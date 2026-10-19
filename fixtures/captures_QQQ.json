@@ -1,0 +1,397 @@
+[
+ {
+  "date": "2026-09-17",
+  "ticker": "QQQ",
+  "status": "eligible",
+  "captured_at": "2026-09-17T14:00:43Z",
+  "contracts": 888,
+  "valid": 865,
+  "coverage_pct": 97.46,
+  "hash": "df3a2e1842efd704989ca786f8cb044b11f22b2fde01e8fb0d350334c4a75fac",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 23
+  },
+  "processed": true,
+  "study_status": "complete",
+  "study_reason": null,
+  "net_gex": 712000000.0
+ },
+ {
+  "date": "2026-09-18",
+  "ticker": "QQQ",
+  "status": "eligible",
+  "captured_at": "2026-09-18T14:00:52Z",
+  "contracts": 888,
+  "valid": 870,
+  "coverage_pct": 98.0,
+  "hash": "e00b125f3c22d99ff5c6578013fb8d7dccff739b98b276e7c46e13b2ef4aa288",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 18
+  },
+  "processed": true,
+  "study_status": "complete",
+  "study_reason": null,
+  "net_gex": -540000000.0
+ },
+ {
+  "date": "2026-09-21",
+  "ticker": "QQQ",
+  "status": "eligible",
+  "captured_at": "2026-09-21T14:00:23Z",
+  "contracts": 888,
+  "valid": 878,
+  "coverage_pct": 98.84,
+  "hash": "ff4141af6658241e2e6db78c70698bb9a1220d69c99ba4c0cdd818801676635b",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 10
+  },
+  "processed": true,
+  "study_status": "complete",
+  "study_reason": null,
+  "net_gex": -237000000.0
+ },
+ {
+  "date": "2026-09-22",
+  "ticker": "QQQ",
+  "status": "eligible",
+  "captured_at": "2026-09-22T14:00:51Z",
+  "contracts": 888,
+  "valid": 863,
+  "coverage_pct": 97.14,
+  "hash": "5b8706e22845a595a04945d5d50a5e37b918040a95577d5c2c5cd4629ce119b8",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 25
+  },
+  "processed": true,
+  "study_status": "complete",
+  "study_reason": null,
+  "net_gex": -166000000.0
+ },
+ {
+  "date": "2026-09-23",
+  "ticker": "QQQ",
+  "status": "eligible",
+  "captured_at": "2026-09-23T14:00:27Z",
+  "contracts": 888,
+  "valid": 869,
+  "coverage_pct": 97.91,
+  "hash": "de300242bd2ce1533823958ff9dd542afce0a027b32cc17dff6a83e7da0702d1",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 19
+  },
+  "processed": true,
+  "study_status": "complete",
+  "study_reason": null,
+  "net_gex": 63000000.0
+ },
+ {
+  "date": "2026-09-24",
+  "ticker": "QQQ",
+  "status": "late",
+  "captured_at": "2026-09-24T14:06:12Z",
+  "contracts": 888,
+  "valid": 877,
+  "coverage_pct": 98.81,
+  "hash": "ee746f4c72db2494764dadbfbe8c59e47bdf2b152347923413b7d71a199ad5bf",
+  "reason": "finished after 10:05 ET",
+  "invalid_counts": {
+   "mid_unusable": 11
+  },
+  "processed": true,
+  "study_status": null,
+  "study_reason": null,
+  "net_gex": 103000000.0
+ },
+ {
+  "date": "2026-09-25",
+  "ticker": "QQQ",
+  "status": "eligible",
+  "captured_at": "2026-09-25T14:00:53Z",
+  "contracts": 888,
+  "valid": 876,
+  "coverage_pct": 98.65,
+  "hash": "8606850d6fcf3cf1a118b27d176b116fd6bab192d80b9d1b8eec12718bc62b2d",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 12
+  },
+  "processed": true,
+  "study_status": "complete",
+  "study_reason": null,
+  "net_gex": -566000000.0
+ },
+ {
+  "date": "2026-09-28",
+  "ticker": "QQQ",
+  "status": "eligible",
+  "captured_at": "2026-09-28T14:00:23Z",
+  "contracts": 888,
+  "valid": 878,
+  "coverage_pct": 98.83,
+  "hash": "787609283b0626529279b444e5aa12334ae1fa354fb1a175d43f515164e63108",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 10
+  },
+  "processed": true,
+  "study_status": "complete",
+  "study_reason": null,
+  "net_gex": 628000000.0
+ },
+ {
+  "date": "2026-09-29",
+  "ticker": "QQQ",
+  "status": "eligible",
+  "captured_at": "2026-09-29T14:00:27Z",
+  "contracts": 888,
+  "valid": 871,
+  "coverage_pct": 98.03,
+  "hash": "be2c30c9c33dff9f5fb7ec6cf7e90d50ccbd6fcd0f3840c94f1a5d6b17b82ee0",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 17
+  },
+  "processed": true,
+  "study_status": "complete",
+  "study_reason": null,
+  "net_gex": 392000000.0
+ },
+ {
+  "date": "2026-09-30",
+  "ticker": "QQQ",
+  "status": "eligible",
+  "captured_at": "2026-09-30T14:00:25Z",
+  "contracts": 888,
+  "valid": 873,
+  "coverage_pct": 98.34,
+  "hash": "78746b365002f0c4e9ecaef9e6d1fe192192bfd1a2a9c2d9c3349cffe313b944",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 15
+  },
+  "processed": true,
+  "study_status": "complete",
+  "study_reason": null,
+  "net_gex": 47000000.0
+ },
+ {
+  "date": "2026-10-01",
+  "ticker": "QQQ",
+  "status": "eligible",
+  "captured_at": "2026-10-01T14:00:40Z",
+  "contracts": 888,
+  "valid": 876,
+  "coverage_pct": 98.61,
+  "hash": "40c1e605d117574a27256d8d348a611a9a33b373d3f710e8a2820e9920ca9619",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 12
+  },
+  "processed": true,
+  "study_status": "complete",
+  "study_reason": null,
+  "net_gex": -518000000.0
+ },
+ {
+  "date": "2026-10-02",
+  "ticker": "QQQ",
+  "status": "missed",
+  "captured_at": null,
+  "contracts": null,
+  "valid": null,
+  "coverage_pct": null,
+  "hash": null,
+  "reason": null,
+  "invalid_counts": null,
+  "processed": false,
+  "study_status": null,
+  "study_reason": null,
+  "net_gex": null
+ },
+ {
+  "date": "2026-10-05",
+  "ticker": "QQQ",
+  "status": "eligible",
+  "captured_at": "2026-10-05T14:00:36Z",
+  "contracts": 888,
+  "valid": 859,
+  "coverage_pct": 96.7,
+  "hash": "cc958cd4bca6f729a45c6b137ef7a2e553f4eba10b017e99e41fd9cbcf8708cc",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 29
+  },
+  "processed": true,
+  "study_status": "complete",
+  "study_reason": null,
+  "net_gex": -310000000.0
+ },
+ {
+  "date": "2026-10-06",
+  "ticker": "QQQ",
+  "status": "eligible",
+  "captured_at": "2026-10-06T14:00:25Z",
+  "contracts": 888,
+  "valid": 863,
+  "coverage_pct": 97.21,
+  "hash": "de175b75dc99554304a101393353c3972de4e1cb3f227e0b84be6daa9c404d44",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 25
+  },
+  "processed": true,
+  "study_status": "complete",
+  "study_reason": null,
+  "net_gex": -254000000.0
+ },
+ {
+  "date": "2026-10-07",
+  "ticker": "QQQ",
+  "status": "eligible",
+  "captured_at": "2026-10-07T14:00:21Z",
+  "contracts": 888,
+  "valid": 858,
+  "coverage_pct": 96.62,
+  "hash": "703b6d9113d6c6e49d404d6c386fe715a8bc390ed2ba8f109adf82a1b7d9ad32",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 30
+  },
+  "processed": true,
+  "study_status": "complete",
+  "study_reason": null,
+  "net_gex": -501000000.0
+ },
+ {
+  "date": "2026-10-08",
+  "ticker": "QQQ",
+  "status": "eligible",
+  "captured_at": "2026-10-08T14:00:31Z",
+  "contracts": 888,
+  "valid": 867,
+  "coverage_pct": 97.64,
+  "hash": "9931ac7b4293ee865deb8985a256ded8a2d672d4b9389605a06ab30141d04fc3",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 21
+  },
+  "processed": true,
+  "study_status": "complete",
+  "study_reason": null,
+  "net_gex": -489000000.0
+ },
+ {
+  "date": "2026-10-09",
+  "ticker": "QQQ",
+  "status": "invalid",
+  "captured_at": "2026-10-09T14:00:20Z",
+  "contracts": 888,
+  "valid": 812,
+  "coverage_pct": 91.4,
+  "hash": "381510d4ae6231c72268d1a84e90b7e472483bf80ae776367106c895872e3cd9",
+  "reason": "coverage 91.40% below 95.0%",
+  "invalid_counts": {
+   "iv_stale": 46,
+   "mid_unusable": 30
+  },
+  "processed": true,
+  "study_status": null,
+  "study_reason": null,
+  "net_gex": 100000000.0
+ },
+ {
+  "date": "2026-10-12",
+  "ticker": "QQQ",
+  "status": "eligible",
+  "captured_at": "2026-10-12T14:00:29Z",
+  "contracts": 888,
+  "valid": 858,
+  "coverage_pct": 96.63,
+  "hash": "fb69f88cede3882369682f56a0143055f63ecb94da080f3a7ec04a94530f85aa",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 30
+  },
+  "processed": true,
+  "study_status": "complete",
+  "study_reason": null,
+  "net_gex": 61000000.0
+ },
+ {
+  "date": "2026-10-13",
+  "ticker": "QQQ",
+  "status": "eligible",
+  "captured_at": "2026-10-13T14:00:23Z",
+  "contracts": 888,
+  "valid": 874,
+  "coverage_pct": 98.37,
+  "hash": "bde9e2d786975f7c42d3fb8183795aeacef688dc4fefba232ac0f7e5296cbb26",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 14
+  },
+  "processed": true,
+  "study_status": "complete",
+  "study_reason": null,
+  "net_gex": -126000000.0
+ },
+ {
+  "date": "2026-10-14",
+  "ticker": "QQQ",
+  "status": "eligible",
+  "captured_at": "2026-10-14T14:00:33Z",
+  "contracts": 888,
+  "valid": 861,
+  "coverage_pct": 97.0,
+  "hash": "a79b1c671f5f6d4de628de851937a7b455ba672f9a16630f8ffe16274f66a289",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 27
+  },
+  "processed": true,
+  "study_status": "complete",
+  "study_reason": null,
+  "net_gex": 315000000.0
+ },
+ {
+  "date": "2026-10-15",
+  "ticker": "QQQ",
+  "status": "eligible",
+  "captured_at": "2026-10-15T14:00:34Z",
+  "contracts": 888,
+  "valid": 871,
+  "coverage_pct": 98.09,
+  "hash": "113e8aff8b1220c914255a0b5e54dfc08a2716210d5fe068f0d21cceea31ed76",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 17
+  },
+  "processed": true,
+  "study_status": "complete",
+  "study_reason": null,
+  "net_gex": 61000000.0
+ },
+ {
+  "date": "2026-10-16",
+  "ticker": "QQQ",
+  "status": "eligible",
+  "captured_at": "2026-10-16T14:00:36Z",
+  "contracts": 888,
+  "valid": 867,
+  "coverage_pct": 97.6,
+  "hash": "dada293a3246d8e93c81d307250138037e500b1fb85cc7f20097b2a8db5617e1",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 21
+  },
+  "processed": true,
+  "study_status": "complete",
+  "study_reason": null,
+  "net_gex": 612000000.0
+ }
+]

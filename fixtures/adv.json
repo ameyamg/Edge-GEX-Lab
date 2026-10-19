@@ -1,0 +1,26 @@
+{
+ "SPY": {
+  "adv_usd": 30000000000.0,
+  "sessions": 20,
+  "first": "2026-09-17",
+  "last": "2026-10-15",
+  "reason": null,
+  "note": "Synthetic fixture"
+ },
+ "QQQ": {
+  "adv_usd": 18000000000.0,
+  "sessions": 20,
+  "first": "2026-09-17",
+  "last": "2026-10-15",
+  "reason": null,
+  "note": "Synthetic fixture"
+ },
+ "NVDA": {
+  "adv_usd": 35000000000.0,
+  "sessions": 20,
+  "first": "2026-09-17",
+  "last": "2026-10-15",
+  "reason": null,
+  "note": "Synthetic fixture"
+ }
+}

@@ -1,0 +1,397 @@
+[
+ {
+  "date": "2026-09-17",
+  "ticker": "NDX",
+  "status": "eligible",
+  "captured_at": "2026-09-17T14:00:43Z",
+  "contracts": 4298,
+  "valid": 4213,
+  "coverage_pct": 98.02,
+  "hash": "dc27fe42cd4e957cab864ecde614d2bad661963b25f8ab4a253fb0cb57da8c6c",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 85
+  },
+  "processed": true,
+  "study_status": null,
+  "study_reason": null,
+  "net_gex": -45000000.0
+ },
+ {
+  "date": "2026-09-18",
+  "ticker": "NDX",
+  "status": "eligible",
+  "captured_at": "2026-09-18T14:00:44Z",
+  "contracts": 4298,
+  "valid": 4273,
+  "coverage_pct": 99.41,
+  "hash": "0eb2a33295f64154253859952eab6ba986cf09150ea923fe30ba1ded1d0104c0",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 25
+  },
+  "processed": true,
+  "study_status": null,
+  "study_reason": null,
+  "net_gex": -1456000000.0
+ },
+ {
+  "date": "2026-09-21",
+  "ticker": "NDX",
+  "status": "eligible",
+  "captured_at": "2026-09-21T14:00:34Z",
+  "contracts": 4298,
+  "valid": 4261,
+  "coverage_pct": 99.14,
+  "hash": "2ea961a5253fdf88cd448cd60bbbf23fdff3d415c6ac3f2a080482dada26ae9f",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 37
+  },
+  "processed": true,
+  "study_status": null,
+  "study_reason": null,
+  "net_gex": -1036000000.0
+ },
+ {
+  "date": "2026-09-22",
+  "ticker": "NDX",
+  "status": "eligible",
+  "captured_at": "2026-09-22T14:00:22Z",
+  "contracts": 4298,
+  "valid": 4258,
+  "coverage_pct": 99.07,
+  "hash": "525bf36bebe53e10d1fa49671cb51e7226a3f6d2012d0d20ca0fc747143e9f0b",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 40
+  },
+  "processed": true,
+  "study_status": null,
+  "study_reason": null,
+  "net_gex": -1635000000.0
+ },
+ {
+  "date": "2026-09-23",
+  "ticker": "NDX",
+  "status": "eligible",
+  "captured_at": "2026-09-23T14:00:48Z",
+  "contracts": 4298,
+  "valid": 4134,
+  "coverage_pct": 96.18,
+  "hash": "429d99736b13e2a303462bf942973ac19b506d8d93e56d59492def958192272a",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 164
+  },
+  "processed": true,
+  "study_status": null,
+  "study_reason": null,
+  "net_gex": 455000000.0
+ },
+ {
+  "date": "2026-09-24",
+  "ticker": "NDX",
+  "status": "late",
+  "captured_at": "2026-09-24T14:06:12Z",
+  "contracts": 4298,
+  "valid": 4203,
+  "coverage_pct": 97.78,
+  "hash": "ac3212a4f6ed561bd148bc13152995c31e5a909280521dac5e2688165671575c",
+  "reason": "finished after 10:05 ET",
+  "invalid_counts": {
+   "mid_unusable": 95
+  },
+  "processed": true,
+  "study_status": null,
+  "study_reason": null,
+  "net_gex": 1748000000.0
+ },
+ {
+  "date": "2026-09-25",
+  "ticker": "NDX",
+  "status": "eligible",
+  "captured_at": "2026-09-25T14:00:33Z",
+  "contracts": 4298,
+  "valid": 4127,
+  "coverage_pct": 96.01,
+  "hash": "5d7d50dac6265bf93c41e7556ccb7ed8b320aa00d1b39a826aa1f4f45c6a5491",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 171
+  },
+  "processed": true,
+  "study_status": null,
+  "study_reason": null,
+  "net_gex": -590000000.0
+ },
+ {
+  "date": "2026-09-28",
+  "ticker": "NDX",
+  "status": "eligible",
+  "captured_at": "2026-09-28T14:00:46Z",
+  "contracts": 4298,
+  "valid": 4184,
+  "coverage_pct": 97.35,
+  "hash": "22506ec8b44ccd0902c2643f436f1689415d47214b003788c842ee0bef6036ec",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 114
+  },
+  "processed": true,
+  "study_status": null,
+  "study_reason": null,
+  "net_gex": -1219000000.0
+ },
+ {
+  "date": "2026-09-29",
+  "ticker": "NDX",
+  "status": "eligible",
+  "captured_at": "2026-09-29T14:00:41Z",
+  "contracts": 4298,
+  "valid": 4200,
+  "coverage_pct": 97.73,
+  "hash": "e47966b51e033a8b1f018b37893f3438739acdce51365d01811e8ebf4e366901",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 98
+  },
+  "processed": true,
+  "study_status": null,
+  "study_reason": null,
+  "net_gex": -843000000.0
+ },
+ {
+  "date": "2026-09-30",
+  "ticker": "NDX",
+  "status": "eligible",
+  "captured_at": "2026-09-30T14:00:24Z",
+  "contracts": 4298,
+  "valid": 4132,
+  "coverage_pct": 96.14,
+  "hash": "640dc56db38045ccceb50efc467f3d579c1bfefd32cf9cb8ac868f88ccf997d8",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 166
+  },
+  "processed": true,
+  "study_status": null,
+  "study_reason": null,
+  "net_gex": 876000000.0
+ },
+ {
+  "date": "2026-10-01",
+  "ticker": "NDX",
+  "status": "eligible",
+  "captured_at": "2026-10-01T14:00:42Z",
+  "contracts": 4298,
+  "valid": 4201,
+  "coverage_pct": 97.74,
+  "hash": "ed41b65b377ab85f611d00574a57740d22ebaf3edb9c8d8f4e668b5bf83b7e2a",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 97
+  },
+  "processed": true,
+  "study_status": null,
+  "study_reason": null,
+  "net_gex": 119000000.0
+ },
+ {
+  "date": "2026-10-02",
+  "ticker": "NDX",
+  "status": "missed",
+  "captured_at": null,
+  "contracts": null,
+  "valid": null,
+  "coverage_pct": null,
+  "hash": null,
+  "reason": null,
+  "invalid_counts": null,
+  "processed": false,
+  "study_status": null,
+  "study_reason": null,
+  "net_gex": null
+ },
+ {
+  "date": "2026-10-05",
+  "ticker": "NDX",
+  "status": "eligible",
+  "captured_at": "2026-10-05T14:00:29Z",
+  "contracts": 4298,
+  "valid": 4150,
+  "coverage_pct": 96.55,
+  "hash": "f5d80a8d8e234a54226af6d1f5f1a5b98ccded89ba76d5ba6ec95ebd4280364f",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 148
+  },
+  "processed": true,
+  "study_status": null,
+  "study_reason": null,
+  "net_gex": 2772000000.0
+ },
+ {
+  "date": "2026-10-06",
+  "ticker": "NDX",
+  "status": "eligible",
+  "captured_at": "2026-10-06T14:00:28Z",
+  "contracts": 4298,
+  "valid": 4227,
+  "coverage_pct": 98.35,
+  "hash": "faac8ef898107c5394a6a4c2d1d3e62fb5bdd96b2f2020cbd841f482e5cc3c38",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 71
+  },
+  "processed": true,
+  "study_status": null,
+  "study_reason": null,
+  "net_gex": -751000000.0
+ },
+ {
+  "date": "2026-10-07",
+  "ticker": "NDX",
+  "status": "eligible",
+  "captured_at": "2026-10-07T14:00:21Z",
+  "contracts": 4298,
+  "valid": 4147,
+  "coverage_pct": 96.49,
+  "hash": "1dd79fa2e8cd5d2e06f7a68788039bab97ccced804cea5dc1e1894d66e73abf5",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 151
+  },
+  "processed": true,
+  "study_status": null,
+  "study_reason": null,
+  "net_gex": 2584000000.0
+ },
+ {
+  "date": "2026-10-08",
+  "ticker": "NDX",
+  "status": "eligible",
+  "captured_at": "2026-10-08T14:00:40Z",
+  "contracts": 4298,
+  "valid": 4169,
+  "coverage_pct": 96.99,
+  "hash": "883b73039ad06c500ad271efbd2d4639ac283d35a9d8e1bd6bfbfa3286b72744",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 129
+  },
+  "processed": true,
+  "study_status": null,
+  "study_reason": null,
+  "net_gex": 781000000.0
+ },
+ {
+  "date": "2026-10-09",
+  "ticker": "NDX",
+  "status": "invalid",
+  "captured_at": "2026-10-09T14:00:54Z",
+  "contracts": 4298,
+  "valid": 3928,
+  "coverage_pct": 91.4,
+  "hash": "8b6bc7dbe756a4e3f8e42a6e32147f8ab24e18ee5a5b881d32353b209f3c473e",
+  "reason": "coverage 91.40% below 95.0%",
+  "invalid_counts": {
+   "iv_stale": 222,
+   "mid_unusable": 148
+  },
+  "processed": true,
+  "study_status": null,
+  "study_reason": null,
+  "net_gex": 2172000000.0
+ },
+ {
+  "date": "2026-10-12",
+  "ticker": "NDX",
+  "status": "eligible",
+  "captured_at": "2026-10-12T14:00:42Z",
+  "contracts": 4298,
+  "valid": 4139,
+  "coverage_pct": 96.31,
+  "hash": "79b709c00f0a87514b3f90066cf1dc476cb9f58b3309e4631ccf5134d765f0b1",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 159
+  },
+  "processed": true,
+  "study_status": null,
+  "study_reason": null,
+  "net_gex": -572000000.0
+ },
+ {
+  "date": "2026-10-13",
+  "ticker": "NDX",
+  "status": "eligible",
+  "captured_at": "2026-10-13T14:00:30Z",
+  "contracts": 4298,
+  "valid": 4201,
+  "coverage_pct": 97.74,
+  "hash": "521e7aabcbfc7d0c9d644cc8b43b744671f0d5b7a9f088115dd34d8ecf1232a7",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 97
+  },
+  "processed": true,
+  "study_status": null,
+  "study_reason": null,
+  "net_gex": -0.0
+ },
+ {
+  "date": "2026-10-14",
+  "ticker": "NDX",
+  "status": "eligible",
+  "captured_at": "2026-10-14T14:00:29Z",
+  "contracts": 4298,
+  "valid": 4176,
+  "coverage_pct": 97.15,
+  "hash": "8a8f383b0dc8b5cf0ba552ad35a7c224dcd9fd8550e4cfe391857533ecf21fc8",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 122
+  },
+  "processed": true,
+  "study_status": null,
+  "study_reason": null,
+  "net_gex": -1300000000.0
+ },
+ {
+  "date": "2026-10-15",
+  "ticker": "NDX",
+  "status": "eligible",
+  "captured_at": "2026-10-15T14:00:21Z",
+  "contracts": 4298,
+  "valid": 4242,
+  "coverage_pct": 98.7,
+  "hash": "e085d8707768f217f1ed62bb6a56b254e0663aa2a3f446e48819e352383cf9b7",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 56
+  },
+  "processed": true,
+  "study_status": null,
+  "study_reason": null,
+  "net_gex": 2957000000.0
+ },
+ {
+  "date": "2026-10-16",
+  "ticker": "NDX",
+  "status": "eligible",
+  "captured_at": "2026-10-16T14:00:34Z",
+  "contracts": 4298,
+  "valid": 4177,
+  "coverage_pct": 97.19,
+  "hash": "10128e84514c119364e0888e69e4ee87d698ec4d26b91920927e441311b546da",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 121
+  },
+  "processed": true,
+  "study_status": null,
+  "study_reason": null,
+  "net_gex": 2338000000.0
+ }
+]

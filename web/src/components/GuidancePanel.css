@@ -1,0 +1,305 @@
+/* Trade guidance panel. Channel palette: green and purple only, amber only for staleness. */
+
+/* One column that never grows past the panel: a long unbreakable line (the demo tag) used to widen the
+   grid track and push every row 13 px past the panel's right edge, clipping text. */
+.guidance-panel {
+  grid-template-columns: minmax(0, 1fr);
+}
+.guidance-panel .demo-tag {
+  white-space: normal;
+}
+.guidance-panel .g-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.g-chip {
+  font: 600 9.5px/1 var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: none;
+  color: var(--muted);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-s);
+  padding: 3px 6px;
+}
+.g-chip.measured {
+  color: var(--green);
+  border-color: var(--green-dim);
+}
+.g-toggle {
+  background: none;
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-s);
+  color: var(--muted);
+  font: 600 10px/1 var(--mono);
+  letter-spacing: 0.06em;
+  padding: 4px 8px;
+}
+.g-toggle:hover {
+  color: var(--text);
+}
+
+.g-env {
+  display: grid;
+  gap: 3px;
+  padding: 8px 10px;
+  border-left: 3px solid var(--line-2);
+  background: var(--surface-2);
+  border-radius: var(--r-s);
+}
+.g-env.mean_reversion {
+  border-left-color: var(--green);
+}
+.g-env.trend {
+  border-left-color: var(--purple-1);
+}
+.g-env-label {
+  font: 700 14px/1.2 var(--display);
+  color: var(--text);
+}
+.g-env.mean_reversion .g-env-label {
+  color: var(--green);
+}
+.g-env.trend .g-env-label {
+  color: var(--purple-2);
+}
+.g-env-sum {
+  font-size: 12px;
+  color: var(--text-2);
+}
+
+.g-small {
+  font-size: 11.5px;
+  line-height: 1.45;
+}
+.g-muted {
+  color: var(--muted);
+}
+.g-text {
+  color: var(--text-2);
+}
+.g-amber {
+  color: var(--amber);
+}
+.g-green {
+  color: var(--green);
+}
+.g-green-dim {
+  color: #a6e05a;
+}
+.g-purple {
+  color: var(--purple-2);
+}
+.g-purple-dim {
+  color: #c9a3f3;
+}
+.guidance-panel .mono {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.g-sec {
+  font: 600 10px/1.2 var(--mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+  margin-top: 2px;
+}
+.g-sec-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.g-levels {
+  width: 100%;
+  font-size: 12px;
+}
+.g-levels th {
+  text-align: left;
+  font: 600 9.5px/1.2 var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+  padding: 0 4px 4px 0;
+  border-bottom: 1px solid var(--line);
+}
+.g-levels td {
+  padding: 3px 4px 3px 0;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+.g-levels .r {
+  text-align: right;
+  padding-right: 0;
+}
+.g-levels tr.g-spot td {
+  color: var(--text);
+  font-weight: 600;
+  background: var(--surface-2);
+}
+
+.g-cards {
+  display: grid;
+  gap: 8px;
+}
+.g-card {
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-s);
+  padding: 8px 10px;
+  display: grid;
+  gap: 5px;
+}
+.g-card.long {
+  border-left: 3px solid var(--green);
+}
+.g-card.short {
+  border-left: 3px solid var(--purple-1);
+}
+.g-card header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+.g-name {
+  font-weight: 600;
+  font-size: 12.5px;
+}
+.g-tags {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+}
+.g-bias {
+  font: 700 10px/1 var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 3px 6px;
+  border-radius: var(--r-s);
+  color: var(--muted);
+  border: 1px solid var(--line-2);
+}
+.g-bias.long {
+  color: #000;
+  background: var(--green);
+  border-color: var(--green);
+}
+.g-bias.short {
+  color: #fff;
+  background: var(--purple);
+  border-color: var(--purple);
+}
+.g-rr {
+  font: 600 10px/1 var(--mono);
+  color: var(--text-2);
+  letter-spacing: 0.04em;
+}
+.g-notes li {
+  color: var(--text-2);
+}
+.g-trigger {
+  font-size: 12px;
+  color: var(--text-2);
+}
+.g-plan {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2px 10px;
+  margin: 0;
+  font-size: 12px;
+}
+.g-plan dt {
+  color: var(--muted);
+  font: 600 10px/1.6 var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.g-plan dd {
+  margin: 0;
+  color: var(--text);
+}
+.g-why {
+  font-size: 11.5px;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.g-list {
+  margin: 0;
+  padding-left: 16px;
+  display: grid;
+  gap: 3px;
+  font-size: 11.5px;
+  color: var(--text-2);
+}
+.guidance-panel details summary {
+  cursor: pointer;
+}
+
+.g-src {
+  font: 600 9.5px/1 var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: none;
+  padding: 3px 6px;
+  border-radius: var(--r-s);
+  border: 1px solid var(--line-2);
+  color: var(--muted);
+}
+.g-src.ai {
+  color: var(--green);
+  border-color: var(--green-dim);
+}
+.g-narr {
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--text-2);
+}
+.g-explain {
+  justify-self: start;
+}
+.g-foot {
+  font-size: 10.5px;
+  color: var(--muted-2);
+  border-top: 1px solid var(--line);
+  padding-top: 8px;
+}
+
+/* Present mode: legible when the recording plays on a phone */
+.app.present .guidance-panel .g-chip,
+.app.present .guidance-panel .g-src {
+  font-size: 13px;
+}
+.app.present .guidance-panel .g-env-label {
+  font-size: 24px;
+}
+.app.present .guidance-panel .g-env-sum,
+.app.present .guidance-panel .g-trigger,
+.app.present .guidance-panel .g-narr,
+.app.present .guidance-panel .g-levels,
+.app.present .guidance-panel .g-plan {
+  font-size: 17px;
+}
+.app.present .guidance-panel .g-small,
+.app.present .guidance-panel .g-why,
+.app.present .guidance-panel .g-list {
+  font-size: 15px;
+}
+.app.present .guidance-panel .g-sec,
+.app.present .guidance-panel .g-levels th,
+.app.present .guidance-panel .g-plan dt,
+.app.present .guidance-panel .g-rr,
+.app.present .guidance-panel .g-bias {
+  font-size: 13px;
+}
+.app.present .guidance-panel .g-name {
+  font-size: 18px;
+}
+.app.present .guidance-panel .g-foot {
+  font-size: 14px;
+}
+.app.present .guidance-panel .g-cards {
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+}

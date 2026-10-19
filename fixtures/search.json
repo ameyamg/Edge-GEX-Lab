@@ -1,0 +1,27 @@
+[
+ {
+  "symbol": "SPY",
+  "name": "SPDR S&P 500 ETF Trust",
+  "source": "alpaca"
+ },
+ {
+  "symbol": "QQQ",
+  "name": "Invesco QQQ Trust",
+  "source": "alpaca"
+ },
+ {
+  "symbol": "SPX",
+  "name": "S&P 500 Index",
+  "source": "cboe"
+ },
+ {
+  "symbol": "NDX",
+  "name": "Nasdaq-100 Index",
+  "source": "cboe"
+ },
+ {
+  "symbol": "NVDA",
+  "name": "NVIDIA Corporation",
+  "source": "alpaca"
+ }
+]

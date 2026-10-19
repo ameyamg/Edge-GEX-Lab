@@ -1,0 +1,23 @@
+name: Feature request
+description: Suggest something the live map should show or do.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: The problem
+      description: What are you trying to see on the map, and what gets in the way today?
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would help
+      description: How you picture it working. A sketch or a screenshot of another tool is welcome.
+  - type: checkboxes
+    id: fit
+    attributes:
+      label: Fit
+      options:
+        - label: This keeps the app local first (no new account, cloud service or telemetry).
+        - label: Every new number on screen can be traced to the data or a stated formula.

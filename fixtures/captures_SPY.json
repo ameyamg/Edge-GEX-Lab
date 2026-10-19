@@ -1,0 +1,397 @@
+[
+ {
+  "date": "2026-09-17",
+  "ticker": "SPY",
+  "status": "eligible",
+  "captured_at": "2026-09-17T14:00:36Z",
+  "contracts": 1020,
+  "valid": 1011,
+  "coverage_pct": 99.16,
+  "hash": "6a5e0b601acf199a5f9babe98843b341902afb4fca3b848bf1f75be2ede1cab3",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 9
+  },
+  "processed": true,
+  "study_status": "complete",
+  "study_reason": null,
+  "net_gex": 948000000.0
+ },
+ {
+  "date": "2026-09-18",
+  "ticker": "SPY",
+  "status": "eligible",
+  "captured_at": "2026-09-18T14:00:48Z",
+  "contracts": 1020,
+  "valid": 992,
+  "coverage_pct": 97.23,
+  "hash": "d80847529efe4d58b0788d3c8372fd27b60917f3148e16d8de34ef85d89300e5",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 28
+  },
+  "processed": true,
+  "study_status": "complete",
+  "study_reason": null,
+  "net_gex": -649000000.0
+ },
+ {
+  "date": "2026-09-21",
+  "ticker": "SPY",
+  "status": "eligible",
+  "captured_at": "2026-09-21T14:00:49Z",
+  "contracts": 1020,
+  "valid": 1014,
+  "coverage_pct": 99.43,
+  "hash": "6ca6d24598adb60792ba39dc870b1829b44365934ba6cb82d20817a132607939",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 6
+  },
+  "processed": true,
+  "study_status": "complete",
+  "study_reason": null,
+  "net_gex": 49000000.0
+ },
+ {
+  "date": "2026-09-22",
+  "ticker": "SPY",
+  "status": "eligible",
+  "captured_at": "2026-09-22T14:00:44Z",
+  "contracts": 1020,
+  "valid": 1001,
+  "coverage_pct": 98.15,
+  "hash": "194fcca64bf27733a033ae8602b6c6205df796f34d2fa0b17cf745262a24395a",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 19
+  },
+  "processed": true,
+  "study_status": "complete",
+  "study_reason": null,
+  "net_gex": 151000000.0
+ },
+ {
+  "date": "2026-09-23",
+  "ticker": "SPY",
+  "status": "eligible",
+  "captured_at": "2026-09-23T14:00:43Z",
+  "contracts": 1020,
+  "valid": 981,
+  "coverage_pct": 96.14,
+  "hash": "a62a402402cf988b439620217baeb261433b42acada5e319acb77eb98bb5a97a",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 39
+  },
+  "processed": true,
+  "study_status": "complete",
+  "study_reason": null,
+  "net_gex": 1474000000.0
+ },
+ {
+  "date": "2026-09-24",
+  "ticker": "SPY",
+  "status": "late",
+  "captured_at": "2026-09-24T14:06:12Z",
+  "contracts": 1020,
+  "valid": 1006,
+  "coverage_pct": 98.67,
+  "hash": "f861c0a145e4ffea9238a9e3134d8b222703a7b643793518abfeaf809b521347",
+  "reason": "finished after 10:05 ET",
+  "invalid_counts": {
+   "mid_unusable": 14
+  },
+  "processed": true,
+  "study_status": null,
+  "study_reason": null,
+  "net_gex": 11000000.0
+ },
+ {
+  "date": "2026-09-25",
+  "ticker": "SPY",
+  "status": "eligible",
+  "captured_at": "2026-09-25T14:00:48Z",
+  "contracts": 1020,
+  "valid": 999,
+  "coverage_pct": 97.9,
+  "hash": "5db531fb904fb302dc6e9b3828a7f33d2218f3b49fc6bda6f028052d78cf575a",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 21
+  },
+  "processed": true,
+  "study_status": "complete",
+  "study_reason": null,
+  "net_gex": 815000000.0
+ },
+ {
+  "date": "2026-09-28",
+  "ticker": "SPY",
+  "status": "eligible",
+  "captured_at": "2026-09-28T14:00:49Z",
+  "contracts": 1020,
+  "valid": 988,
+  "coverage_pct": 96.85,
+  "hash": "8782e2f335facc573f40e845819008034eed49800d6968e734c23cf0edf9a7f3",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 32
+  },
+  "processed": true,
+  "study_status": "complete",
+  "study_reason": null,
+  "net_gex": -99000000.0
+ },
+ {
+  "date": "2026-09-29",
+  "ticker": "SPY",
+  "status": "eligible",
+  "captured_at": "2026-09-29T14:00:51Z",
+  "contracts": 1020,
+  "valid": 1006,
+  "coverage_pct": 98.6,
+  "hash": "444c097c3b40ec45bf46d3e06e7202f6506eef7373e13cc7d9759703e61d7cd6",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 14
+  },
+  "processed": true,
+  "study_status": "complete",
+  "study_reason": null,
+  "net_gex": -246000000.0
+ },
+ {
+  "date": "2026-09-30",
+  "ticker": "SPY",
+  "status": "eligible",
+  "captured_at": "2026-09-30T14:00:29Z",
+  "contracts": 1020,
+  "valid": 1005,
+  "coverage_pct": 98.52,
+  "hash": "572408848d6fb3c71f4053b438bbee5c6d57384f9fe094c9bd449205a68281e4",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 15
+  },
+  "processed": true,
+  "study_status": "complete",
+  "study_reason": null,
+  "net_gex": -1369000000.0
+ },
+ {
+  "date": "2026-10-01",
+  "ticker": "SPY",
+  "status": "eligible",
+  "captured_at": "2026-10-01T14:00:36Z",
+  "contracts": 1020,
+  "valid": 1015,
+  "coverage_pct": 99.52,
+  "hash": "72d37731727e411abc52bdc99f0ac534c245e4e24080c4df0cce0d669765f37f",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 5
+  },
+  "processed": true,
+  "study_status": "complete",
+  "study_reason": null,
+  "net_gex": 1073000000.0
+ },
+ {
+  "date": "2026-10-02",
+  "ticker": "SPY",
+  "status": "missed",
+  "captured_at": null,
+  "contracts": null,
+  "valid": null,
+  "coverage_pct": null,
+  "hash": null,
+  "reason": null,
+  "invalid_counts": null,
+  "processed": false,
+  "study_status": null,
+  "study_reason": null,
+  "net_gex": null
+ },
+ {
+  "date": "2026-10-05",
+  "ticker": "SPY",
+  "status": "eligible",
+  "captured_at": "2026-10-05T14:00:42Z",
+  "contracts": 1020,
+  "valid": 991,
+  "coverage_pct": 97.15,
+  "hash": "1357ef72c01a7f3b0b8ab24156b93fd9b759b2804d679d3c01ce39f916f45912",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 29
+  },
+  "processed": true,
+  "study_status": "complete",
+  "study_reason": null,
+  "net_gex": 326000000.0
+ },
+ {
+  "date": "2026-10-06",
+  "ticker": "SPY",
+  "status": "eligible",
+  "captured_at": "2026-10-06T14:00:45Z",
+  "contracts": 1020,
+  "valid": 1001,
+  "coverage_pct": 98.11,
+  "hash": "738b28c3227b2732b7788a5a44f52ac09ce6efa0e4ec84dce753d6d093517c93",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 19
+  },
+  "processed": true,
+  "study_status": "complete",
+  "study_reason": null,
+  "net_gex": -942000000.0
+ },
+ {
+  "date": "2026-10-07",
+  "ticker": "SPY",
+  "status": "eligible",
+  "captured_at": "2026-10-07T14:00:44Z",
+  "contracts": 1020,
+  "valid": 1016,
+  "coverage_pct": 99.57,
+  "hash": "3ced169574d484017658496dd189f9f1c78130b45bd6b31877af30f7538fc16a",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 4
+  },
+  "processed": true,
+  "study_status": "complete",
+  "study_reason": null,
+  "net_gex": 860000000.0
+ },
+ {
+  "date": "2026-10-08",
+  "ticker": "SPY",
+  "status": "eligible",
+  "captured_at": "2026-10-08T14:00:54Z",
+  "contracts": 1020,
+  "valid": 990,
+  "coverage_pct": 97.06,
+  "hash": "0bd14cb2cb8e08068ac93acef5282747dbb44e8c9dfb9626f911c3d1f646b5be",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 30
+  },
+  "processed": true,
+  "study_status": "complete",
+  "study_reason": null,
+  "net_gex": 349000000.0
+ },
+ {
+  "date": "2026-10-09",
+  "ticker": "SPY",
+  "status": "invalid",
+  "captured_at": "2026-10-09T14:00:46Z",
+  "contracts": 1020,
+  "valid": 932,
+  "coverage_pct": 91.4,
+  "hash": "4f82d4095cde0fb33c78695c6e867ec3093d7de167bed051d4a38c25b4c87b66",
+  "reason": "coverage 91.40% below 95.0%",
+  "invalid_counts": {
+   "iv_stale": 53,
+   "mid_unusable": 35
+  },
+  "processed": true,
+  "study_status": null,
+  "study_reason": null,
+  "net_gex": 1158000000.0
+ },
+ {
+  "date": "2026-10-12",
+  "ticker": "SPY",
+  "status": "eligible",
+  "captured_at": "2026-10-12T14:00:33Z",
+  "contracts": 1020,
+  "valid": 1007,
+  "coverage_pct": 98.74,
+  "hash": "9995db339de760d5729ef2df405860e9772815020672fac05bc7554804def51d",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 13
+  },
+  "processed": true,
+  "study_status": "complete",
+  "study_reason": null,
+  "net_gex": -1120000000.0
+ },
+ {
+  "date": "2026-10-13",
+  "ticker": "SPY",
+  "status": "eligible",
+  "captured_at": "2026-10-13T14:00:50Z",
+  "contracts": 1020,
+  "valid": 988,
+  "coverage_pct": 96.87,
+  "hash": "064123caa4f6ac00894067dd1f6ab9a94c18eaa8829876234e5a336a4a0e9532",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 32
+  },
+  "processed": true,
+  "study_status": "complete",
+  "study_reason": null,
+  "net_gex": 1517000000.0
+ },
+ {
+  "date": "2026-10-14",
+  "ticker": "SPY",
+  "status": "eligible",
+  "captured_at": "2026-10-14T14:00:48Z",
+  "contracts": 1020,
+  "valid": 1000,
+  "coverage_pct": 98.0,
+  "hash": "21c8161c70b1524a56a9627f1d132e42b44668935b0a87273f69b890816412a6",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 20
+  },
+  "processed": true,
+  "study_status": "complete",
+  "study_reason": null,
+  "net_gex": 1806000000.0
+ },
+ {
+  "date": "2026-10-15",
+  "ticker": "SPY",
+  "status": "eligible",
+  "captured_at": "2026-10-15T14:00:38Z",
+  "contracts": 1020,
+  "valid": 982,
+  "coverage_pct": 96.25,
+  "hash": "aaaf24dc9fbbcefe9140865ebbc9dd3626c1cdf2437abc5eb641d556383ec73c",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 38
+  },
+  "processed": true,
+  "study_status": "complete",
+  "study_reason": null,
+  "net_gex": 524000000.0
+ },
+ {
+  "date": "2026-10-16",
+  "ticker": "SPY",
+  "status": "eligible",
+  "captured_at": "2026-10-16T14:00:32Z",
+  "contracts": 1020,
+  "valid": 1009,
+  "coverage_pct": 98.93,
+  "hash": "bc6cbe550c8c0b176413bf561aade6c7502520dbd1415e6cf368f78ef7390fcd",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 11
+  },
+  "processed": true,
+  "study_status": "complete",
+  "study_reason": null,
+  "net_gex": 1633000000.0
+ }
+]

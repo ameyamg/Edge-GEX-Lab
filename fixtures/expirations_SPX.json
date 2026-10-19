@@ -1,0 +1,60 @@
+{
+ "ticker": "SPX",
+ "window_days": 7,
+ "expirations": [
+  {
+   "date": "2026-10-16",
+   "dte": 0,
+   "settlement": "PM",
+   "settlements": [
+    "PM"
+   ],
+   "kind": "monthly"
+  },
+  {
+   "date": "2026-10-19",
+   "dte": 3,
+   "settlement": "PM",
+   "settlements": [
+    "PM"
+   ],
+   "kind": "daily"
+  },
+  {
+   "date": "2026-10-20",
+   "dte": 4,
+   "settlement": "PM",
+   "settlements": [
+    "PM"
+   ],
+   "kind": "daily"
+  },
+  {
+   "date": "2026-10-21",
+   "dte": 5,
+   "settlement": "PM",
+   "settlements": [
+    "PM"
+   ],
+   "kind": "daily"
+  },
+  {
+   "date": "2026-10-22",
+   "dte": 6,
+   "settlement": "PM",
+   "settlements": [
+    "PM"
+   ],
+   "kind": "daily"
+  },
+  {
+   "date": "2026-10-23",
+   "dte": 7,
+   "settlement": "PM",
+   "settlements": [
+    "PM"
+   ],
+   "kind": "weekly"
+  }
+ ]
+}

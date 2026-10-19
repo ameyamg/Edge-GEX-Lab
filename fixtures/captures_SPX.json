@@ -1,0 +1,397 @@
+[
+ {
+  "date": "2026-09-17",
+  "ticker": "SPX",
+  "status": "eligible",
+  "captured_at": "2026-09-17T14:00:47Z",
+  "contracts": 2394,
+  "valid": 2303,
+  "coverage_pct": 96.18,
+  "hash": "4c893d78aebbb0fd9d84b31b48bf3a7a8779d05b136f759e66865040abf69759",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 91
+  },
+  "processed": true,
+  "study_status": null,
+  "study_reason": null,
+  "net_gex": 10562000000.0
+ },
+ {
+  "date": "2026-09-18",
+  "ticker": "SPX",
+  "status": "eligible",
+  "captured_at": "2026-09-18T14:00:38Z",
+  "contracts": 2394,
+  "valid": 2329,
+  "coverage_pct": 97.29,
+  "hash": "9629c564b3b61f0c18487c8f52467ad77c6b1a9f3a6e937b4b96dbf7189485d5",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 65
+  },
+  "processed": true,
+  "study_status": null,
+  "study_reason": null,
+  "net_gex": 12705000000.0
+ },
+ {
+  "date": "2026-09-21",
+  "ticker": "SPX",
+  "status": "eligible",
+  "captured_at": "2026-09-21T14:00:47Z",
+  "contracts": 2394,
+  "valid": 2327,
+  "coverage_pct": 97.22,
+  "hash": "fdc2c3906d7a4384ba8341f4f6cb3d187022fb695b6767323b1caaf7aea3d427",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 67
+  },
+  "processed": true,
+  "study_status": null,
+  "study_reason": null,
+  "net_gex": 9133000000.0
+ },
+ {
+  "date": "2026-09-22",
+  "ticker": "SPX",
+  "status": "eligible",
+  "captured_at": "2026-09-22T14:00:31Z",
+  "contracts": 2394,
+  "valid": 2340,
+  "coverage_pct": 97.74,
+  "hash": "b3cd389e0154268c89c49b4915a32ba25b855bc3cc90721f996eaee1050411b3",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 54
+  },
+  "processed": true,
+  "study_status": null,
+  "study_reason": null,
+  "net_gex": -1312000000.0
+ },
+ {
+  "date": "2026-09-23",
+  "ticker": "SPX",
+  "status": "eligible",
+  "captured_at": "2026-09-23T14:00:50Z",
+  "contracts": 2394,
+  "valid": 2348,
+  "coverage_pct": 98.06,
+  "hash": "4ec128d7f8a425c6d5bb86ae435cbe3082dcc9db16e74037e1db08d3de52cfbd",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 46
+  },
+  "processed": true,
+  "study_status": null,
+  "study_reason": null,
+  "net_gex": -6006000000.0
+ },
+ {
+  "date": "2026-09-24",
+  "ticker": "SPX",
+  "status": "late",
+  "captured_at": "2026-09-24T14:06:12Z",
+  "contracts": 2394,
+  "valid": 2374,
+  "coverage_pct": 99.15,
+  "hash": "87733f29fcc3b28efe8ef84557705d038cc976db9a295594fc104a0f9126d96b",
+  "reason": "finished after 10:05 ET",
+  "invalid_counts": {
+   "mid_unusable": 20
+  },
+  "processed": true,
+  "study_status": null,
+  "study_reason": null,
+  "net_gex": 8178000000.0
+ },
+ {
+  "date": "2026-09-25",
+  "ticker": "SPX",
+  "status": "eligible",
+  "captured_at": "2026-09-25T14:00:29Z",
+  "contracts": 2394,
+  "valid": 2361,
+  "coverage_pct": 98.62,
+  "hash": "1b9ed86375821a8f7bc36d4f8af5953736d235eb73f026c93549c2fcdd850820",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 33
+  },
+  "processed": true,
+  "study_status": null,
+  "study_reason": null,
+  "net_gex": 3458000000.0
+ },
+ {
+  "date": "2026-09-28",
+  "ticker": "SPX",
+  "status": "eligible",
+  "captured_at": "2026-09-28T14:00:21Z",
+  "contracts": 2394,
+  "valid": 2382,
+  "coverage_pct": 99.51,
+  "hash": "1107a572e335e1d3561ebf5366514bcdc414b2242c9bf9dfca68b29c1e3b84c9",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 12
+  },
+  "processed": true,
+  "study_status": null,
+  "study_reason": null,
+  "net_gex": -6050000000.0
+ },
+ {
+  "date": "2026-09-29",
+  "ticker": "SPX",
+  "status": "eligible",
+  "captured_at": "2026-09-29T14:00:46Z",
+  "contracts": 2394,
+  "valid": 2324,
+  "coverage_pct": 97.09,
+  "hash": "6a43b1c4ba9b6aeaf9a46fa1862e2b409b08c38427484637c48571dca32bfc00",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 70
+  },
+  "processed": true,
+  "study_status": null,
+  "study_reason": null,
+  "net_gex": 8423000000.0
+ },
+ {
+  "date": "2026-09-30",
+  "ticker": "SPX",
+  "status": "eligible",
+  "captured_at": "2026-09-30T14:00:36Z",
+  "contracts": 2394,
+  "valid": 2371,
+  "coverage_pct": 99.02,
+  "hash": "dc49acd538f2a7db3a364988af1f28a30f2d710aeec5e04b988ab39a943da044",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 23
+  },
+  "processed": true,
+  "study_status": null,
+  "study_reason": null,
+  "net_gex": 5850000000.0
+ },
+ {
+  "date": "2026-10-01",
+  "ticker": "SPX",
+  "status": "eligible",
+  "captured_at": "2026-10-01T14:00:35Z",
+  "contracts": 2394,
+  "valid": 2354,
+  "coverage_pct": 98.35,
+  "hash": "31b4266989886143400ef628ec08f6dfe40889e8286b5fa5d06e2dc78690dd2a",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 40
+  },
+  "processed": true,
+  "study_status": null,
+  "study_reason": null,
+  "net_gex": -3560000000.0
+ },
+ {
+  "date": "2026-10-02",
+  "ticker": "SPX",
+  "status": "missed",
+  "captured_at": null,
+  "contracts": null,
+  "valid": null,
+  "coverage_pct": null,
+  "hash": null,
+  "reason": null,
+  "invalid_counts": null,
+  "processed": false,
+  "study_status": null,
+  "study_reason": null,
+  "net_gex": null
+ },
+ {
+  "date": "2026-10-05",
+  "ticker": "SPX",
+  "status": "eligible",
+  "captured_at": "2026-10-05T14:00:34Z",
+  "contracts": 2394,
+  "valid": 2366,
+  "coverage_pct": 98.83,
+  "hash": "bb00e7f505c4b33ce35d69202d09a035fe9ab82aa89217453cf659f0ee527b5d",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 28
+  },
+  "processed": true,
+  "study_status": null,
+  "study_reason": null,
+  "net_gex": 15044000000.0
+ },
+ {
+  "date": "2026-10-06",
+  "ticker": "SPX",
+  "status": "eligible",
+  "captured_at": "2026-10-06T14:00:38Z",
+  "contracts": 2394,
+  "valid": 2333,
+  "coverage_pct": 97.45,
+  "hash": "352b0f884638253deced37a043f4cae2fb809b0554d9dee55b0ff77a06cc987a",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 61
+  },
+  "processed": true,
+  "study_status": null,
+  "study_reason": null,
+  "net_gex": 13870000000.0
+ },
+ {
+  "date": "2026-10-07",
+  "ticker": "SPX",
+  "status": "eligible",
+  "captured_at": "2026-10-07T14:00:42Z",
+  "contracts": 2394,
+  "valid": 2316,
+  "coverage_pct": 96.74,
+  "hash": "d9e93b33ac699aed3aadd2562c58969326d51e3dd34c01c3c20273b0115e9d76",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 78
+  },
+  "processed": true,
+  "study_status": null,
+  "study_reason": null,
+  "net_gex": 11086000000.0
+ },
+ {
+  "date": "2026-10-08",
+  "ticker": "SPX",
+  "status": "eligible",
+  "captured_at": "2026-10-08T14:00:47Z",
+  "contracts": 2394,
+  "valid": 2382,
+  "coverage_pct": 99.5,
+  "hash": "dff99ff526eeb90e629eca669709388058480526396727344698121c0064d292",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 12
+  },
+  "processed": true,
+  "study_status": null,
+  "study_reason": null,
+  "net_gex": 4480000000.0
+ },
+ {
+  "date": "2026-10-09",
+  "ticker": "SPX",
+  "status": "invalid",
+  "captured_at": "2026-10-09T14:00:23Z",
+  "contracts": 2394,
+  "valid": 2188,
+  "coverage_pct": 91.4,
+  "hash": "0f0c60128839aab4a0db5a6de8e51bb94f786adfe022eb321298d5f1ccfb1fa2",
+  "reason": "coverage 91.40% below 95.0%",
+  "invalid_counts": {
+   "iv_stale": 124,
+   "mid_unusable": 82
+  },
+  "processed": true,
+  "study_status": null,
+  "study_reason": null,
+  "net_gex": 17621000000.0
+ },
+ {
+  "date": "2026-10-12",
+  "ticker": "SPX",
+  "status": "eligible",
+  "captured_at": "2026-10-12T14:00:32Z",
+  "contracts": 2394,
+  "valid": 2339,
+  "coverage_pct": 97.69,
+  "hash": "50aa3de1e019727ea3e26c404a52c448b513f6e0a191a3266c8c0da919ec033d",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 55
+  },
+  "processed": true,
+  "study_status": null,
+  "study_reason": null,
+  "net_gex": 9323000000.0
+ },
+ {
+  "date": "2026-10-13",
+  "ticker": "SPX",
+  "status": "eligible",
+  "captured_at": "2026-10-13T14:00:42Z",
+  "contracts": 2394,
+  "valid": 2370,
+  "coverage_pct": 98.99,
+  "hash": "f514155b905b188aa02a82376fb01f0550c73b2ddc501f8343aa2877fa3950db",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 24
+  },
+  "processed": true,
+  "study_status": null,
+  "study_reason": null,
+  "net_gex": 1355000000.0
+ },
+ {
+  "date": "2026-10-14",
+  "ticker": "SPX",
+  "status": "eligible",
+  "captured_at": "2026-10-14T14:00:45Z",
+  "contracts": 2394,
+  "valid": 2364,
+  "coverage_pct": 98.76,
+  "hash": "5fa7c38a7d64fb20f8c672707bc974c3f0b696f8e88a3bf5b249139c3644364f",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 30
+  },
+  "processed": true,
+  "study_status": null,
+  "study_reason": null,
+  "net_gex": 16155000000.0
+ },
+ {
+  "date": "2026-10-15",
+  "ticker": "SPX",
+  "status": "eligible",
+  "captured_at": "2026-10-15T14:00:34Z",
+  "contracts": 2394,
+  "valid": 2373,
+  "coverage_pct": 99.13,
+  "hash": "2f66a019e066fd07dcfed910ad6952d595c21f57be95e38f9b3787aa7878579e",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 21
+  },
+  "processed": true,
+  "study_status": null,
+  "study_reason": null,
+  "net_gex": 13198000000.0
+ },
+ {
+  "date": "2026-10-16",
+  "ticker": "SPX",
+  "status": "eligible",
+  "captured_at": "2026-10-16T14:00:53Z",
+  "contracts": 2394,
+  "valid": 2323,
+  "coverage_pct": 97.03,
+  "hash": "a5bd37f8a30f1b2d6f3546c4e310b8b3faef35daf3b256c032580d6cd466d691",
+  "reason": null,
+  "invalid_counts": {
+   "mid_unusable": 71
+  },
+  "processed": true,
+  "study_status": null,
+  "study_reason": null,
+  "net_gex": -6727000000.0
+ }
+]

@@ -1,0 +1,242 @@
+"""Every knob Edge GEX Lab uses, each with the reason it holds that value.
+
+Change behavior here, not in the modules. Values that come from the frozen spec
+(docs/next_project/build/SPEC_GEX.md, "model v1.0") are marked SPEC.
+"""
+from __future__ import annotations
+
+import os
+from datetime import time
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+
+# ---------------------------------------------------------------- identity
+MODEL_VERSION = "1.1"            # Model/input version, stored on every capture. 1.0 = SPEC math with Alpaca OI for
+                                 # SPY, QQQ and stocks. 1.1 (2026-10-19, Cboe OI switch): same gamma math, but open
+                                 # interest for Alpaca-quoted tickers now comes from Cboe (OI_SOURCE). Inputs changed,
+                                 # so the version moved; the capture gate stays 1.2.
+GATE_VERSION = "1.3"             # Capture eligibility gate. 1.3 (2026-10-19 evening, day-1 audit, Simon approved): 1.2 plus
+                                 # (a) open interest must be from the previous completed session (OI_STALE_MAX_FRAC),
+                                 # (b) a band contract with OI whose |GEX| cannot be estimated (no donor IV) fails the
+                                 # capture instead of being dropped from the denominator (no safe upper bound exists for
+                                 # a missing near-expiry contract), (c) one quote clock: a quote is "future" only when it
+                                 # is stamped after it was received (the fetch: the time it arrived; the gate: the capture's
+                                 # completion), and at the close only within CLOSED_QUOTE_AFTER_CLOSE_S of the close.
+                                 # History: 1.2 (Simon approved 2026-10-19 11:15 ET).
+                                 # 1.0 gated on the CONTRACT count within +-10%; 1.1 (2026-10-19, 10:15 snapshot on)
+                                 # on OPEN INTEREST within +-5% (GATE_OI_*); 1.2 on the estimated ABSOLUTE GEX within
+                                 # +-5% (GATE_GEX_MIN_PCT). Stored on every new capture (captures.gate_version); rows
+                                 # with no value were judged by 1.0, and every row keeps the status its own gate gave
+                                 # it. The GEX math is unchanged, so MODEL_VERSION stays 1.0, and the study protocol
+                                 # (touches, placebo seeds) is unchanged, so studies.params.PROTOCOL_VERSION stays 1.0.
+INSTALL_DATE = "2026-10-19"      # First live recorder session. reconcile never lists a session before it as missed
+                                 # (the recorder did not exist yet). None = the first stored capture date.
+PINNED_TICKERS = ["SPY", "QQQ", "SPX", "NDX"]  # SPEC: the four chips and the recorder universe.
+CBOE_TICKERS = {"SPX", "NDX"}    # SPEC: Alpaca has no SPX/NDX quotes, so these come from Cboe.
+CBOE_ROOTS = {"SPX": {"SPX": "AM", "SPXW": "PM"},
+              "NDX": {"NDX": "AM", "NDXP": "PM"}}  # SPEC: monthly roots settle AM, weeklies PM.
+
+# ---------------------------------------------------------------- modes
+def is_demo() -> bool:
+    """SPEC: GEXLAB_DEMO=1 serves fixtures, no network. Read live so tests can toggle it."""
+    return os.getenv("GEXLAB_DEMO", "0") == "1"
+
+
+FIXTURES_DIR = ROOT / "fixtures"             # Synthetic inputs for DEMO mode and tests.
+DEMO_DB_DEFAULT = ROOT / "data" / "gexlab_demo.db"  # DEMO writes never touch the research DB (GEXLAB_DEMO_DB overrides).
+CACHE_DIR = ROOT / "data" / "cache"          # Gitignored (data/); holds the Cboe payload cache and asset list.
+API_PORT = 8240                              # SPEC: Edge GEX Lab API port; never 3000/3001/3010/7777-7780/8000/8001.
+
+# ---------------------------------------------------------------- Alpaca
+ALPACA_DATA_BASE = "https://data.alpaca.markets"  # Market data host (REST only, never the websocket).
+ALPACA_TRADING_BASES = {"paper": "https://paper-api.alpaca.markets",
+                        "live": "https://api.alpaca.markets"}  # SPEC: ALPACA_MODE picks the trading base.
+CONTRACTS_PAGE_LIMIT = 10000     # Alpaca maximum per page for /v2/options/contracts; fewest requests.
+SNAPSHOTS_PAGE_LIMIT = 1000      # Alpaca maximum per page for option snapshots.
+FEED_LABELS = {
+    "opra": "OPRA quotes, refreshed 60s",
+    "indicative": "Indicative quotes, modified; trades delayed 15m",
+    "cboe_delayed": "Cboe delayed quotes (about 15 min)",
+    "demo": "Synthetic fixture",
+}                                # SPEC: labels exactly as written.
+FEED_REDETECT_S = 3600           # Re-test OPRA entitlement hourly so an upgraded plan is picked up without a restart.
+ASSET_CACHE_S = 86400            # SPEC: asset list for search is cached daily.
+CALENDAR_CACHE_S = 21600         # Calendar changes rarely; 6 h keeps early closes current without spamming.
+CALENDAR_RETRY_S = 300           # After a failed calendar fetch, retry in 5 min instead of trusting a fallback for 6 h.
+CALENDAR_DISK_CACHE = ROOT / "data" / "cache" / "calendar_alpaca.json"  # Last validated exchange calendar, survives restarts.
+CONTRACTS_CACHE_S = 1800         # OI moves once a day; 30 min avoids refetching thousands of contracts every refresh.
+
+# ---------------------------------------------------------------- rate limits
+RATE_CAP_PER_MIN = 60            # SPEC: app-level cap on Alpaca requests per minute.
+RATE_RESERVE_FOR_RECORDER = 15   # SPEC "recorder has priority": the live map may use at most 45 of the 60.
+RATE_DB = ROOT / "data" / "ratelimit.sqlite"  # Shared across the API and recorder processes.
+HTTP_TIMEOUT_S = 30              # Snapshots pages can be slow; long enough not to fail on a healthy API.
+HTTP_MAX_RETRIES = 4             # 429/5xx backoff attempts before giving up on a page.
+HTTP_BACKOFF_BASE_S = 1.5        # Exponential backoff base (1.5, 3, 6, 12 s) unless Retry-After says otherwise.
+
+# ---------------------------------------------------------------- Cboe
+CBOE_URL = "https://cdn.cboe.com/api/global/delayed_quotes/options/{symbol}.json"  # SPEC source. Indexes take a
+                                 # leading underscore (_SPX, _NDX); ETFs and stocks do not (SPY, QQQ, AAPL).
+CBOE_INDEX_SYMBOLS = {"SPX": "_SPX", "NDX": "_NDX"}  # Cboe payload symbol for each index we serve.
+CBOE_USER_AGENT = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                   "(KHTML, like Gecko) Chrome/129.0 Safari/537.36 GEXLab/1.0 (personal research, polite)")
+                                 # SPEC: needs a browser User-Agent; we also identify ourselves.
+CBOE_CACHE_S = 60                # SPEC: at most one fetch per ticker per 60 s (disk cache, shared by processes).
+CBOE_TIMESTAMP_TZ = "UTC"        # Verified 2026-10-17: payload "13:32:46" arrived at 09:33 ET, so it is UTC.
+CBOE_MAX_PAYLOAD_AGE_S = 300     # Frozen capture: the payload must be generated within 5 min of the run's completion.
+CBOE_LOCK_TIMEOUT_S = 120        # Max wait for the cross-process Cboe cache lock (a 13 MB fetch can take a while).
+OI_SOURCE = "cboe"               # Open interest for Alpaca-quoted tickers (SPY, QQQ, stocks): "cboe" or "alpaca".
+                                 # Verified 2026-10-19 11:50 ET: Alpaca still served OI dated Thu Oct 15 for QQQ Oct 19
+                                 # (calls 50,757 / puts 73,657 at strikes 700 to 750) while Cboe carried Friday's
+                                 # positioning (157,975 / 141,447). Quotes, spot and IV stay on Alpaca; only OI moves.
+CBOE_OI_CACHE_S = 600            # OI changes once a day, so an OI-only payload is reused for 10 min (>= the 60 s floor).
+CBOE_OI_MIN_MATCH = 0.90         # Cboe must list at least 90% of the Alpaca contracts (by OCC symbol) or the whole
+                                 # chain falls back to Alpaca OI, labeled. Below that the payload is not the same chain.
+CBOE_OI_BUDGET_S = 25           # End-to-end budget for the OI overlay (cache lock wait plus the HTTP fetch). The spot is
+                                 # already read, so a slow Cboe falls back to Alpaca OI (labeled, and failed by the OI
+                                 # freshness gate if that OI is old) before the 60 s spot-age gate can fail the capture.
+CBOE_CHAIN_BUDGET_S = 75         # End-to-end budget for a recorder index chain (SPX, NDX): lock wait plus a 7 to 13 MB fetch.
+                                 # Four tickers in sequence still finish inside the 10:00 to 10:05 frozen window.
+CBOE_FAIL_COOLDOWN_S = 60        # After a Cboe failure, dashboard requests for that payload wait this long (or Retry-After,
+                                 # capped at CBOE_FAIL_COOLDOWN_MAX_S) before asking again; shared across processes on disk.
+                                 # Recorder runs ignore the cooldown (a missed 10:00 capture cannot be redone) but keep
+                                 # their own budget.
+CBOE_FAIL_COOLDOWN_MAX_S = 300
+CBOE_OI_SAME_MAX_FRAC = 0.01     # When at most 1% of the contracts both feeds report differ, Cboe carries Alpaca's
+                                 # OI vintage and takes Alpaca's dated OI date; above it Cboe is the newer file and its
+                                 # date is inferred as the most recent completed session before the payload day.
+
+# ---------------------------------------------------------------- window and refresh
+WINDOW_DAYS = 7                  # SPEC: expiries 0 to 7 calendar days.
+REFRESH_MIN_S = 60               # SPEC: live map refresh at most every 60 s; chain cache TTL.
+STALE_AFTER_S = 180              # SPEC: no successful refresh in 3 min means stale.
+FETCH_STRIKE_BAND = 0.20         # Fetch strikes within +-20% so the +-10% zero-gamma sweep sees edge gamma.
+DISPLAY_STRIKE_BAND = 0.10       # SPEC: strikes in /api/map limited to spot +-10%.
+WALL_STRIKE_BAND = 0.10          # Walls chosen inside the displayed band so a wall is always on the chart.
+SWEEP_BAND = 0.10                # SPEC: zero-gamma sweep within +-10% of spot.
+PROFILE_POINTS = 201             # SPEC: profile_curve about 200 points (201 includes spot at the center).
+SWEEP_STEP = {"SPY": 0.01, "QQQ": 0.01, "SPX": 0.5, "NDX": 1.0}  # SPEC grid steps.
+STOCK_STEP_FRAC = 0.01           # SPEC: "0.01 * price rounded" for stocks (literal reading, about 20 grid points).
+SWEEP_CHUNK = 256                # Grid points per numpy chunk; bounds memory near 256 x contracts floats.
+
+# ---------------------------------------------------------------- IV and quality
+WIDE_SPREAD_FRAC = 0.50          # Mid unusable when (ask - bid) / mid exceeds 50%: the mid is not a price there.
+IV_MIN = 0.01                    # An IV below 1% is a bad print, not a market; treated as invalid.
+IV_MAX = 5.0                     # Matches the solver ceiling (500%); above it the solve is meaningless.
+NEUTRAL_FRAC = 0.02              # Regime "neutral" when |net GEX| is under 2% of gross GEX at spot.
+COVERAGE_STRIKE_BAND = 0.10     # Coverage counts OI > 0 contracts within +-10%, the band the map and sweep describe.
+OI_MISSING_MAX_FRAC = 0.50       # More than half the chain with no OI record means the OI feed failed: invalid.
+QUALITY_MIN_PCT = 95.0           # Gate 1.0 (diagnostic since 1.1): share of CONTRACTS within +-10% with usable OI and IV.
+                                 # Day 1 showed why it cannot gate: SPY 10:00 failed at 91.7% while 99.9% of its
+                                 # estimated |GEX| was valid; the misses were 0DTE tail puts quoted 0.01 x 0.02
+                                 # (a one-tick spread is 67% of mid) with negligible gamma. Still reported.
+GATE_OI_BAND = 0.05              # Gate band (1.1 and 1.2): +-5% of spot. The walls, the flip and the reactions the studies
+                                 # measure sit here (an ATR is about 1%); beyond it 0-7 DTE gamma is tiny.
+GATE_OI_MIN_PCT = 95.0           # Gate 1.1 (diagnostic reference since 1.2): valid contracts held >= 95% of the open
+                                 # interest inside GATE_OI_BAND. Still stored on every capture (oi_coverage_pct).
+                                 # Day 1 showed why it cannot gate: SPY 10:30 OI 93.38% with |GEX| 99.53%, QQQ 10:45
+                                 # OI 94.40% with |GEX| 98.25%. The OI misses were 0DTE tail puts quoted 0.01 x 0.02:
+                                 # real open interest, almost no gamma.
+GATE_OI_UNKNOWN_WEIGHT = "median"  # A contract inside the band with NO OI record is invalid, and its unknown OI is
+                                 # weighted as the median OI of the band's known contracts (it cannot be ignored,
+                                 # and treating it as zero would hide a broken OI feed).
+GATE_GEX_MIN_PCT = 98.0          # Gate 1.2: valid contracts must hold >= 98% of the estimated ABSOLUTE GEX inside
+                                 # GATE_OI_BAND, on the unrounded ratio. |GEX| weights each miss by the gamma
+                                 # exposure it hides, which is what the walls and the flip are built from. An invalid
+                                 # contract's gamma uses the IV of the nearest valid strike of the same expiry and
+                                 # type, else of the same expiry, else it is left out and counted. Day 1 (2026-10-19)
+                                 # measured 98.25% to 99.97% on every capture, those failing gate 1.1 included, so 98
+                                 # passes healthy chains and still fails one missing a real slice of gamma. No
+                                 # computable share (null) = invalid.
+OI_STALE_MAX_FRAC = 0.01         # Gate 1.3: at most 1% of the open interest inside GATE_OI_BAND may sit on contracts whose
+                                 # OI is not dated the previous completed session (older, undated or mixed sources). Day 1
+                                 # showed why: QQQ's 10:00 capture used Alpaca OI dated Oct 15 on Oct 19 (two sessions old)
+                                 # and still passed. Cboe does not publish a date, so its date is INFERRED from the payload
+                                 # time (research policy, declared here): a payload stamped on the session day carries the
+                                 # previous session's OI. A payload with no time, or a time in the future, is not used.
+SPOT_MAX_AGE_S = 60              # SPEC: spot age <= 60 s, measured at completion AND against the valuation time.
+CLOCK_SKEW_S = 2                 # A vendor timestamp later than our completion clock by more than this is "future": rejected.
+QUOTE_SPOT_MAX_SKEW_S = 60       # An OPRA quote more than 60 s from the spot trade is not solved against that spot.
+CLOSED_QUOTE_AFTER_CLOSE_S = 960  # Market closed: the spot is the session close, and an OPRA closing quote may be stamped up to
+                                 # 16 min after it (ETF and index options trade until 16:15 ET; verified 2026-10-17: SPY
+                                 # quotes at 16:14:59). Such a quote is solved at the close; one older than 60 s before it is not.
+CLOSE_BAR_LOOKBACK_MIN = 15      # Fallback close (no daily bar): the last 1-minute bar ending at or before the close,
+                                 # searched over the final 15 minutes of the session.
+INDICATIVE_IV_MAX_AGE_S = 300    # An indicative IV is used only if its quote is at most 5 min older than the valuation
+                                 # time (the same tolerance the Cboe payload gets). Older = "iv_stale"; no quote time =
+                                 # "iv_time_unknown". Frozen and snapshot captures exclude both (never shared either);
+                                 # the live map shows unknown-age IV with a label and, outside market hours, stale IV too.
+OI_NULL_AMBIGUOUS_MAX_FRAC = 0.50  # Alpaca returns open_interest null, never 0, for a series with no OI on the OI date
+                                 # (verified 2026-10-17: 0 explicit zeros in 3,060 SPY and QQQ contracts). Null is read
+                                 # as zero only while the OI feed is healthy: of the series that traded on or before the
+                                 # OI date, at most this share may lack a record. Above it the feed is treated as broken
+                                 # and the nulls stay unknown (they count against coverage).
+
+# ---------------------------------------------------------------- recorder schedule (America/New_York)
+FROZEN_AT = time(10, 0)          # SPEC: 10:00 ET frozen capture.
+FROZEN_DEADLINE = time(10, 5)    # SPEC: done by 10:05 or it is late (archived, excluded).
+FROZEN_EARLY_WAIT_S = 300        # If the task fires a little before 10:00, wait up to 5 min for 10:00.
+FROZEN_RETRY_WAIT_S = 30         # One retry after a failed fetch, only if still before the deadline.
+SNAPSHOT_START = time(9, 45)     # SPEC: 15-min snapshots 09:45 to 16:00.
+SNAPSHOT_END = time(16, 0)
+SNAPSHOT_EVERY_MIN = 15
+SNAPSHOT_SLOT_TOLERANCE_S = 120  # Task Scheduler starts a little after the slot (16:00:00.4); 2 min bounds that drift.
+SNAPSHOT_SKIP_SLOTS = (time(10, 0),)  # The frozen capture is the 10:00 observation (replay already reads it as a
+                                 # path point). Day 1 ran both at 10:00 for every ticker and they competed for the
+                                 # rate budget, so the snapshot task skips that slot.
+PROCESS_AT = time(16, 20)        # After-close study processing (bars for the day are final by then).
+DEFAULT_SETTLE_PM = time(16, 0)  # SPEC: PM settlement 16:00 ET (early-close aware via the calendar).
+DEFAULT_SETTLE_AM = time(9, 30)  # SPEC: AM settlement 09:30 ET.
+RECONCILE_DAYS = 30              # Look back 30 sessions for missed frozen captures.
+
+# ---------------------------------------------------------------- study cohort (Decision 8, Simon approved 2026-10-19)
+COHORT_START = "2026-10-20"      # Oct 19 was the calibration day: the capture gate changed three times during the session
+                                 # (see AMENDMENTS). Only frozen captures on or after this date count toward the studies.
+STUDY_GATES = ("1.3",)           # Capture gates whose eligible captures count. A later gate joins only by a logged amendment.
+STUDY_MODELS = ("1.1",)          # Model versions whose captures count (1.1 = Cboe OI for SPY and QQQ).
+AMENDMENTS = [                   # Every change to what a capture or a study counts, with when it took effect (ET).
+    {"version": "gate 1.1", "effective": "2026-10-19 10:15 ET", "commit": "4b61723",
+     "change": "capture gate on OI-weighted coverage within 5% of spot (was contract count within 10%)"},
+    {"version": "gate 1.2", "effective": "2026-10-19 11:15 ET", "commit": "481c304",
+     "change": "capture gate on the estimated |GEX| share within 5% of spot, at least 98%"},
+    {"version": "model 1.1", "effective": "2026-10-19 12:15 ET", "commit": "76bb1b1",
+     "change": "open interest for SPY, QQQ and stocks from Cboe instead of Alpaca"},
+    {"version": "gate 1.3", "effective": "2026-10-20 09:45 ET", "commit": "3f711d7, 1c4e211, bf8a6f0 and the third-pass fix after them",
+     "change": "OI must be from the previous session, dated per contract; a band contract with OI and no estimable "
+               "|GEX| fails the capture; one quote clock (future = stamped after it was received). Oct 19 declared "
+               "calibration; the study cohort starts Oct 20 (gate 1.3, model 1.1)"},
+]
+
+# ---------------------------------------------------------------- AI-free copy guard
+BANNED_WORDS = ("buy", "sell", "bullish", "bearish", "signal", "entry", "should")  # Brand rules 2 and 4.
+
+# ---------------------------------------------------------------- net GEX magnitude reference
+ADV_SESSIONS = 20                # Average daily dollar volume over the last 20 completed regular sessions: one trading
+                                 # month, long enough to smooth one heavy day, short enough to track a regime change.
+ADV_LOOKBACK_DAYS = 45           # Calendar days of daily bars requested to be sure 20 sessions are inside (holidays).
+ADV_FEED = "sip"                 # Dollar volume must be consolidated. IEX alone is a few percent of volume, so an IEX
+                                 # ADV would overstate the share roughly 30x: no SIP, no ADV (null with a reason).
+ADV_CACHE_FILE = ROOT / "data" / "cache" / "adv_daily.json"  # One entry per symbol, valid for one completed session.
+ADV_RETRY_S = 300                # After a failed ADV fetch, retry in 5 min, never on every 60 s map refresh.
+_NO_REF = "No free volume reference: index hedging trades mostly in ES and NQ futures"
+ADV_NO_REFERENCE = {"SPX": _NO_REF, "NDX": _NO_REF}  # No share volume, and the hedge trades mostly in futures we have
+                                 # no free data for. Scaling SPY/QQQ dollar volume by the price ratio is a units
+                                 # error, so no share of ADV is shown (decision 2026-10-17, PROPOSED, supersedes the proxy).
+MAGNITUDE_MOVES = (0.5, 1.0, 2.0)  # Hedge-flow rows in the method drawer: linear in the move, labeled as such.
+MAGNITUDE_TICKS = (1, 2, 5, 10)  # Neutral reference ticks on the scale, percent of ADV. Descriptive, no colors.
+PERCENTILE_MIN_HISTORY = 20      # No percentile until 20 eligible frozen captures exist; fewer is not a distribution.
+ATR_SESSIONS = 14                # Typical day = simple mean true range of the last 14 completed regular sessions (the
+                                 # common ATR length). Needs 15 daily bars: the first one only supplies a prior close.
+ATR_CACHE_FILE = ROOT / "data" / "cache" / "atr_daily.json"  # Same daily cache rule as ADV: one entry per completed session.
+ATR_ADJUSTMENT = "split"         # A split inside the window would read as a huge true range on raw bars. Split adjusted
+                                 # prices are right for a range; dividends are left alone (ADV stays raw dollars).
+ATR_FROM_ETF = {"SPX": "SPY", "NDX": "QQQ"}  # Alpaca has no index bars. ATR% is a percentage, so the ETF's ATR% is a
+                                 # fair stand in for the index's (no units problem, unlike dollar volume). Labeled.
+
+# ---------------------------------------------------------------- trade guidance
+GUIDANCE_MAX_DATA_AGE_S = 300    # Market open: no setups when the vendor's data time (spot trade, or the Cboe payload) is
+                                 # more than 5 min old, even if the last fetch "succeeded" (day-1 verification).
+GUIDANCE_MIN_RR = 1.0            # A scenario is shown only when the reward from the entry zone's worst edge to target 1
+                                 # is at least the risk from that edge to the stop (Simon, Oct 19). Below 1 to 1 the
+                                 # idea needs a hit rate above 50% to break even, which nothing here has measured.

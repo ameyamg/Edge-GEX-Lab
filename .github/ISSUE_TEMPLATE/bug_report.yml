@@ -1,0 +1,60 @@
+name: Bug report
+description: Something is broken or a level looks wrong.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. **Do not paste API keys or account details.** A screenshot of the map
+        is fine; crop out anything personal.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you did, what you expected, and what you saw instead. For a level that looks wrong, say which tool you compared it with and its value.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open SPY, expiry 2026-10-20, signed view
+        2. ...
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - GEX levels (walls, gamma flip, regime)
+        - Net GEX size or ATR
+        - Trade guidance
+        - Data source (Alpaca or Cboe)
+        - Install or startup
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: when
+    attributes:
+      label: When (New York time) and market state
+      placeholder: 2026-10-20 10:15 ET, market open
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: The release you downloaded, or the commit if you cloned.
+      placeholder: v1.0.0
+  - type: input
+    id: system
+    attributes:
+      label: System
+      placeholder: Windows 11, Python 3.12, Node 22, Alpaca free plan
+  - type: textarea
+    id: logs
+    attributes:
+      label: Errors or logs
+      description: The message on the page, the launch window, or the browser console.
+      render: text

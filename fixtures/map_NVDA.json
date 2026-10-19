@@ -1,0 +1,1048 @@
+{
+ "ticker": "NVDA",
+ "as_of": "2026-10-16T14:00:00Z",
+ "model_version": "1.0",
+ "spot": {
+  "price": 187.4,
+  "ts": "2026-10-16T14:00:00Z",
+  "source": "demo",
+  "basis": "last_trade"
+ },
+ "valuation": {
+  "ts": "2026-10-16T14:00:00Z",
+  "basis": "quote_time",
+  "label": null
+ },
+ "feed": {
+  "kind": "demo",
+  "label": "Synthetic fixture",
+  "stale": false,
+  "market_open": true,
+  "last_success": "2026-10-16T14:00:00Z",
+  "data_ts": "2026-10-16T14:00:00Z"
+ },
+ "oi_date": "2026-10-15",
+ "coverage": {
+  "eligible": 48,
+  "valid": 47,
+  "pct": 97.9
+ },
+ "signed": true,
+ "strikes": [
+  {
+   "strike": 170.0,
+   "call_gex": 1013528.7507345087,
+   "put_gex": -1107370.9137559114,
+   "net_gex": -93842.16302140267,
+   "call_oi": 3957,
+   "put_oi": 5617
+  },
+  {
+   "strike": 175.0,
+   "call_gex": 1638437.2585850023,
+   "put_gex": -4254233.206125817,
+   "net_gex": -2615795.947540815,
+   "call_oi": 4044,
+   "put_oi": 8901
+  },
+  {
+   "strike": 177.5,
+   "call_gex": 1547475.2305656683,
+   "put_gex": -3971837.0695774606,
+   "net_gex": -2424361.839011792,
+   "call_oi": 3534,
+   "put_oi": 14436
+  },
+  {
+   "strike": 180.0,
+   "call_gex": 6066626.889322331,
+   "put_gex": -15183641.331330942,
+   "net_gex": -9117014.44200861,
+   "call_oi": 21193,
+   "put_oi": 37422
+  },
+  {
+   "strike": 182.5,
+   "call_gex": 9166529.604815897,
+   "put_gex": -20340159.665810622,
+   "net_gex": -11173630.060994726,
+   "call_oi": 12618,
+   "put_oi": 35761
+  },
+  {
+   "strike": 185.0,
+   "call_gex": 86041655.07659799,
+   "put_gex": -56128214.99883767,
+   "net_gex": 29913440.077760316,
+   "call_oi": 26055,
+   "put_oi": 19445
+  },
+  {
+   "strike": 187.5,
+   "call_gex": 160601805.85837492,
+   "put_gex": -91930729.20783438,
+   "net_gex": 68671076.65054055,
+   "call_oi": 28025,
+   "put_oi": 18553
+  },
+  {
+   "strike": 190.0,
+   "call_gex": 156434262.54642978,
+   "put_gex": -104535472.64029516,
+   "net_gex": 51898789.90613462,
+   "call_oi": 60102,
+   "put_oi": 37399
+  },
+  {
+   "strike": 192.5,
+   "call_gex": 9405900.719002627,
+   "put_gex": -5462236.747717947,
+   "net_gex": 3943663.97128468,
+   "call_oi": 19287,
+   "put_oi": 9485
+  },
+  {
+   "strike": 195.0,
+   "call_gex": 2648489.1720830044,
+   "put_gex": -2018904.721141753,
+   "net_gex": 629584.4509412514,
+   "call_oi": 10996,
+   "put_oi": 5250
+  },
+  {
+   "strike": 200.0,
+   "call_gex": 11137737.064210465,
+   "put_gex": -2191206.4548045653,
+   "net_gex": 8946530.6094059,
+   "call_oi": 20621,
+   "put_oi": 8470
+  },
+  {
+   "strike": 205.0,
+   "call_gex": 1744616.8667117527,
+   "put_gex": -332901.3583876236,
+   "net_gex": 1411715.508324129,
+   "call_oi": 4054,
+   "put_oi": 1570
+  }
+ ],
+ "by_expiry": [
+  {
+   "expiry": "2026-10-16",
+   "contracts": 24,
+   "valid": 24,
+   "valid_pct": 100.0,
+   "net_gex": 152303974.12966034
+  },
+  {
+   "expiry": "2026-10-23",
+   "contracts": 24,
+   "valid": 23,
+   "valid_pct": 95.8,
+   "net_gex": -12313817.40784622
+  }
+ ],
+ "totals": {
+  "call_gex": 447447065.037434,
+  "put_gex": -307456908.3156198,
+  "net_gex": 139990156.72181416
+ },
+ "magnitude": {
+  "adv_usd": 35000000000.0,
+  "adv_basis": "own",
+  "adv_label": "NVDA's average daily dollar volume",
+  "adv_sessions": 20,
+  "adv_window": {
+   "first": "2026-09-17",
+   "last": "2026-10-15"
+  },
+  "adv_source": "demo",
+  "adv_reason": null,
+  "hedge_per_1pct_usd": 139990156.72181416,
+  "pct_of_adv": 0.39997187634804043,
+  "hedge_for_move": [
+   {
+    "move_pct": 0.5,
+    "usd": 69995078.36090708
+   },
+   {
+    "move_pct": 1.0,
+    "usd": 139990156.72181416
+   },
+   {
+    "move_pct": 2.0,
+    "usd": 279980313.4436283
+   }
+  ],
+  "hedge_for_move_method": "Linear: the hedge per 1% times the move. Gamma itself changes as price moves, so the larger the move, the rougher the estimate.",
+  "per_atr": {
+   "atr_pct": 3.4151547491995733,
+   "atr_usd": 6.4,
+   "atr_symbol": "NVDA",
+   "atr_basis": "own",
+   "atr_pct_basis": "spot",
+   "atr_label": "NVDA's 14-session ATR",
+   "atr_note": null,
+   "atr_sessions": 14,
+   "atr_window": {
+    "first": "2026-09-25",
+    "last": "2026-10-15"
+   },
+   "atr_source": "demo",
+   "atr_reason": null,
+   "hedge_per_atr_usd": 478088048.5696962,
+   "pct_of_adv_per_atr": 1.3659658530562748,
+   "method": "Linear: the hedge per 1% times the ATR in percent. ATR is the simple mean true range of the last 14 completed sessions, divided by spot (SPX and NDX: the ETF's last close). Gamma changes as price moves, so this is a rough size for a typical day, not a forecast."
+  },
+  "gross": {
+   "per_1pct_usd": 754903973.3530538,
+   "pct_of_adv": 2.1568684952944395,
+   "hedge_per_atr_usd": 2578113889.7863097,
+   "pct_of_adv_per_atr": 7.366039685103742,
+   "net_to_gross": 0.1854410119210533,
+   "note": "Gross adds call GEX and put GEX without signs, same expiries. Net to gross near 100% means one side dominates. A low ratio means calls and puts largely offset each other: check the Unsigned view to see how much exposure sits on each side."
+  },
+  "percentile": null,
+  "percentile_value": 139990156.7218141,
+  "percentile_basis": "Signed net GEX over every expiry in the 0 to 7 day window, against this ticker's eligible 10:00 frozen captures before today.",
+  "history_n": 0,
+  "history_min": 20,
+  "ticks_pct": [
+   1,
+   2,
+   5,
+   10
+  ],
+  "explainer": "Net GEX estimates how many dollars of the underlying dealers would have to trade, under the sign assumption, for each 1% move. Compare it to how much normally trades: a few percent of daily volume is noticeable; a fraction of a percent is usually lost in normal flow. The size is a model estimate, not a measured flow.",
+  "index_note": "Index products read larger than single stocks for four reasons: daily expiries keep a lot of short dated gamma open, index positioning is put heavy so less of it nets out, implied volatility is lower so each contract carries more gamma, and a 1% move is a large day for an index but a small one for a volatile stock. The per typical day view (1 ATR) puts them on a more equal footing."
+ },
+ "levels": {
+  "call_wall": 187.5,
+  "put_wall": 190.0,
+  "zero_gamma": [
+   184.8468
+  ],
+  "nearest_zero_gamma": 184.8468,
+  "regime": "positive"
+ },
+ "profile_curve": [
+  {
+   "spot": 168.66,
+   "net_gex": -20236322.110706646
+  },
+  {
+   "spot": 168.8474,
+   "net_gex": -20736079.697033558
+  },
+  {
+   "spot": 169.0348,
+   "net_gex": -21204845.418769054
+  },
+  {
+   "spot": 169.2222,
+   "net_gex": -21638287.3766897
+  },
+  {
+   "spot": 169.4096,
+   "net_gex": -22033019.921617545
+  },
+  {
+   "spot": 169.597,
+   "net_gex": -22386799.03752107
+  },
+  {
+   "spot": 169.7844,
+   "net_gex": -22698692.77247881
+  },
+  {
+   "spot": 169.9718,
+   "net_gex": -22969220.181494884
+  },
+  {
+   "spot": 170.1592,
+   "net_gex": -23200453.686869692
+  },
+  {
+   "spot": 170.3466,
+   "net_gex": -23396081.420145683
+  },
+  {
+   "spot": 170.534,
+   "net_gex": -23561427.85389764
+  },
+  {
+   "spot": 170.7214,
+   "net_gex": -23703432.724726442
+  },
+  {
+   "spot": 170.9088,
+   "net_gex": -23830589.7602555
+  },
+  {
+   "spot": 171.0962,
+   "net_gex": -23952847.942134373
+  },
+  {
+   "spot": 171.2836,
+   "net_gex": -24081478.885424037
+  },
+  {
+   "spot": 171.471,
+   "net_gex": -24228914.355246495
+  },
+  {
+   "spot": 171.6584,
+   "net_gex": -24408557.98473517
+  },
+  {
+   "spot": 171.8458,
+   "net_gex": -24634574.96353922
+  },
+  {
+   "spot": 172.0332,
+   "net_gex": -24921662.93791962
+  },
+  {
+   "spot": 172.2206,
+   "net_gex": -25284806.742262058
+  },
+  {
+   "spot": 172.408,
+   "net_gex": -25739019.030032832
+  },
+  {
+   "spot": 172.5954,
+   "net_gex": -26299068.556011774
+  },
+  {
+   "spot": 172.7828,
+   "net_gex": -26979197.93073857
+  },
+  {
+   "spot": 172.9702,
+   "net_gex": -27792833.23439523
+  },
+  {
+   "spot": 173.1576,
+   "net_gex": -28752288.995910466
+  },
+  {
+   "spot": 173.345,
+   "net_gex": -29868473.696794003
+  },
+  {
+   "spot": 173.5324,
+   "net_gex": -31150603.050243933
+  },
+  {
+   "spot": 173.7198,
+   "net_gex": -32605930.655264918
+  },
+  {
+   "spot": 173.9072,
+   "net_gex": -34239507.981158175
+  },
+  {
+   "spot": 174.0946,
+   "net_gex": -36053987.693911254
+  },
+  {
+   "spot": 174.282,
+   "net_gex": -38049485.75955086
+  },
+  {
+   "spot": 174.4694,
+   "net_gex": -40223518.22291145
+  },
+  {
+   "spot": 174.6568,
+   "net_gex": -42571027.778886504
+  },
+  {
+   "spot": 174.8442,
+   "net_gex": -45084513.0207666
+  },
+  {
+   "spot": 175.0316,
+   "net_gex": -47754269.47082578
+  },
+  {
+   "spot": 175.219,
+   "net_gex": -50568746.20920099
+  },
+  {
+   "spot": 175.4064,
+   "net_gex": -53515015.299550846
+  },
+  {
+   "spot": 175.5938,
+   "net_gex": -56579343.58724216
+  },
+  {
+   "spot": 175.7812,
+   "net_gex": -59747848.265242584
+  },
+  {
+   "spot": 175.9686,
+   "net_gex": -63007209.406953454
+  },
+  {
+   "spot": 176.156,
+   "net_gex": -66345405.05018656
+  },
+  {
+   "spot": 176.3434,
+   "net_gex": -69752427.98782729
+  },
+  {
+   "spot": 176.5308,
+   "net_gex": -73220938.74456285
+  },
+  {
+   "spot": 176.7182,
+   "net_gex": -76746806.77991073
+  },
+  {
+   "spot": 176.9056,
+   "net_gex": -80329492.12310994
+  },
+  {
+   "spot": 177.093,
+   "net_gex": -83972222.64080876
+  },
+  {
+   "spot": 177.2804,
+   "net_gex": -87681928.03645305
+  },
+  {
+   "spot": 177.4678,
+   "net_gex": -91468900.3985691
+  },
+  {
+   "spot": 177.6552,
+   "net_gex": -95346162.4249837
+  },
+  {
+   "spot": 177.8426,
+   "net_gex": -99328537.9911041
+  },
+  {
+   "spot": 178.03,
+   "net_gex": -103431435.02448595
+  },
+  {
+   "spot": 178.2174,
+   "net_gex": -107669367.11574838
+  },
+  {
+   "spot": 178.4048,
+   "net_gex": -112054257.26706032
+  },
+  {
+   "spot": 178.5922,
+   "net_gex": -116593583.90147236
+  },
+  {
+   "spot": 178.7796,
+   "net_gex": -121288444.90295662
+  },
+  {
+   "spot": 178.967,
+   "net_gex": -126131629.13845852
+  },
+  {
+   "spot": 179.1544,
+   "net_gex": -131105795.69577613
+  },
+  {
+   "spot": 179.3418,
+   "net_gex": -136181868.00887772
+  },
+  {
+   "spot": 179.5292,
+   "net_gex": -141317752.2270273
+  },
+  {
+   "spot": 179.7166,
+   "net_gex": -146457485.81004807
+  },
+  {
+   "spot": 179.904,
+   "net_gex": -151530912.7807558
+  },
+  {
+   "spot": 180.0914,
+   "net_gex": -156453965.99513435
+  },
+  {
+   "spot": 180.2788,
+   "net_gex": -161129614.2290091
+  },
+  {
+   "spot": 180.4662,
+   "net_gex": -165449503.30308345
+  },
+  {
+   "spot": 180.6536,
+   "net_gex": -169296286.85240224
+  },
+  {
+   "spot": 180.841,
+   "net_gex": -172546605.18288997
+  },
+  {
+   "spot": 181.0284,
+   "net_gex": -175074631.9156994
+  },
+  {
+   "spot": 181.2158,
+   "net_gex": -176756070.15788484
+  },
+  {
+   "spot": 181.4032,
+   "net_gex": -177472445.35786113
+  },
+  {
+   "spot": 181.5906,
+   "net_gex": -177115513.46537304
+  },
+  {
+   "spot": 181.778,
+   "net_gex": -175591583.01243126
+  },
+  {
+   "spot": 181.9654,
+   "net_gex": -172825540.363507
+  },
+  {
+   "spot": 182.1528,
+   "net_gex": -168764370.13558936
+  },
+  {
+   "spot": 182.3402,
+   "net_gex": -163379978.35157797
+  },
+  {
+   "spot": 182.5276,
+   "net_gex": -156671154.03563094
+  },
+  {
+   "spot": 182.715,
+   "net_gex": -148664544.4929412
+  },
+  {
+   "spot": 182.9024,
+   "net_gex": -139414568.3198398
+  },
+  {
+   "spot": 183.0898,
+   "net_gex": -129002245.34405918
+  },
+  {
+   "spot": 183.2772,
+   "net_gex": -117532980.68580185
+  },
+  {
+   "spot": 183.4646,
+   "net_gex": -105133397.11647531
+  },
+  {
+   "spot": 183.652,
+   "net_gex": -91947362.00813946
+  },
+  {
+   "spot": 183.8394,
+   "net_gex": -78131398.83841266
+  },
+  {
+   "spot": 184.0268,
+   "net_gex": -63849705.45111138
+  },
+  {
+   "spot": 184.2142,
+   "net_gex": -49269019.90954465
+  },
+  {
+   "spot": 184.4016,
+   "net_gex": -34553578.65681094
+  },
+  {
+   "spot": 184.589,
+   "net_gex": -19860400.740878653
+  },
+  {
+   "spot": 184.7764,
+   "net_gex": -5335107.08041183
+  },
+  {
+   "spot": 184.9638,
+   "net_gex": 8891552.875083392
+  },
+  {
+   "spot": 185.1512,
+   "net_gex": 22706340.41219057
+  },
+  {
+   "spot": 185.3386,
+   "net_gex": 36015257.45333384
+  },
+  {
+   "spot": 185.526,
+   "net_gex": 48744345.26370969
+  },
+  {
+   "spot": 185.7134,
+   "net_gex": 60839582.082423344
+  },
+  {
+   "spot": 185.9008,
+   "net_gex": 72265956.88602547
+  },
+  {
+   "spot": 186.0882,
+   "net_gex": 83005835.93396075
+  },
+  {
+   "spot": 186.2756,
+   "net_gex": 93056768.44347924
+  },
+  {
+   "spot": 186.463,
+   "net_gex": 102428896.42373216
+  },
+  {
+   "spot": 186.6504,
+   "net_gex": 111142140.95172125
+  },
+  {
+   "spot": 186.8378,
+   "net_gex": 119223333.41232674
+  },
+  {
+   "spot": 187.0252,
+   "net_gex": 126703446.60324761
+  },
+  {
+   "spot": 187.2126,
+   "net_gex": 133615058.86751463
+  },
+  {
+   "spot": 187.4,
+   "net_gex": 139990156.72181097
+  },
+  {
+   "spot": 187.5874,
+   "net_gex": 145858350.17945987
+  },
+  {
+   "spot": 187.7748,
+   "net_gex": 151245542.532
+  },
+  {
+   "spot": 187.9622,
+   "net_gex": 156173065.01118436
+  },
+  {
+   "spot": 188.1496,
+   "net_gex": 160657258.45970225
+  },
+  {
+   "spot": 188.337,
+   "net_gex": 164709460.43425852
+  },
+  {
+   "spot": 188.5244,
+   "net_gex": 168336338.09855518
+  },
+  {
+   "spot": 188.7118,
+   "net_gex": 171540495.36897558
+  },
+  {
+   "spot": 188.8992,
+   "net_gex": 174321277.07784066
+  },
+  {
+   "spot": 189.0866,
+   "net_gex": 176675692.98923495
+  },
+  {
+   "spot": 189.274,
+   "net_gex": 178599389.5353275
+  },
+  {
+   "spot": 189.4614,
+   "net_gex": 180087606.05986607
+  },
+  {
+   "spot": 189.6488,
+   "net_gex": 181136063.9250569
+  },
+  {
+   "spot": 189.8362,
+   "net_gex": 181741749.78395936
+  },
+  {
+   "spot": 190.0236,
+   "net_gex": 181903567.43920785
+  },
+  {
+   "spot": 190.211,
+   "net_gex": 181622844.96262643
+  },
+  {
+   "spot": 190.3984,
+   "net_gex": 180903694.33922577
+  },
+  {
+   "spot": 190.5858,
+   "net_gex": 179753229.30468857
+  },
+  {
+   "spot": 190.7732,
+   "net_gex": 178181653.04398316
+  },
+  {
+   "spot": 190.9606,
+   "net_gex": 176202231.06410047
+  },
+  {
+   "spot": 191.148,
+   "net_gex": 173831166.1336645
+  },
+  {
+   "spot": 191.3354,
+   "net_gex": 171087392.15288165
+  },
+  {
+   "spot": 191.5228,
+   "net_gex": 167992302.72699752
+  },
+  {
+   "spot": 191.7102,
+   "net_gex": 164569428.62317815
+  },
+  {
+   "spot": 191.8976,
+   "net_gex": 160844076.68840632
+  },
+  {
+   "spot": 192.085,
+   "net_gex": 156842941.56346002
+  },
+  {
+   "spot": 192.2724,
+   "net_gex": 152593700.8513859
+  },
+  {
+   "spot": 192.4598,
+   "net_gex": 148124604.3175308
+  },
+  {
+   "spot": 192.6472,
+   "net_gex": 143464068.0793511
+  },
+  {
+   "spot": 192.8346,
+   "net_gex": 138640285.32682434
+  },
+  {
+   "spot": 193.022,
+   "net_gex": 133680865.56562325
+  },
+  {
+   "spot": 193.2094,
+   "net_gex": 128612514.35045977
+  },
+  {
+   "spot": 193.3968,
+   "net_gex": 123460764.68334877
+  },
+  {
+   "spot": 193.5842,
+   "net_gex": 118249769.5048866
+  },
+  {
+   "spot": 193.7716,
+   "net_gex": 113002161.96150152
+  },
+  {
+   "spot": 193.959,
+   "net_gex": 107738986.50183958
+  },
+  {
+   "spot": 194.1464,
+   "net_gex": 102479699.60240324
+  },
+  {
+   "spot": 194.3338,
+   "net_gex": 97242234.42503539
+  },
+  {
+   "spot": 194.5212,
+   "net_gex": 92043119.4134815
+  },
+  {
+   "spot": 194.7086,
+   "net_gex": 86897637.19854884
+  },
+  {
+   "spot": 194.896,
+   "net_gex": 81820007.60420382
+  },
+  {
+   "spot": 195.0834,
+   "net_gex": 76823577.3254801
+  },
+  {
+   "spot": 195.2708,
+   "net_gex": 71920999.13189977
+  },
+  {
+   "spot": 195.4582,
+   "net_gex": 67124385.21677935
+  },
+  {
+   "spot": 195.6456,
+   "net_gex": 62445422.37760965
+  },
+  {
+   "spot": 195.833,
+   "net_gex": 57895440.74625833
+  },
+  {
+   "spot": 196.0204,
+   "net_gex": 53485432.36033602
+  },
+  {
+   "spot": 196.2078,
+   "net_gex": 49226020.500685595
+  },
+  {
+   "spot": 196.3952,
+   "net_gex": 45127384.9475338
+  },
+  {
+   "spot": 196.5826,
+   "net_gex": 41199151.72883567
+  },
+  {
+   "spot": 196.77,
+   "net_gex": 37450258.25814429
+  },
+  {
+   "spot": 196.9574,
+   "net_gex": 33888805.83659643
+  },
+  {
+   "spot": 197.1448,
+   "net_gex": 30521911.325000126
+  },
+  {
+   "spot": 197.3322,
+   "net_gex": 27355568.520176783
+  },
+  {
+   "spot": 197.5196,
+   "net_gex": 24394527.653164543
+  },
+  {
+   "spot": 197.707,
+   "net_gex": 21642198.80041146
+  },
+  {
+   "spot": 197.8944,
+   "net_gex": 19100582.227796644
+  },
+  {
+   "spot": 198.0818,
+   "net_gex": 16770226.119323283
+  },
+  {
+   "spot": 198.2692,
+   "net_gex": 14650210.066102186
+  },
+  {
+   "spot": 198.4566,
+   "net_gex": 12738151.304418057
+  },
+  {
+   "spot": 198.644,
+   "net_gex": 11030230.082398225
+  },
+  {
+   "spot": 198.8314,
+   "net_gex": 9521230.67859845
+  },
+  {
+   "spot": 199.0188,
+   "net_gex": 8204595.367394567
+  },
+  {
+   "spot": 199.2062,
+   "net_gex": 7072489.822424253
+  },
+  {
+   "spot": 199.3936,
+   "net_gex": 6115879.821877505
+  },
+  {
+   "spot": 199.581,
+   "net_gex": 5324620.409572381
+  },
+  {
+   "spot": 199.7684,
+   "net_gex": 4687559.639105899
+  },
+  {
+   "spot": 199.9558,
+   "net_gex": 4192659.50455365
+  },
+  {
+   "spot": 200.1432,
+   "net_gex": 3827136.533967753
+  },
+  {
+   "spot": 200.3306,
+   "net_gex": 3577623.7697611596
+  },
+  {
+   "spot": 200.518,
+   "net_gex": 3430354.5451772343
+  },
+  {
+   "spot": 200.7054,
+   "net_gex": 3371366.72327901
+  },
+  {
+   "spot": 200.8928,
+   "net_gex": 3386724.0829573288
+  },
+  {
+   "spot": 201.0802,
+   "net_gex": 3462749.533551652
+  },
+  {
+   "spot": 201.2676,
+   "net_gex": 3586263.0374464155
+  },
+  {
+   "spot": 201.455,
+   "net_gex": 3744815.7187055196
+  },
+  {
+   "spot": 201.6424,
+   "net_gex": 3926910.793455618
+  },
+  {
+   "spot": 201.8298,
+   "net_gex": 4122201.775272718
+  },
+  {
+   "spot": 202.0172,
+   "net_gex": 4321658.9225016795
+  },
+  {
+   "spot": 202.2046,
+   "net_gex": 4517696.07529303
+  },
+  {
+   "spot": 202.392,
+   "net_gex": 4704251.790401155
+  },
+  {
+   "spot": 202.5794,
+   "net_gex": 4876820.88631469
+  },
+  {
+   "spot": 202.7668,
+   "net_gex": 5032434.9927738
+  },
+  {
+   "spot": 202.9542,
+   "net_gex": 5169593.274432428
+  },
+  {
+   "spot": 203.1416,
+   "net_gex": 5288146.986772026
+  },
+  {
+   "spot": 203.329,
+   "net_gex": 5389143.757708464
+  },
+  {
+   "spot": 203.5164,
+   "net_gex": 5474639.332920269
+  },
+  {
+   "spot": 203.7038,
+   "net_gex": 5547485.875065833
+  },
+  {
+   "spot": 203.8912,
+   "net_gex": 5611106.705667724
+  },
+  {
+   "spot": 204.0786,
+   "net_gex": 5669267.603686213
+  },
+  {
+   "spot": 204.266,
+   "net_gex": 5725854.445698971
+  },
+  {
+   "spot": 204.4534,
+   "net_gex": 5784666.14201973
+  },
+  {
+   "spot": 204.6408,
+   "net_gex": 5849230.571008435
+  },
+  {
+   "spot": 204.8282,
+   "net_gex": 5922649.639591379
+  },
+  {
+   "spot": 205.0156,
+   "net_gex": 6007477.812267227
+  },
+  {
+   "spot": 205.203,
+   "net_gex": 6105636.567729127
+  },
+  {
+   "spot": 205.3904,
+   "net_gex": 6218365.372128387
+  },
+  {
+   "spot": 205.5778,
+   "net_gex": 6346208.001579429
+  },
+  {
+   "spot": 205.7652,
+   "net_gex": 6489031.489647095
+  },
+  {
+   "spot": 205.9526,
+   "net_gex": 6646073.685794221
+  },
+  {
+   "spot": 206.14,
+   "net_gex": 6816014.4349942515
+  }
+ ],
+ "frozen_today": {
+  "captured_at": "2026-10-16T14:00:00Z",
+  "status": "eligible",
+  "reason": null,
+  "call_wall": 187.5,
+  "put_wall": 190.0,
+  "nearest_zero_gamma": 184.8468
+ },
+ "lead": "NVDA at 187.40 sits above the gamma flip (184.85) and below the call wall (187.5). Built from 97.9% of the chain within 10% of spot.",
+ "warnings": [
+  "Synthetic fixture",
+  "OI is from Oct 15 (one session behind).",
+  "Signed view assumes calls add gamma (+) and puts subtract (-)."
+ ]
+}

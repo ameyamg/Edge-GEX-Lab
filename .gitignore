@@ -1,0 +1,27 @@
+# secrets
+.env
+
+# databases and runtime caches
+*.db
+*.db-wal
+*.db-shm
+*.bak
+*.bak-*
+data/
+
+# python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+
+# node
+node_modules/
+web/dist/
+
+# windows shortcuts
+*.lnk
+
+# export marker (local only)
+.public-export

@@ -1,0 +1,32 @@
+{
+ "SPY": {
+  "atr_usd": 7.7,
+  "last_close": 700.0,
+  "atr_pct_of_close": 1.1,
+  "sessions": 14,
+  "first": "2026-09-25",
+  "last": "2026-10-15",
+  "reason": null,
+  "note": "Synthetic fixture"
+ },
+ "QQQ": {
+  "atr_usd": 8.6,
+  "last_close": 610.0,
+  "atr_pct_of_close": 1.4098,
+  "sessions": 14,
+  "first": "2026-09-25",
+  "last": "2026-10-15",
+  "reason": null,
+  "note": "Synthetic fixture"
+ },
+ "NVDA": {
+  "atr_usd": 6.4,
+  "last_close": 186.0,
+  "atr_pct_of_close": 3.4409,
+  "sessions": 14,
+  "first": "2026-09-25",
+  "last": "2026-10-15",
+  "reason": null,
+  "note": "Synthetic fixture"
+ }
+}

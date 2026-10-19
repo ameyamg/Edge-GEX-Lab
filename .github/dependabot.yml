@@ -1,0 +1,32 @@
+# Weekly dependency updates, grouped so each ecosystem arrives as one pull request.
+# Security updates still open immediately. CI runs on Node 24 (npm 11), the same npm Dependabot
+# uses to write package-lock.json, so its lock files pass `npm ci`.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /web
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      web:
+        patterns: ["*"]
+        update-types: [minor, patch]
+    ignore:
+      # v5 renames the series API (addCandlestickSeries and friends). Migrate deliberately.
+      - dependency-name: lightweight-charts
+        update-types: [version-update:semver-major]
+
+  - package-ecosystem: pip
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      python:
+        patterns: ["*"]
+        update-types: [minor, patch]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
