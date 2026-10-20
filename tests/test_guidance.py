@@ -163,7 +163,7 @@ def _all_prices(g: dict) -> list[float]:
 
 
 def spx_live_like() -> dict:
-    """SPX with the off-grid numbers Simon saw on screen: spot 7,659.44, gamma flip 7,766.39."""
+    """SPX with off-grid numbers seen on screen: spot 7,659.44, gamma flip 7,766.39."""
     m = fmap("SPX")
     m["spot"]["price"] = 7659.44
     m["levels"]["zero_gamma"] = [7766.39]
@@ -433,7 +433,7 @@ def synth(spot=100.0, call_wall=110.0, put_wall=95.0, flip=90.0, regime="positiv
 
 
 def mu_case(**kw) -> dict:
-    """Simon's MU screen: spot 925.54, put wall 920, positive gamma, ATR 47.3 (buffer 4.73), 0.4% of ADV."""
+    """An MU screen: spot 925.54, put wall 920, positive gamma, ATR 47.3 (buffer 4.73), 0.4% of ADV."""
     args = dict(spot=925.54, call_wall=950.0, put_wall=920.0, flip=905.0, pct_of_adv=0.4, ntg=0.3, atr=47.3,
                 ticker="MU")
     args.update(kw)

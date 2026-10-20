@@ -1,7 +1,8 @@
-"""Edge GEX Lab FastAPI app (port 8240). Shapes follow docs/API_CONTRACT.md.
+"""Edge GEX Lab FastAPI app (port 8240). Shapes follow the v1 API contract.
 
-Run: scripts/run_api.bat, or
+Run: launch.bat, or
   .venv\\Scripts\\python -m uvicorn gexlab.api:app --host 127.0.0.1 --port 8240
+(launch.bat takes the port from GEXLAB_PORT, 8240 by default.)
 GEXLAB_DEMO=1 serves synthetic fixtures with no keys and no network.
 """
 from __future__ import annotations

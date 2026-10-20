@@ -1,4 +1,4 @@
-// Typed shapes for Edge GEX Lab API contract v1 (gex-lab/docs/API_CONTRACT.md).
+// Typed shapes for the Edge GEX Lab API, contract v1.
 // Times are ISO 8601 UTC strings. GEX values are dollars of delta change per 1% move.
 
 export type FeedKind = "opra" | "indicative" | "cboe_delayed" | "demo";
@@ -12,6 +12,8 @@ export interface Health {
   market_open: boolean;
   last_frozen_capture: { ticker: string; date: string; status: CaptureStatus } | null;
   rate: { used_last_min: number; cap: number };
+  // false when no Alpaca keys are set: SPY, QQQ and stocks cannot load, SPX and NDX still do
+  keys_configured?: boolean;
   // Newest frozen capture per pinned ticker, with its stored invalid-contract counts by reason.
   latest_captures?: {
     ticker: string;
@@ -77,7 +79,8 @@ export interface MapLevels {
   put_wall: number | null;
   zero_gamma: number[];
   nearest_zero_gamma: number | null;
-  regime: Regime;
+  /** null when the map has no usable quotes (`quotes.usable` false). */
+  regime: Regime | null;
 }
 
 export interface FrozenToday {
@@ -89,7 +92,7 @@ export interface FrozenToday {
   nearest_zero_gamma: number | null;
 }
 
-/** Net GEX next to what normally trades. See docs/API_CONTRACT.md "Net GEX magnitude". */
+/** Net GEX next to what normally trades. Contract section "Net GEX magnitude". */
 /** Net GEX for a typical day: the hedge for a 1-ATR move (linear). SPX/NDX use the ETF's ATR%. */
 export interface MagnitudePerAtr {
   atr_pct: number | null;
@@ -188,6 +191,9 @@ export interface GexMap {
   totals: { call_gex: number; put_gex: number; net_gex: number };
   /** null when the reference could not be built; absent from older payloads. */
   magnitude?: Magnitude | null;
+  /** usable false: no valid contract within 10% of spot, so the levels are unavailable, not neutral or zero.
+   *  reason "no_live_quotes": no bid, ask or IV anywhere in the selection (Cboe's first minutes after the open). */
+  quotes?: { usable: boolean; reason: "no_live_quotes" | "no_usable_contracts" | null; live: number };
   levels: MapLevels;
   profile_curve: { spot: number; net_gex: number }[];
   frozen_today: FrozenToday | null;
@@ -313,7 +319,7 @@ export interface Replay {
   date: string;
   resolution: "1m" | "15m";
   // History audit-fix: GET /api/replay is a pure reader. processed:false means the after-close
-  // step (python -m gexlab.recorder process) has not stored this session yet.
+  // processing step has not stored this session yet.
   processed?: boolean;
   processed_at?: string | null;
   session?: { date: string; is_session: boolean; open: string; close: string; early_close: boolean; calendar_source: string; completed: boolean } | null;
@@ -388,7 +394,7 @@ export interface Recap {
   rejected: string[];
 }
 
-// Results shapes per API_CONTRACT.md "/api/scorecard results" (null until a gate passes).
+// Results shapes per the contract's "/api/scorecard results" (null until a gate passes).
 export type Interval = [number, number];
 
 export interface Study1FamilyResult {

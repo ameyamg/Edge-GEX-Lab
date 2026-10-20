@@ -2,12 +2,14 @@
 quotes), and open interest only for SPY, QQQ and stocks (model 1.1, apply_oi below).
 
 Source: https://cdn.cboe.com/api/global/delayed_quotes/options/_SPX.json (about
-13 MB) and _NDX.json (about 7 MB). Delayed about 15 minutes. Simon chose this
-source knowingly (terms risk logged); we stay polite: a browser User-Agent that
+13 MB) and _NDX.json (about 7 MB). Delayed about 15 minutes. This source is
+used knowingly (the terms risk is stated in the README); we stay polite: a browser User-Agent that
 also names Edge GEX Lab, at most one fetch per ticker per 60 s, cached on disk so the
 API server and the recorder share one fetch. The cache is guarded by a
 cross-process file lock: freshness is rechecked under the lock, and the body is
-written to a unique temp file and atomically swapped in.
+written to a unique temp file and atomically swapped in. A downloaded payload whose
+`timestamp` is older than the cached one's (the CDN can serve a stale edge copy) never
+replaces the cache and is never served: the cached payload is returned instead.
 
 A payload with no `timestamp` keeps source_ts and spot.ts as None (age unknown);
 the request time is never substituted, so such a capture cannot pass the
@@ -33,6 +35,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import re
 import threading
 import time as _time
@@ -193,8 +196,38 @@ def _fetch_locked(ticker, symbol, cache, max_age, client, now, deadline, respect
     if status != 200:
         _start_cooldown(ticker, retry_after, _time.time())
         raise SourceError(f"Cboe HTTP {status}", status=status)
+    held = cache.read_bytes() if cache.is_file() else None
+    if held is not None and _older(body, held):
+        # Cboe's CDN can answer with an older copy than the one on disk (2026-10-20: feed.data_ts went
+        # 13:44:48Z, 13:43:12Z, 13:45:09Z). An older payload never replaces the cache and is never
+        # served; the held file is touched so the 60 s politeness floor still applies.
+        try:
+            os.utime(cache)
+        except OSError:
+            pass
+        return held, False
     atomic_write_bytes(cache, body)
     return body, False
+
+
+_TS_RE = re.compile(rb'"timestamp"\s*:\s*"([^"]{1,40})"')
+
+
+def payload_ts(body: bytes) -> datetime | None:
+    """The payload's top-level timestamp without a full parse (the SPX file is about 13 MB); None if absent."""
+    m = _TS_RE.search(body)
+    if not m:
+        return None
+    try:
+        return parse_cboe_timestamp(m.group(1).decode("ascii"))
+    except (UnicodeDecodeError, ValueError):
+        return None
+
+
+def _older(new: bytes, held: bytes) -> bool:
+    """True only when both payloads carry a timestamp and the new one is strictly older."""
+    a, b = payload_ts(new), payload_ts(held)
+    return a is not None and b is not None and a < b
 
 
 def _download(client: httpx.Client, url: str, timeout: float) -> tuple[int, str | None, bytes]:

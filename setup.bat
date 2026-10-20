@@ -67,6 +67,7 @@ if exist ".env" (
 
 echo.
 echo Setup finished. Start it with launch.bat, then open http://127.0.0.1:8240
+echo Without Alpaca keys it opens on SPX, which needs none.
 echo A new install starts empty: no saved maps and no history.
 echo.
 pause

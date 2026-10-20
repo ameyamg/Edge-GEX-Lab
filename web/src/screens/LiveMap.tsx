@@ -250,7 +250,7 @@ export default function LiveMap({ initialTicker, onTicker }: { initialTicker: st
   const allOn = selected !== null && expList.length > 0 && selected.length === expList.length;
   const selExps = expList.filter((e) => selected?.includes(e.date));
   const expText = allOn && expList.length > 1 ? `all ${expList.length} expiries` : selExps.length > 0 && selExps.length <= 3 ? selExps.map(expLabel).join(", ") : null;
-  const lead = m ? (m.signed ? m.lead : unsignedLead(m)) : null;
+  const lead = m ? (m.signed || m.quotes?.usable === false ? m.lead : unsignedLead(m)) : null;
 
   const chartPanel = (
     <Panel
@@ -765,6 +765,15 @@ function LevelsPanel({
       ),
       def: GEX_UNITS,
     });
+  }
+  // No usable quotes: every current-chain value is unavailable, never a neutral sign or a $0 total. The 10:00
+  // reference levels (frozen) come from the capture, so they stay.
+  if (m.quotes?.usable === false) {
+    const current = frozen ? ["sign", "net", "abs"] : ["cpw", "cw", "pw", "zg", "sign", "net", "abs"];
+    for (const k of tiles) {
+      if (!current.includes(k.key)) continue;
+      Object.assign(k, { value: "Unavailable", valueClass: "word", valueStyle: { color: "var(--muted)" }, sub: "no usable quotes", def: undefined });
+    }
   }
   if (layout === "grid" && tiles.length % 2 === 1) tiles[tiles.length - 1].wide = true;
 

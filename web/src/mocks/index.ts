@@ -459,7 +459,7 @@ function unprocessedReplay(ticker: string, date: string): Replay {
     levels_tested: [],
     snapshots: full.snapshots.slice(0, 3).map((x, i) => ({ ...x, time: nyIso(date, 10, i * 15), used: true })),
     lead: `${ticker} on ${monthDay(date)} is not processed yet.`,
-    notes: ["Synthetic fixture", "Not processed yet: run python -m gexlab.recorder process after the close."],
+    notes: ["Synthetic fixture", "Not processed yet: run the after-close processing step."],
   };
 }
 
@@ -779,7 +779,7 @@ async function recapGenerate(ticker: string, date: string): Promise<Recap> {
   await sleep(UNPROCESSED.has(date) ? 300 : 5200);
   if (UNPROCESSED.has(date)) {
     const { ApiError } = await import("../api/client");
-    throw new ApiError(409, `No recap for ${ticker} ${date}: not processed yet. Run python -m gexlab.recorder process first.`);
+    throw new ApiError(409, `No recap for ${ticker} ${date}: not processed yet. Run the after-close processing step first.`);
   }
   const base = recapTemplate(ticker, date);
   const rp = replay(ticker, date);

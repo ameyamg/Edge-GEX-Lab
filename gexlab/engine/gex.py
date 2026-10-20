@@ -1,4 +1,4 @@
-"""GEX math, model v1.0 (see SPEC_GEX.md "Math").
+"""GEX math, model v1.0.
 
 GEX per contract = sign * Gamma * OI * multiplier * S^2 * 0.01
   units: dollars of dealer delta change per 1% move in the underlying.

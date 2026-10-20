@@ -185,7 +185,7 @@ def fmt_px(x: float | None, ticker: str) -> str:
     if x is None:
         return "n/a"
     if ticker in config.CBOE_TICKERS:
-        return f"{math.floor(x + 0.5):,}"  # index points: whole numbers, halves up like the web (Simon, Oct 18)
+        return f"{math.floor(x + 0.5):,}"  # index points: whole numbers, halves up like the web
     return f"{x:.2f}".rstrip("0").rstrip(".") if x != int(x) else f"{int(x)}"
 
 
@@ -226,6 +226,40 @@ def lead_sentence(ticker: str, spot: float, lv: G.Levels, coverage_pct: float) -
     return f"{body} Built from {coverage_pct:.1f}% of the chain within {band}% of spot."
 
 
+def quote_state(contracts: list[Contract], cov: G.Coverage) -> dict:
+    """Whether the selected chain has anything the map can be built from.
+
+    usable is False when no contract within the coverage band is valid. reason "no_live_quotes": no
+    contract in the selection has a bid, an ask or an IV (Cboe's delayed payload in the first minutes
+    after the open, 2026-10-20); "no_usable_contracts": quotes exist but none is usable. Either way the
+    walls, the gamma flip and the regime are unavailable, not neutral or zero."""
+    live = sum(1 for c in contracts if (c.bid or 0) > 0 or (c.ask or 0) > 0 or (c.iv or 0) > 0)
+    usable = cov.valid > 0
+    reason = None if usable else "no_live_quotes" if live == 0 else "no_usable_contracts"
+    return {"usable": usable, "reason": reason, "live": live}
+
+
+def no_quotes_lead(ticker: str, spot: float, q: dict, cov: G.Coverage, feed: str,
+                   cal: TradingCalendar | None, now: datetime, market_open: bool) -> str:
+    """The lead when quote_state says unusable. Says what is missing; never reads as a market state."""
+    s = f"{ticker} at {fmt_spot(spot, ticker)}."
+    band = int(round(config.COVERAGE_STRIKE_BAND * 100))
+    if q["reason"] == "no_live_quotes":
+        src = "Cboe's delayed feed" if feed == "cboe_delayed" else "the feed"
+        early = ""
+        if feed == "cboe_delayed" and market_open and cal is not None:
+            sess = cal.sessions.get(now.astimezone(NY).date())
+            if sess is not None:
+                opened = datetime.combine(now.astimezone(NY).date(), sess.open, NY)
+                if (now - opened).total_seconds() < config.CBOE_OPEN_GAP_MIN * 60:
+                    early = " (first 15 minutes after the open)"
+        return f"{s} No usable quotes yet: {src} has no quotes for this chain{early}."
+    if cov.eligible == 0:
+        return f"{s} No usable quotes: the selected chain has no contracts within {band}% of spot."
+    return (f"{s} No usable quotes: none of the {cov.eligible:,} contracts within {band}% of spot "
+            "has a usable quote and IV.")
+
+
 def _signed(v: float, signed: bool) -> float:
     return v if signed else abs(v)
 
@@ -244,6 +278,7 @@ def build_map(ticker: str, expiries: list[str] | None, signed: bool) -> dict:
     spot = chain.spot.price
     cov = G.coverage(sel, spot)
     eligible, valid, pct = cov.eligible, cov.valid, cov.pct
+    quotes = quote_state(sel, cov)
 
     key = (ticker, slot.fetched, tuple(sorted(exp_set)) if exp_set else None)
     cached = _LEVEL_CACHE.get(key)
@@ -364,9 +399,10 @@ def build_map(ticker: str, expiries: list[str] | None, signed: bool) -> dict:
         "totals": {"call_gex": call_tot, "put_gex": put_tot_out,
                    "net_gex": call_tot + put_tot_out},
         "magnitude": _magnitude(ticker, chain, call_tot, put_tot, spot, cal, now),
+        "quotes": quotes,
         "levels": {"call_wall": lv.call_wall, "put_wall": lv.put_wall,
                    "zero_gamma": lv.zero_gamma, "nearest_zero_gamma": lv.nearest_zero_gamma,
-                   "regime": lv.regime},
+                   "regime": lv.regime if quotes["usable"] else None},
         "profile_curve": prof,
         "frozen_today": (
             {"captured_at": iso_z(chain.as_of), "status": "eligible", "reason": None, "call_wall": lv.call_wall,
@@ -375,7 +411,8 @@ def build_map(ticker: str, expiries: list[str] | None, signed: bool) -> dict:
              "oi_source": chain.oi_source, "expiries": sorted({c.expiry.isoformat() for c in chain.contracts}),
              "excluded": None}
             if config.is_demo() else frozen_today(ticker, ny_today(now))),
-        "lead": lead_sentence(ticker, spot, lv, pct),
+        "lead": (lead_sentence(ticker, spot, lv, pct) if quotes["usable"] else
+                 no_quotes_lead(ticker, spot, quotes, cov, kind, None if config.is_demo() else cal, now, market_open)),
         "warnings": warnings,
     }
 

@@ -25,8 +25,9 @@ if errorlevel 1 (
 )
 
 if /i "%~1"=="demo" set "GEXLAB_DEMO=1"
+if "%GEXLAB_PORT%"=="" set "GEXLAB_PORT=8240"
 
-echo Edge GEX Lab on http://127.0.0.1:8240 (close this window to stop it)
-start "" /b powershell -NoProfile -Command "Start-Sleep -Seconds 3; Start-Process 'http://127.0.0.1:8240/'"
-".venv\Scripts\python.exe" -m uvicorn gexlab.api:app --host 127.0.0.1 --port 8240
+echo Edge GEX Lab on http://127.0.0.1:%GEXLAB_PORT% (close this window to stop it)
+if not "%GEXLAB_NO_BROWSER%"=="1" start "" /b powershell -NoProfile -Command "Start-Sleep -Seconds 3; Start-Process 'http://127.0.0.1:%GEXLAB_PORT%/'"
+".venv\Scripts\python.exe" -m uvicorn gexlab.api:app --host 127.0.0.1 --port %GEXLAB_PORT%
 endlocal

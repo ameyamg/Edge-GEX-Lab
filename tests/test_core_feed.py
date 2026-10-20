@@ -178,6 +178,15 @@ def test_credentials_from_env_file(tmp_path, monkeypatch):
     assert A.load_credentials().key == "envk"
 
 
+def test_no_keys_message_points_at_env(tmp_path, monkeypatch):
+    monkeypatch.delenv("APCA_API_KEY_ID", raising=False)
+    monkeypatch.delenv("APCA_API_SECRET_KEY", raising=False)
+    monkeypatch.setenv("ALPACA_ENV_FILE", str(tmp_path / "missing.env"))
+    assert A.load_credentials() is None
+    with pytest.raises(SourceError, match=r"APCA_API_KEY_ID and APCA_API_SECRET_KEY in \.env .*SPX and NDX work without keys"):
+        A.AlpacaSource()
+
+
 def test_pair_iv_from_otm():
     from gexlab.models import Contract
     d = date(2026, 10, 19)

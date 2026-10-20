@@ -1,5 +1,5 @@
 import { Component, useCallback, useEffect, useState, type ReactNode } from "react";
-import { MOCK, api } from "./api/client";
+import { API_HOST, MOCK, api } from "./api/client";
 import { DemoContext, MetaContext, PresentContext, type TopMeta } from "./components/ui";
 import { useAsync, useHashRoute } from "./lib/hooks";
 import LiveMap from "./screens/LiveMap";
@@ -92,7 +92,11 @@ export default function App() {
   const demo = MOCK || health.data?.demo === true;
   const [present, togglePresent] = usePresentMode();
 
-  const ticker = (params.get("ticker") || "SPY").toUpperCase();
+  // No ticker in the URL: SPY, or SPX when the API has no Alpaca keys (SPX and NDX need none). The live map
+  // waits for the health answer so a keyless install never opens on a map it cannot load.
+  const keyless = health.data?.keys_configured === false;
+  const ticker = (params.get("ticker") || (keyless ? "SPX" : "SPY")).toUpperCase();
+  const awaitingDefault = !params.get("ticker") && health.loading;
   const route = NAV.some((n) => n.path === path) ? path : "/live";
 
   const setTicker = useCallback((t: string) => go(route, { ticker: t }), [go, route]);
@@ -131,7 +135,7 @@ export default function App() {
 
             <main className="main">
               <Boundary resetKey={route}>
-                {route === "/live" && <LiveMap key="live" initialTicker={ticker} onTicker={setTicker} />}
+                {route === "/live" && !awaitingDefault && <LiveMap key="live" initialTicker={ticker} onTicker={setTicker} />}
               </Boundary>
             </main>
 
@@ -144,7 +148,7 @@ export default function App() {
                   API {health.data.status} · rate {health.data.rate.used_last_min}/{health.data.rate.cap} per min
                 </span>
               )}
-              {health.error && !MOCK && <span className="footer-err">API offline on 8240</span>}
+              {health.error && !MOCK && <span className="footer-err">API offline on {API_HOST}</span>}
               <span>Times in New York</span>
               <a href="https://www.tradingview.com/" target="_blank" rel="noreferrer" style={{ color: "inherit" }}>
                 Charts: TradingView Lightweight Charts

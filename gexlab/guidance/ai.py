@@ -1,4 +1,4 @@
-"""AI narrative of a guidance object through the local claude CLI (Simon's subscription, no API key).
+"""AI narrative of a guidance object through the local claude CLI (its own login, no API key).
 
 The shared hardened call (gexlab/llm.py): no tools, an empty MCP config, no settings,
 no CLAUDE.md, a fresh temporary working directory, the prompt on stdin, shell=False, and a child

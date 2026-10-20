@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useRef, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { ApiError } from "../api/client";
 import { vocab } from "../lib/format";
@@ -114,7 +114,7 @@ export function ErrorState({ error, onRetry, what }: { error: Error; onRetry?: (
       <p>{error.message}</p>
       {offline && (
         <p>
-          Start the API with <code>scripts\run_api.bat</code>, or run the UI against fixtures with <code>npm run dev:mock</code>.
+          Start the API with <code>launch.bat</code>, or run the UI against fixtures with <code>npm run dev:mock</code>.
         </p>
       )}
       {onRetry && (
@@ -300,64 +300,6 @@ export function Meter({ value, max, tone = "green", gate }: { value: number; max
     <div className={`meter ${tone === "green" ? "" : tone}`} role="meter" aria-valuenow={value} aria-valuemin={0} aria-valuemax={max}>
       <i style={{ width: `${w}%` }} />
       {gate !== undefined && <span className="gate" style={{ left: `${(gate / max) * 100}%` }} />}
-    </div>
-  );
-}
-
-// ---------- "not processed yet": replay and recap are pure readers of the after-close step ----------
-export const PROCESS_CMD = "python -m gexlab.recorder process";
-
-function CopyCmd() {
-  const [copied, setCopied] = useState(false);
-  return (
-    <div className="cmd-line">
-      <code>{PROCESS_CMD}</code>
-      <button
-        type="button"
-        className="btn ghost"
-        onClick={() => {
-          navigator.clipboard?.writeText(PROCESS_CMD).then(
-            () => {
-              setCopied(true);
-              window.setTimeout(() => setCopied(false), 1600);
-            },
-            () => undefined,
-          );
-        }}
-      >
-        {copied ? "Copied" : "Copy"}
-      </button>
-    </div>
-  );
-}
-
-/**
- * Shown when GET /api/replay or /api/recap answers processed:false, or POST /api/recap/generate answers 409.
- * `stored` lists what the recorder already holds for the day (frozen capture, snapshots) so the screen is never blank.
- */
-export function NotProcessed({ what, stored, compact }: { what: string; stored?: string[]; compact?: boolean }) {
-  return (
-    <div className={`not-processed ${compact ? "compact" : ""}`} role="status">
-      <span className="kicker">
-        <i className="np-dot" aria-hidden />
-        Not processed yet
-      </span>
-      {compact ? <p className="np-title">This session has not been processed.</p> : <h2>This session has not been processed.</h2>}
-      <p>Run the after-close step:</p>
-      <CopyCmd />
-      {!compact && (
-        <p>
-          It fetches the day's minute bars through the exchange close, then stores {what}. The scheduled task runs it at 16:20 ET on
-          weekdays. Nothing on this page is computed on demand.
-        </p>
-      )}
-      {stored && stored.length > 0 && (
-        <ul className="np-stored">
-          {stored.map((s) => (
-            <li key={s}>{s}</li>
-          ))}
-        </ul>
-      )}
     </div>
   );
 }

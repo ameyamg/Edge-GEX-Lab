@@ -1,4 +1,4 @@
-// Capture eligibility gate per API_CONTRACT.md "Capture protocol v1.3".
+// Capture eligibility gate per the contract's "Capture protocol v1.3".
 // Gate 1.3 (current, from 2026-10-20): gate 1.2 plus open interest from the previous session, unestimable |GEX|
 // charged at a conservative bound, and closing quotes judged on the valuation clock. Same number and threshold.
 // Gate 1.2 (2026-10-19 11:15 to the close): valid contracts hold >= 98% of the estimated absolute GEX within 5% of spot.

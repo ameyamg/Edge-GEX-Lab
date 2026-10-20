@@ -19,6 +19,7 @@ venv/
 # node
 node_modules/
 web/dist/
+*.tsbuildinfo
 
 # windows shortcuts
 *.lnk

@@ -76,7 +76,7 @@ function writeOpen(v: boolean) {
   }
 }
 
-// whole=true: a PRICE (or a distance in points) on SPX/NDX, shown in whole index points (Simon, Oct 18).
+// whole=true: a PRICE (or a distance in points) on SPX/NDX, shown in whole index points.
 // Percentages and GEX billions always keep up to 2 decimals.
 function fx(v: number | null | undefined, whole = false): string {
   if (v === null || v === undefined || !Number.isFinite(v)) return "n/a";

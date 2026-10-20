@@ -74,7 +74,7 @@ timestamp, the contracts with open interest, its date and source, and IV with it
 - Timestamps are the vendor's, never the request time. Unknown stays unknown and is labeled.
 - An IV whose quote time is unknown or stale is dropped in strict mode, never silently used.
 - Open interest carries its own date per contract, so old data is visible to the coverage checks.
-- Network calls go through the shared rate limiter (`sources/base.py`) with backoff.
+- Network calls go through the shared rate limiter (`gexlab/sources/base.py`) with backoff.
 
 ## Pull requests
 

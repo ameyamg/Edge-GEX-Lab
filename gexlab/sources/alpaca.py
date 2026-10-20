@@ -1,7 +1,7 @@
 """Alpaca REST source: contracts + OI, option snapshots, stock spot, calendar, assets.
 
-REST ONLY. This module never opens a websocket (Simon's live scanner owns the
-single allowed connection) and never calls an order endpoint. Every request
+REST ONLY. This module never opens a websocket (Alpaca allows one per account and
+another app may own it) and never calls an order endpoint. Every request
 goes through the shared rate limiter. Keys are read, never printed or logged.
 
 IV policy (model v1.0):
@@ -219,7 +219,8 @@ class AlpacaSource:
                  rate: RateLimiter | None = None, priority: str = "low", who: str = "api"):
         self.creds = creds or load_credentials()
         if self.creds is None:
-            raise SourceError("Alpaca keys not configured (set ALPACA_ENV_FILE or APCA_API_KEY_ID)")
+            raise SourceError("Alpaca keys not configured: put APCA_API_KEY_ID and APCA_API_SECRET_KEY in .env "
+                              "(SPX and NDX work without keys)")
         self.client = client or httpx.Client(timeout=config.HTTP_TIMEOUT_S)
         self.rate = rate if rate is not None else limiter()
         self.priority, self.who = priority, who

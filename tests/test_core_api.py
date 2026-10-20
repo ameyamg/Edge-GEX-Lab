@@ -1,4 +1,4 @@
-"""Core endpoints in DEMO mode (synthetic fixtures, no network). Shapes per docs/API_CONTRACT.md."""
+"""Core endpoints in DEMO mode (synthetic fixtures, no network). Shapes per the v1 API contract."""
 import re
 
 import pytest

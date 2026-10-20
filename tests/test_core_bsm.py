@@ -1,4 +1,4 @@
-"""Ported from Options/wheel_system/tests/test_engine.py (pricing + IV parts), adapted to gexlab.engine.
+"""Pricing and IV checks for gexlab.engine, ported from an earlier options engine's tests.
 Plus checks that the one-hour time floor is gone."""
 import math
 

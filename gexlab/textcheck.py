@@ -1,6 +1,6 @@
 """Number and text check primitives shared by the narration validators (recap and trade guidance).
 
-Moved out of recap/validate.py unchanged so the live map's guidance validator does not depend on
+Moved out of the recap validator unchanged so the live map's guidance validator does not depend on
 the recap (evidence) side."""
 from __future__ import annotations
 

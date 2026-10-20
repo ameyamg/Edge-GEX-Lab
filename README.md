@@ -96,7 +96,13 @@ and an [Alpaca](https://alpaca.markets/) account for its free API keys (SPX and 
 
 1. `setup.bat`, once. It installs everything, builds the web page and creates `.env` for your keys.
    Open `.env` and paste your Alpaca key and secret.
-2. `launch.bat`, every time. It opens http://127.0.0.1:8240
+2. `launch.bat`, every time. It opens http://127.0.0.1:8240. Without Alpaca keys it opens on SPX,
+   which needs none.
+
+**Try it first with no keys and no network:** `launch.bat demo` (or set `GEXLAB_DEMO=1` before
+starting the server) serves synthetic fixtures for SPY, QQQ, SPX, NDX and NVDA. Every screen carries a
+"Synthetic fixture" badge, nothing in it is market data, and it writes only to `data/gexlab_demo.db`,
+so your real install stays empty. Close the window and run `launch.bat` to switch to your own data.
 
 **Manual setup (Mac, Linux, or if you prefer):**
 
@@ -110,6 +116,10 @@ cd web && npm ci && npm run build && cd ..
 
 Every install starts empty: no saved maps and no history. Open the page, pick a ticker, and the map
 loads from your own data feed.
+
+**If the web build fails on Windows** with "An Application Control policy has blocked this file":
+that is Smart App Control blocking a native build helper. The project builds with the WebAssembly
+version of Rollup to avoid it, so delete `web\node_modules` and run `setup.bat` again.
 
 ## Updating to a new release
 
@@ -126,6 +136,10 @@ Your keys (`.env`) and caches (`data/`) are not part of a release, so an update 
 |---|---|
 | `APCA_API_KEY_ID`, `APCA_API_SECRET_KEY` | SPY, QQQ and stock maps (Alpaca quotes, spot and volume). SPX and NDX work without them. |
 | `ALPACA_MODE` | `paper` (default) or `live`: which Alpaca account the keys belong to. Market data is the same. |
+| `ALPACA_ENV_FILE` (environment variable, not `.env`) | Optional path to a `.env` file somewhere else that already holds your Alpaca keys, used instead of the `.env` next to this README. Keys set directly as environment variables win over both. |
+| `GEXLAB_PORT` (environment variable, not `.env`) | Port for `launch.bat` and the web dev server's proxy, 8240 by default. Example: `set GEXLAB_PORT=8250` then `launch.bat`. For the manual start, pass the same number to `--port`. |
+| `GEXLAB_NO_BROWSER` (environment variable, not `.env`) | `1` stops `launch.bat` from opening your browser. |
+| `GEXLAB_DEMO` (environment variable, not `.env`) | `1` serves the synthetic demo fixtures, the same as `launch.bat demo`. |
 | `GEXLAB_RECAP_MODEL` (environment variable, not `.env`) | Optional model name passed to your `claude` CLI for "Explain this map". |
 
 ## How it works

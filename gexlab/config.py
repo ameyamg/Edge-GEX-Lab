@@ -1,7 +1,7 @@
 """Every knob Edge GEX Lab uses, each with the reason it holds that value.
 
-Change behavior here, not in the modules. Values that come from the frozen spec
-(docs/next_project/build/SPEC_GEX.md, "model v1.0") are marked SPEC.
+Change behavior here, not in the modules. Values that come from the frozen
+model v1.0 spec are marked SPEC.
 """
 from __future__ import annotations
 
@@ -16,23 +16,21 @@ MODEL_VERSION = "1.1"            # Model/input version, stored on every capture.
                                  # SPY, QQQ and stocks. 1.1 (2026-10-19, Cboe OI switch): same gamma math, but open
                                  # interest for Alpaca-quoted tickers now comes from Cboe (OI_SOURCE). Inputs changed,
                                  # so the version moved; the capture gate stays 1.2.
-GATE_VERSION = "1.3"             # Capture eligibility gate. 1.3 (2026-10-19 evening, day-1 audit, Simon approved): 1.2 plus
+GATE_VERSION = "1.3"             # Capture eligibility gate. 1.3 (2026-10-19 evening, day-1 audit): 1.2 plus
                                  # (a) open interest must be from the previous completed session (OI_STALE_MAX_FRAC),
                                  # (b) a band contract with OI whose |GEX| cannot be estimated (no donor IV) fails the
                                  # capture instead of being dropped from the denominator (no safe upper bound exists for
                                  # a missing near-expiry contract), (c) one quote clock: a quote is "future" only when it
                                  # is stamped after it was received (the fetch: the time it arrived; the gate: the capture's
                                  # completion), and at the close only within CLOSED_QUOTE_AFTER_CLOSE_S of the close.
-                                 # History: 1.2 (Simon approved 2026-10-19 11:15 ET).
+                                 # History: 1.2 (2026-10-19 11:15 ET).
                                  # 1.0 gated on the CONTRACT count within +-10%; 1.1 (2026-10-19, 10:15 snapshot on)
                                  # on OPEN INTEREST within +-5% (GATE_OI_*); 1.2 on the estimated ABSOLUTE GEX within
                                  # +-5% (GATE_GEX_MIN_PCT). Stored on every new capture (captures.gate_version); rows
                                  # with no value were judged by 1.0, and every row keeps the status its own gate gave
                                  # it. The GEX math is unchanged, so MODEL_VERSION stays 1.0, and the study protocol
-                                 # (touches, placebo seeds) is unchanged, so studies.params.PROTOCOL_VERSION stays 1.0.
-INSTALL_DATE = "2026-10-19"      # First live recorder session. reconcile never lists a session before it as missed
-                                 # (the recorder did not exist yet). None = the first stored capture date.
-PINNED_TICKERS = ["SPY", "QQQ", "SPX", "NDX"]  # SPEC: the four chips and the recorder universe.
+                                 # (touches, placebo seeds) is unchanged, so the study protocol version stays 1.0.
+PINNED_TICKERS = ["SPY", "QQQ", "SPX", "NDX"]  # SPEC: the four pinned chips.
 CBOE_TICKERS = {"SPX", "NDX"}    # SPEC: Alpaca has no SPX/NDX quotes, so these come from Cboe.
 CBOE_ROOTS = {"SPX": {"SPX": "AM", "SPXW": "PM"},
               "NDX": {"NDX": "AM", "NDXP": "PM"}}  # SPEC: monthly roots settle AM, weeklies PM.
@@ -46,7 +44,7 @@ def is_demo() -> bool:
 FIXTURES_DIR = ROOT / "fixtures"             # Synthetic inputs for DEMO mode and tests.
 DEMO_DB_DEFAULT = ROOT / "data" / "gexlab_demo.db"  # DEMO writes never touch the research DB (GEXLAB_DEMO_DB overrides).
 CACHE_DIR = ROOT / "data" / "cache"          # Gitignored (data/); holds the Cboe payload cache and asset list.
-API_PORT = 8240                              # SPEC: Edge GEX Lab API port; never 3000/3001/3010/7777-7780/8000/8001.
+API_PORT = int(os.getenv("GEXLAB_PORT") or 8240)  # API port, 8240 by default. launch.bat reads the same GEXLAB_PORT.
 
 # ---------------------------------------------------------------- Alpaca
 ALPACA_DATA_BASE = "https://data.alpaca.markets"  # Market data host (REST only, never the websocket).
@@ -85,6 +83,9 @@ CBOE_USER_AGENT = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
 CBOE_CACHE_S = 60                # SPEC: at most one fetch per ticker per 60 s (disk cache, shared by processes).
 CBOE_TIMESTAMP_TZ = "UTC"        # Verified 2026-10-17: payload "13:32:46" arrived at 09:33 ET, so it is UTC.
 CBOE_MAX_PAYLOAD_AGE_S = 300     # Frozen capture: the payload must be generated within 5 min of the run's completion.
+CBOE_OPEN_GAP_MIN = 30           # Verified 2026-10-20: the 09:42 ET payload (about 09:27 market time) had bid 0, ask 0 and
+                                 # iv 0 on every SPXW contract; by 09:45 ET 144 of 339 were usable. A chain with no quotes
+                                 # this soon after the open is labeled as the delayed feed's first minutes, not a market state.
 CBOE_LOCK_TIMEOUT_S = 120        # Max wait for the cross-process Cboe cache lock (a 13 MB fetch can take a while).
 OI_SOURCE = "cboe"               # Open interest for Alpaca-quoted tickers (SPY, QQQ, stocks): "cboe" or "alpaca".
                                  # Verified 2026-10-19 11:50 ET: Alpaca still served OI dated Thu Oct 15 for QQQ Oct 19
@@ -173,40 +174,9 @@ OI_NULL_AMBIGUOUS_MAX_FRAC = 0.50  # Alpaca returns open_interest null, never 0,
                                  # OI date, at most this share may lack a record. Above it the feed is treated as broken
                                  # and the nulls stay unknown (they count against coverage).
 
-# ---------------------------------------------------------------- recorder schedule (America/New_York)
-FROZEN_AT = time(10, 0)          # SPEC: 10:00 ET frozen capture.
-FROZEN_DEADLINE = time(10, 5)    # SPEC: done by 10:05 or it is late (archived, excluded).
-FROZEN_EARLY_WAIT_S = 300        # If the task fires a little before 10:00, wait up to 5 min for 10:00.
-FROZEN_RETRY_WAIT_S = 30         # One retry after a failed fetch, only if still before the deadline.
-SNAPSHOT_START = time(9, 45)     # SPEC: 15-min snapshots 09:45 to 16:00.
-SNAPSHOT_END = time(16, 0)
-SNAPSHOT_EVERY_MIN = 15
-SNAPSHOT_SLOT_TOLERANCE_S = 120  # Task Scheduler starts a little after the slot (16:00:00.4); 2 min bounds that drift.
-SNAPSHOT_SKIP_SLOTS = (time(10, 0),)  # The frozen capture is the 10:00 observation (replay already reads it as a
-                                 # path point). Day 1 ran both at 10:00 for every ticker and they competed for the
-                                 # rate budget, so the snapshot task skips that slot.
-PROCESS_AT = time(16, 20)        # After-close study processing (bars for the day are final by then).
+# ---------------------------------------------------------------- option settlement (America/New_York)
 DEFAULT_SETTLE_PM = time(16, 0)  # SPEC: PM settlement 16:00 ET (early-close aware via the calendar).
 DEFAULT_SETTLE_AM = time(9, 30)  # SPEC: AM settlement 09:30 ET.
-RECONCILE_DAYS = 30              # Look back 30 sessions for missed frozen captures.
-
-# ---------------------------------------------------------------- study cohort (Decision 8, Simon approved 2026-10-19)
-COHORT_START = "2026-10-20"      # Oct 19 was the calibration day: the capture gate changed three times during the session
-                                 # (see AMENDMENTS). Only frozen captures on or after this date count toward the studies.
-STUDY_GATES = ("1.3",)           # Capture gates whose eligible captures count. A later gate joins only by a logged amendment.
-STUDY_MODELS = ("1.1",)          # Model versions whose captures count (1.1 = Cboe OI for SPY and QQQ).
-AMENDMENTS = [                   # Every change to what a capture or a study counts, with when it took effect (ET).
-    {"version": "gate 1.1", "effective": "2026-10-19 10:15 ET", "commit": "4b61723",
-     "change": "capture gate on OI-weighted coverage within 5% of spot (was contract count within 10%)"},
-    {"version": "gate 1.2", "effective": "2026-10-19 11:15 ET", "commit": "481c304",
-     "change": "capture gate on the estimated |GEX| share within 5% of spot, at least 98%"},
-    {"version": "model 1.1", "effective": "2026-10-19 12:15 ET", "commit": "76bb1b1",
-     "change": "open interest for SPY, QQQ and stocks from Cboe instead of Alpaca"},
-    {"version": "gate 1.3", "effective": "2026-10-20 09:45 ET", "commit": "3f711d7, 1c4e211, bf8a6f0 and the third-pass fix after them",
-     "change": "OI must be from the previous session, dated per contract; a band contract with OI and no estimable "
-               "|GEX| fails the capture; one quote clock (future = stamped after it was received). Oct 19 declared "
-               "calibration; the study cohort starts Oct 20 (gate 1.3, model 1.1)"},
-]
 
 # ---------------------------------------------------------------- AI-free copy guard
 BANNED_WORDS = ("buy", "sell", "bullish", "bearish", "signal", "entry", "should")  # Brand rules 2 and 4.
@@ -238,5 +208,5 @@ ATR_FROM_ETF = {"SPX": "SPY", "NDX": "QQQ"}  # Alpaca has no index bars. ATR% is
 GUIDANCE_MAX_DATA_AGE_S = 300    # Market open: no setups when the vendor's data time (spot trade, or the Cboe payload) is
                                  # more than 5 min old, even if the last fetch "succeeded" (day-1 verification).
 GUIDANCE_MIN_RR = 1.0            # A scenario is shown only when the reward from the entry zone's worst edge to target 1
-                                 # is at least the risk from that edge to the stop (Simon, Oct 19). Below 1 to 1 the
+                                 # is at least the risk from that edge to the stop. Below 1 to 1 the
                                  # idea needs a hit rate above 50% to break even, which nothing here has measured.

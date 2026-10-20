@@ -22,7 +22,9 @@ export class ApiError extends Error {
   }
 }
 
-const OFFLINE = "Nothing answered on 127.0.0.1:8240.";
+// Where the API listens: the page's own address when the API serves the built UI, the proxy target in dev.
+export const API_HOST = import.meta.env.DEV ? `127.0.0.1:${__API_PORT__}` : window.location.host;
+const OFFLINE = `Nothing answered on ${API_HOST}.`;
 
 async function http<T>(path: string, init?: RequestInit): Promise<T> {
   if (MOCK) {
@@ -46,7 +48,7 @@ async function http<T>(path: string, init?: RequestInit): Promise<T> {
     } catch {
       /* body was not JSON; keep the status line */
     }
-    // The Vite proxy answers 5xx with a non-JSON body when nothing listens on 8240.
+    // The Vite proxy answers 5xx with a non-JSON body when nothing listens on the API port.
     if (!json && res.status >= 500) throw new ApiError(0, OFFLINE);
     throw new ApiError(res.status, msg);
   }

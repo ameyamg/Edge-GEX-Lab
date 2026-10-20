@@ -33,13 +33,13 @@ DEFAULT_RANGE_PCT = 5.0    # The live map's middle range chip when the caller do
 MAX_SCENARIOS = 4          # At most 4 scenarios; fewer (or none) when the reward to risk filter drops them.
 MAX_TARGETS = 2            # Two next levels in the trade direction: the first and the one behind it.
 FADE_ZONE_ATR = 0.25       # A fade entry hugs the wall: wall to wall +- a quarter of a typical day toward spot
-                           # (Simon, Oct 19), never past spot.
-TARGET_GAP_ATR = 0.25      # A target must sit a quarter ATR beyond the entry's far edge (Simon, Oct 19): a level
+                           # but never past spot.
+TARGET_GAP_ATR = 0.25      # A target must sit a quarter ATR beyond the entry's far edge: a level
                            # closer than that is noise inside the entry, not a place to take profit.
-TARGET_GAP_SPOT_FRAC = 0.005  # Without an ATR the gap is 0.5% of spot (Simon, Oct 19).
+TARGET_GAP_SPOT_FRAC = 0.005  # Without an ATR the gap is 0.5% of spot.
 NO_SETUPS = "No trade setups from this map right now"
 
-FOOTNOTE = "For education only. Not financial advice."          # Simon's wording, panel footnote and narrative
+FOOTNOTE = "For education only. Not financial advice."          # panel footnote and narrative
 CHIP_UNTESTED = "Untested: no study tests these setups"         # a data-quality fact, shown next to the title.
                            # Always shown: the Scorecard measures the levels and the regime, never these entry, stop
                            # and target rules, so a passed Scorecard does not validate a setup (day-1 audit).
@@ -55,7 +55,7 @@ def r2(x: float | None) -> float | None:
 
 
 def is_index(ticker: str | None) -> bool:
-    """SPX and NDX quote in index points: every PRICE is a whole number (Simon, Oct 18)."""
+    """SPX and NDX quote in index points: every PRICE is a whole number."""
     return ticker in config.CBOE_TICKERS
 
 
@@ -487,6 +487,7 @@ def build(m: dict, *, zero_dte: dict | None = None, scorecard: dict | None = Non
     mg = m.get("magnitude") or {}
     gross = mg.get("gross") or {}
     regime = lv.get("regime") or "neutral"
+    no_quotes = (m.get("quotes") or {}).get("usable") is False    # the map's regime is null, not neutral
     range_pct = float(range_pct or DEFAULT_RANGE_PCT)
     comps: list[dict] = []
     feed = m.get("feed") or {}
@@ -516,7 +517,9 @@ def build(m: dict, *, zero_dte: dict | None = None, scorecard: dict | None = Non
     low_size = mg.get("pct_of_adv") is not None and mg["pct_of_adv"] < min(ticks)
     low_ntg = ntg is not None and ntg < NET_TO_GROSS_LOW
     reasons = []
-    if regime == "neutral":
+    if no_quotes:
+        reasons.append("the map has no usable quotes yet, so the regime is unknown")
+    elif regime == "neutral":
         reasons.append("the regime is neutral: net GEX is under 2% of gross at spot")
     if low_size:
         reasons.append(f"net GEX is {fp(pct_adv)}% of daily volume, below the {fp(min(ticks))}% tick, so the modeled "
@@ -615,6 +618,8 @@ def build(m: dict, *, zero_dte: dict | None = None, scorecard: dict | None = Non
 
     # ---- map quality: no setups from a stale or failed map (day-1 audit)
     blocked = []
+    if no_quotes:
+        blocked.append("the map has no usable quotes yet")
     if feed.get("stale"):
         blocked.append(f"the feed is stale (no successful refresh in {config.STALE_AFTER_S // 60} min)")
     elif feed.get("market_open") and (feed.get("data_age_s") or 0) > config.GUIDANCE_MAX_DATA_AGE_S:
@@ -710,8 +715,9 @@ def build(m: dict, *, zero_dte: dict | None = None, scorecard: dict | None = Non
                 "rules, so none of these ideas has a measured hit rate." if passed else
                 "Untested: the Scorecard gates have not passed, so none of these ideas has a measured hit rate.")
 
-    regime_summary = f"{t} at {fp(spot)} is in {regime} gamma"
-    if flip_lv and flip_lv["side"] != "at":
+    regime_summary = (f"{t} at {fp(spot)} has no usable quotes yet, so the regime is unknown" if no_quotes else
+                      f"{t} at {fp(spot)} is in {regime} gamma")
+    if flip_lv and flip_lv["side"] != "at" and not no_quotes:
         spot_side = "above" if flip_lv["side"] == "below" else "below"   # the flip is below spot: spot is above it
         regime_summary += f", {fp(abs(flip_lv['distance']))} {spot_side} the gamma flip at {fp(flip_lv['price'])}"
     regime_summary += "."
@@ -729,7 +735,7 @@ def build(m: dict, *, zero_dte: dict | None = None, scorecard: dict | None = Non
         "feed": {"label": feed.get("label"), "stale": bool(feed.get("stale")), "market_open": feed.get("market_open")},
         "status": {"tested": False, "chip": CHIP_UNTESTED, "scorecard_passed": passed,
                    "scorecard_lead": (scorecard or {}).get("lead") if passed else None, "footnote": FOOTNOTE},
-        "regime": {"regime": regime, "summary": regime_summary, "net_gex_billions": net_b, "pct_of_adv": pct_adv,
+        "regime": {"regime": None if no_quotes else regime, "summary": regime_summary, "net_gex_billions": net_b, "pct_of_adv": pct_adv,
                    "pct_of_adv_per_atr": pct_adv_atr, "net_to_gross_pct": ntg_pct, "scale_band": band,
                    "ticks_pct": ticks, "size_text": size_text},
         "environment": {"kind": env, "label": ENV_LABELS[env], "why": why},
