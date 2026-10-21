@@ -16,6 +16,22 @@ updates:
       # v5 renames the series API (addCandlestickSeries and friends). Migrate deliberately.
       - dependency-name: lightweight-charts
         update-types: [version-update:semver-major]
+      # React 19, TypeScript 7 and Vite 8 (with plugin-react 6, which needs Vite 7+) each need a tested upgrade.
+      # Vite 8 also swaps Rollup for Rolldown, whose native binaries Windows Smart App Control may block.
+      - dependency-name: react
+        update-types: [version-update:semver-major]
+      - dependency-name: react-dom
+        update-types: [version-update:semver-major]
+      - dependency-name: "@types/react"
+        update-types: [version-update:semver-major]
+      - dependency-name: "@types/react-dom"
+        update-types: [version-update:semver-major]
+      - dependency-name: typescript
+        update-types: [version-update:semver-major]
+      - dependency-name: vite
+        update-types: [version-update:semver-major]
+      - dependency-name: "@vitejs/plugin-react"
+        update-types: [version-update:semver-major]
 
   - package-ecosystem: pip
     directory: /
@@ -25,6 +41,10 @@ updates:
       python:
         patterns: ["*"]
         update-types: [minor, patch]
+    ignore:
+      # scipy 1.18 needs Python 3.12; setup.bat supports 3.11.
+      - dependency-name: scipy
+        versions: [">=1.18"]
 
   - package-ecosystem: github-actions
     directory: /
