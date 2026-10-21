@@ -42,9 +42,11 @@ updates:
         patterns: ["*"]
         update-types: [minor, patch]
     ignore:
-      # scipy 1.18 needs Python 3.12; setup.bat supports 3.11.
+      # scipy 1.18 and numpy 2.5 need Python 3.12; setup.bat supports 3.11.
       - dependency-name: scipy
         versions: [">=1.18"]
+      - dependency-name: numpy
+        versions: [">=2.5"]
 
   - package-ecosystem: github-actions
     directory: /
