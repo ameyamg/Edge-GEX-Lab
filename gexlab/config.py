@@ -86,6 +86,10 @@ CBOE_MAX_PAYLOAD_AGE_S = 300     # Frozen capture: the payload must be generated
 CBOE_OPEN_GAP_MIN = 30           # Verified 2026-10-20: the 09:42 ET payload (about 09:27 market time) had bid 0, ask 0 and
                                  # iv 0 on every SPXW contract; by 09:45 ET 144 of 339 were usable. A chain with no quotes
                                  # this soon after the open is labeled as the delayed feed's first minutes, not a market state.
+CBOE_DELAY_MIN = 15              # Cboe's public quotes run about 15 minutes behind the market (named in the lead).
+CBOE_FIRST_QUOTES_MIN = 20       # Minutes after the open by which the delayed payload has carried quotes every day so far
+                                 # (2026-10-20 to 10-23: the 09:45 payload was stamped 09:42 to 09:44 ET, about 09:27
+                                 # market time, and had none; by 09:48 SPX was usable).
 CBOE_LOCK_TIMEOUT_S = 120        # Max wait for the cross-process Cboe cache lock (a 13 MB fetch can take a while).
 OI_SOURCE = "cboe"               # Open interest for Alpaca-quoted tickers (SPY, QQQ, stocks): "cboe" or "alpaca".
                                  # Verified 2026-10-19 11:50 ET: Alpaca still served OI dated Thu Oct 15 for QQQ Oct 19

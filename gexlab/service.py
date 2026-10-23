@@ -245,15 +245,17 @@ def no_quotes_lead(ticker: str, spot: float, q: dict, cov: G.Coverage, feed: str
     s = f"{ticker} at {fmt_spot(spot, ticker)}."
     band = int(round(config.COVERAGE_STRIKE_BAND * 100))
     if q["reason"] == "no_live_quotes":
-        src = "Cboe's delayed feed" if feed == "cboe_delayed" else "the feed"
-        early = ""
         if feed == "cboe_delayed" and market_open and cal is not None:
             sess = cal.sessions.get(now.astimezone(NY).date())
             if sess is not None:
                 opened = datetime.combine(now.astimezone(NY).date(), sess.open, NY)
                 if (now - opened).total_seconds() < config.CBOE_OPEN_GAP_MIN * 60:
-                    early = " (first 15 minutes after the open)"
-        return f"{s} No usable quotes yet: {src} has no quotes for this chain{early}."
+                    by = opened + timedelta(minutes=config.CBOE_FIRST_QUOTES_MIN)
+                    return (f"{s} No usable quotes yet: Cboe's feed runs about {config.CBOE_DELAY_MIN} minutes "
+                            f"behind, so right after the {opened:%H:%M} open it still shows the market before the "
+                            f"open. Quotes usually arrive by about {by:%H:%M} ET.")
+        src = "Cboe's delayed feed" if feed == "cboe_delayed" else "the feed"
+        return f"{s} No usable quotes yet: {src} has no quotes for this chain."
     if cov.eligible == 0:
         return f"{s} No usable quotes: the selected chain has no contracts within {band}% of spot."
     return (f"{s} No usable quotes: none of the {cov.eligible:,} contracts within {band}% of spot "
