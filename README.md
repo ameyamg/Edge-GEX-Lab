@@ -67,7 +67,8 @@ caches or screenshots with your account details.
 
 - **Live map**: net GEX by strike (signed, or unsigned by size), the call and put walls, every gamma
   flip within 10% of spot, a hypothetical net GEX curve, an expiry picker (opens on the nearest expiry),
-  refreshed every 60 seconds and valued at the session close when the market is shut.
+  refreshed every 60 seconds and valued at the session close when the market is shut. Tickers you
+  search stay as one-click chips beside the search box (the last 6, kept in your browser).
 - **Net GEX size**: net and gross GEX per 1% move and per typical day (14-session ATR), as a share of
   the ticker's 20-day average dollar volume. Indexes show none: their hedging trades mostly in futures.
 - **Trade guidance**: the environment (trend in negative gamma, mean reversion in positive gamma, mixed

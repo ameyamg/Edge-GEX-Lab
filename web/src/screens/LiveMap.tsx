@@ -103,6 +103,26 @@ function writePriceView(v: PriceView) {
     /* storage blocked: the choice still holds for this page view */
   }
 }
+
+// Recent searches: the last tickers picked from the search box, newest first, as chips beside it. Per browser,
+// guarded like the price view.
+const RECENT_KEY = "gexlab.recentTickers";
+const RECENT_MAX = 6;
+function readRecent(): string[] {
+  try {
+    const v = JSON.parse(window.localStorage.getItem(RECENT_KEY) || "[]");
+    return Array.isArray(v) ? v.filter((t): t is string => typeof t === "string" && /^[A-Z0-9.]{1,10}$/.test(t)).slice(0, RECENT_MAX) : [];
+  } catch {
+    return [];
+  }
+}
+function writeRecent(v: string[]) {
+  try {
+    window.localStorage.setItem(RECENT_KEY, JSON.stringify(v));
+  } catch {
+    /* storage blocked: the list still holds for this page view */
+  }
+}
 // Typed futures prices are kept per index (SPY shares SPX's, QQQ NDX's) for this page view only.
 const FUT_INDEX: Record<string, string> = { SPY: "SPX", QQQ: "NDX", SPX: "SPX", NDX: "NDX" };
 
@@ -280,6 +300,29 @@ export default function LiveMap({ initialTicker, onTicker }: { initialTicker: st
     [ticker, onTicker],
   );
 
+  const [recent, setRecent] = useState<string[]>(readRecent);
+  const recentChips = recent.filter((t) => !pinned.includes(t));
+  // A pick from the search box goes to the front of the recent chips; picking a chip does not reorder them.
+  const pickSearched = useCallback(
+    (t: string) => {
+      if (!pinned.includes(t)) {
+        setRecent((cur) => {
+          const next = [t, ...cur.filter((x) => x !== t)].slice(0, RECENT_MAX);
+          writeRecent(next);
+          return next;
+        });
+      }
+      chooseTicker(t);
+    },
+    [pinned, chooseTicker],
+  );
+  const forgetRecent = (t: string) =>
+    setRecent((cur) => {
+      const next = cur.filter((x) => x !== t);
+      writeRecent(next);
+      return next;
+    });
+
   function toggleExp(d: string) {
     manualFor.current = ticker;
     setSelected((cur) => {
@@ -375,9 +418,23 @@ export default function LiveMap({ initialTicker, onTicker }: { initialTicker: st
               {t}
             </button>
           ))}
-          <TickerSearch active={!pinned.includes(ticker) ? ticker : null} onPick={chooseTicker} />
+          <TickerSearch active={!pinned.includes(ticker) && !recentChips.includes(ticker) ? ticker : null} onPick={pickSearched} />
         </div>
-        <span className="vsep" />
+        {recentChips.length > 0 && (
+          <div className="group" role="group" aria-label="Recent searches">
+            {recentChips.map((t) => (
+              <span key={t} className="recent">
+                <button type="button" className="chip ticker" aria-pressed={ticker === t} onClick={() => chooseTicker(t)} title={`${t}, from your recent searches`}>
+                  {t}
+                </button>
+                <button type="button" className="recent-x" onClick={() => forgetRecent(t)} aria-label={`Remove ${t} from recent searches`} title="Remove">
+                  <Icon name="close" size={9} />
+                </button>
+              </span>
+            ))}
+          </div>
+        )}
+        <span className="vsep push-right" />
         <div className="group" role="group" aria-label="Expiries">
           <span className="group-label" title="Opens on the nearest expiry that has not settled. Add expiries with the chips or All; your pick holds until you switch tickers.">
             Expiry
@@ -448,7 +505,7 @@ export default function LiveMap({ initialTicker, onTicker }: { initialTicker: st
             },
           ]}
         />
-        <div style={{ marginLeft: "auto" }} className="refresh">
+        <div className="refresh">
           <Countdown remaining={remaining} paused={paused} frac={fetchedAt ? Math.min(1, elapsed / REFRESH_S) : 0} loading={map.loading} />
           <button type="button" className="icon-btn" onClick={() => setPaused((p) => !p)} aria-label={paused ? "Resume auto refresh" : "Pause auto refresh"} title={paused ? "Resume" : "Pause"}>
             <Icon name={paused ? "play" : "pause"} size={13} />
@@ -623,7 +680,12 @@ function TickerSearch({ active, onPick }: { active: string | null; onPick: (t: s
           setOpen(true);
           setQ("");
         }}
-        onBlur={() => window.setTimeout(() => setOpen(false), 120)}
+        onBlur={() =>
+          window.setTimeout(() => {
+            setOpen(false);
+            setQ("");   // an unfinished or unmatched query never lingers in the box
+          }, 120)
+        }
         onChange={(e) => setQ(e.target.value.toUpperCase())}
         onKeyDown={(e) => {
           if (e.key === "ArrowDown") {

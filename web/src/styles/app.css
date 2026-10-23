@@ -392,6 +392,39 @@ p {
   height: 22px;
   background: var(--line-2);
 }
+/* everything from the expiry chips to the refresh timer sits on the right */
+.push-right {
+  margin-left: auto;
+}
+/* recent searches: ticker chips beside the search box, each with a remove button shown on hover */
+.recent {
+  position: relative;
+  display: inline-flex;
+}
+.recent-x {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid var(--line-2);
+  background: var(--bg);
+  color: var(--muted);
+  cursor: pointer;
+}
+.recent:hover .recent-x,
+.recent:focus-within .recent-x {
+  display: inline-flex;
+}
+.recent-x:hover {
+  color: var(--text);
+  border-color: var(--muted-2);
+}
 .chip {
   display: inline-flex;
   align-items: center;
