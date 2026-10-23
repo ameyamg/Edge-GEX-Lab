@@ -132,7 +132,7 @@ def mid_usable(bid: float | None, ask: float | None) -> bool:
 
 
 def pair_iv_from_otm(contracts: list[Contract], spot: float) -> int:
-    """Use the OTM member's IV for both the call and the put at each (expiry, strike).
+    """Use the OTM member's IV for both the call and the put at each (root, expiry, strike).
 
     Under European BSM with r = q = 0 a call and a put at the same strike share
     one IV, and the OTM quote is the cleaner one (an ITM mid is mostly intrinsic
@@ -141,12 +141,14 @@ def pair_iv_from_otm(contracts: list[Contract], spot: float) -> int:
     """
     pairs: dict[tuple, dict[str, Contract]] = {}
     for c in contracts:
-        pairs.setdefault((c.expiry, c.strike), {})[c.type] = c
+        # By root too: two series can share an expiry and strike (SPX AM and SPXW PM on the third Friday,
+        # NDX and NDXP, or a stock's adjusted series after a corporate action). Reported in discussion 19.
+        pairs.setdefault((c.root, c.expiry, c.strike), {})[c.type] = c
     for c in contracts:                     # record each contract's own IV before any sharing
         if not c.iv_shared:
             c.iv_own, c.iv_own_source = c.iv, c.iv_source
     changed = 0
-    for (_, k), pc in pairs.items():
+    for (_, _, k), pc in pairs.items():
         otm = pc.get("call") if k >= spot else pc.get("put")
         itm = pc.get("put") if k >= spot else pc.get("call")
         src = otm if otm is not None and iv_ok(otm.iv) else itm if itm is not None and iv_ok(itm.iv) else None
