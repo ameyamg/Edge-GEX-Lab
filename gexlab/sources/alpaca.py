@@ -260,6 +260,24 @@ class AlpacaSource:
                 return self.latest_trade(symbol, hasher)
         raise SourceError(f"no latest trade for {symbol}", status=last_status)
 
+    def trade_at(self, symbol: str, at: datetime, lookback_s: float) -> Spot | None:
+        """The last trade at or before `at`, no older than lookback_s (REST, one request). None when there is none.
+
+        The Futures view pairs it with the Cboe index value of the same instant for the ETF to index ratio."""
+        feeds = [FEED_STATE["stocks"]] if FEED_STATE["stocks"] else ["sip", "iex"]
+        last_status = None
+        for feed in feeds:
+            r = self._get(f"{config.ALPACA_DATA_BASE}/v2/stocks/{symbol}/trades",
+                          {"feed": feed, "start": iso_z(at - timedelta(seconds=lookback_s)), "end": iso_z(at),
+                           "limit": 1, "sort": "desc"})
+            last_status = r.status_code
+            if r.status_code != 200:
+                continue
+            FEED_STATE["stocks"] = feed
+            rows = [t for t in (r.json().get("trades") or []) if t.get("p") and parse_ts(t.get("t"))]
+            return Spot(float(rows[0]["p"]), parse_ts(rows[0]["t"]), f"alpaca_{feed}") if rows else None
+        raise SourceError(f"no trades for {symbol}", status=last_status)
+
     def session_close(self, symbol: str, close: datetime, hasher: Hasher | None = None) -> Spot:
         """The official regular-session close for the session ending at `close`, never an
         extended-hours print. Daily bar close first (it is the closing-auction price: verified

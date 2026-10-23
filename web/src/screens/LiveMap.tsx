@@ -1,11 +1,13 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { api } from "../api/client";
-import type { Expiration, GexMap, Magnitude, SearchHit } from "../api/types";
+import type { Expiration, FuturesView, GexMap, Magnitude, SearchHit } from "../api/types";
 import GexProfile, { type ProfileLevels } from "../components/GexProfile";
 import GuidancePanel from "../components/GuidancePanel";
 import { Drawer, ErrorState, Icon, Lead, Panel, Seg, Skeleton, usePresent, useTopMeta } from "../components/ui";
 import { GEX_UNITS, dayFull, dayShort, distText, gex, int, nyTime, nyToday, pct, price, px, strike } from "../lib/format";
 import { CURRENT_GATE, gateMin } from "../lib/gate";
+import FuturesPanel from "../components/FuturesPanel";
+import { FUTURES_TICKERS, convOf, futPx, toFut, type FutConv, type StoredOverride } from "../lib/futures";
 import { useAsync, useNow } from "../lib/hooks";
 
 const REFRESH_S = 60;
@@ -84,6 +86,26 @@ function oiSourceText(m: GexMap): string {
   return `${o.label}. Open interest from Alpaca's contracts endpoint, with the date Alpaca reports.${o.fallback_reason ? ` Cboe open interest was not used: ${o.fallback_reason}.` : ""}`;
 }
 
+// Index or Futures prices: remembered per browser. Storage can be blocked, so every access is guarded.
+type PriceView = "index" | "futures";
+const PRICE_VIEW_KEY = "gexlab.priceView";
+function readPriceView(): PriceView {
+  try {
+    return window.localStorage.getItem(PRICE_VIEW_KEY) === "futures" ? "futures" : "index";
+  } catch {
+    return "index";
+  }
+}
+function writePriceView(v: PriceView) {
+  try {
+    window.localStorage.setItem(PRICE_VIEW_KEY, v);
+  } catch {
+    /* storage blocked: the choice still holds for this page view */
+  }
+}
+// Typed futures prices are kept per index (SPY shares SPX's, QQQ NDX's) for this page view only.
+const FUT_INDEX: Record<string, string> = { SPY: "SPX", QQQ: "NDX", SPX: "SPX", NDX: "NDX" };
+
 export default function LiveMap({ initialTicker, onTicker }: { initialTicker: string; onTicker: (t: string) => void }) {
   const present = usePresent();
   const [ticker, setTicker] = useState(initialTicker);
@@ -97,6 +119,12 @@ export default function LiveMap({ initialTicker, onTicker }: { initialTicker: st
   const [paused, setPaused] = useState(false);
   const [drawer, setDrawer] = useState(false);
   const [fetchedAt, setFetchedAt] = useState<number | null>(null);
+  const [priceView, setPriceViewState] = useState<PriceView>(readPriceView);
+  const setPriceView = (v: PriceView) => {
+    setPriceViewState(v);
+    writePriceView(v);
+  };
+  const [overrides, setOverrides] = useState<Record<string, StoredOverride>>({});
 
   const tickers = useAsync(() => api.tickers(), []);
   const pinned = tickers.data?.pinned ?? ["SPY", "QQQ", "SPX", "NDX"];
@@ -140,6 +168,24 @@ export default function LiveMap({ initialTicker, onTicker }: { initialTicker: st
   }, [elapsed, paused, fetchedAt, map.loading]);
 
   const m = map.data && map.data.ticker === ticker ? map.data : null;
+
+  // Futures view: a display transform. The map stays in index or ETF units; /api/futures returns the basis (and the
+  // ETF ratio) and every shown level is round_to_tick(level * ratio + basis). Fetched again with each map refresh.
+  const futOk = FUTURES_TICKERS.has(ticker);
+  const futOn = priceView === "futures" && futOk;
+  const ov = overrides[FUT_INDEX[ticker] ?? ticker] ?? null;
+  const futQ = useAsync<FuturesView>(() => api.futures(ticker, { overrideBasis: ov?.basis }), [ticker, map.data, ov?.basis], futOn && m !== null);
+  const futData = futOn && futQ.data && futQ.data.ticker === ticker ? futQ.data : null;
+  const conv = futOn ? convOf(futData) : null;
+  const exact = m ? { spot: m.spot.price, flips: m.levels.zero_gamma } : null;
+  const setOverride = (o: StoredOverride | null) =>
+    setOverrides((cur) => {
+      const k = FUT_INDEX[ticker] ?? ticker;
+      const next = { ...cur };
+      if (o) next[k] = o;
+      else delete next[k];
+      return next;
+    });
   const expsFor = exps.data && exps.data.ticker === ticker ? exps.data : null;
   const noExpiries = expsFor !== null && expsFor.expirations.length === 0;
   const fatal: Error | null = !m ? (map.error ?? (exps.error && !expsFor ? exps.error : null)) : null;
@@ -288,7 +334,7 @@ export default function LiveMap({ initialTicker, onTicker }: { initialTicker: st
       }
     >
       {m && levels ? (
-        <GexProfile map={m} levels={levels} rangePct={rangePct} showCurve={curveOn} frozen={showFrozen} height={chartH} present={present} />
+        <GexProfile map={m} levels={levels} rangePct={rangePct} showCurve={curveOn} frozen={showFrozen} height={chartH} present={present} fut={conv} />
       ) : (
         <ProfileSkeleton height={chartH} />
       )}
@@ -386,6 +432,22 @@ export default function LiveMap({ initialTicker, onTicker }: { initialTicker: st
             { value: "unsigned", label: "Unsigned", title: "Every contract counts by size. Shows where gamma sits, not its direction." },
           ]}
         />
+        <Seg<PriceView>
+          label="Price units"
+          value={futOn ? "futures" : "index"}
+          onChange={setPriceView}
+          options={[
+            { value: "index", label: "Index", title: `Levels in ${ticker} units, as computed` },
+            {
+              value: "futures",
+              label: "Futures",
+              disabled: !futOk,
+              title: futOk
+                ? `Levels as ${FUT_INDEX[ticker] === "NDX" ? "/MNQ" : "/ES"} equivalents: an estimate from the option chain, rounded to the 0.25 tick`
+                : "Futures view: SPX, NDX, SPY and QQQ only",
+            },
+          ]}
+        />
         <div style={{ marginLeft: "auto" }} className="refresh">
           <Countdown remaining={remaining} paused={paused} frac={fetchedAt ? Math.min(1, elapsed / REFRESH_S) : 0} loading={map.loading} />
           <button type="button" className="icon-btn" onClick={() => setPaused((p) => !p)} aria-label={paused ? "Resume auto refresh" : "Pause auto refresh"} title={paused ? "Resume" : "Pause"}>
@@ -409,6 +471,15 @@ export default function LiveMap({ initialTicker, onTicker }: { initialTicker: st
             )}
             <br />
             {expText ?? `${m.by_expiry.length} ${m.by_expiry.length === 1 ? "expiry" : "expiries"}`} · {int(m.coverage.eligible)} contracts
+            {conv && (
+              <>
+                <br />
+                <span className="fut-aside">
+                  {conv.symbol} equivalents, basis {conv.basis >= 0 ? "+" : "-"}
+                  {Math.abs(conv.basis).toFixed(2)} (estimate)
+                </span>
+              </>
+            )}
           </div>
         )}
       </div>
@@ -423,15 +494,17 @@ export default function LiveMap({ initialTicker, onTicker }: { initialTicker: st
         </div>
       ) : present ? (
         <div className="present-stack">
-          <LevelsPanel m={m} levels={levels} frozen={showFrozen} layout="strip" onExplain={() => setDrawer(true)} />
+          <LevelsPanel m={m} levels={levels} frozen={showFrozen} layout="strip" onExplain={() => setDrawer(true)} fut={conv} />
+          {futOn && <FuturesPanel ticker={ticker} f={futData} error={futQ.error} loading={futQ.loading} ov={ov} onOverride={setOverride} />}
           {chartPanel}
-          <GuidancePanel ticker={ticker} expiries={selKey} signed={signedMode} asOf={m?.as_of ?? null} range={rangePct} />
+          <GuidancePanel ticker={ticker} expiries={selKey} signed={signedMode} asOf={m?.as_of ?? null} range={rangePct} fut={conv} exact={exact} />
         </div>
       ) : (
         <div className="grid-main">
           {chartPanel}
           <div className="side">
-            <LevelsPanel m={m} levels={levels} frozen={showFrozen} layout="grid" onExplain={() => setDrawer(true)} />
+            {futOn && <FuturesPanel ticker={ticker} f={futData} error={futQ.error} loading={futQ.loading} ov={ov} onOverride={setOverride} />}
+            <LevelsPanel m={m} levels={levels} frozen={showFrozen} layout="grid" onExplain={() => setDrawer(true)} fut={conv} />
             <ExpiryPanel m={m} exps={expList} />
             {m && m.warnings.length > 0 && (
               <Panel title="Notes">
@@ -452,7 +525,7 @@ export default function LiveMap({ initialTicker, onTicker }: { initialTicker: st
                 Open
               </span>
             </button>
-            <GuidancePanel ticker={ticker} expiries={selKey} signed={signedMode} asOf={m?.as_of ?? null} range={rangePct} />
+            <GuidancePanel ticker={ticker} expiries={selKey} signed={signedMode} asOf={m?.as_of ?? null} range={rangePct} fut={conv} exact={exact} />
           </div>
         </div>
       )}
@@ -612,12 +685,15 @@ function LevelsPanel({
   frozen,
   layout,
   onExplain,
+  fut = null,
 }: {
   m: GexMap | null;
   levels: ProfileLevels | null;
   frozen: boolean;
   layout: "grid" | "strip";
   onExplain?: () => void;
+  /** Futures view: the price tiles show the futures equivalent large and the index value small. */
+  fut?: FutConv | null;
 }) {
   if (!m || !levels) {
     return (
@@ -765,6 +841,36 @@ function LevelsPanel({
       ),
       def: GEX_UNITS,
     });
+  }
+  // Futures view: price tiles show the futures equivalent large, the index (or ETF) value small. Display only.
+  if (fut) {
+    const src: Record<string, number | null> = {
+      spot: S,
+      cpw: levels.call_wall,
+      cw: levels.call_wall,
+      pw: levels.put_wall,
+      zg: levels.nearest_zero_gamma,
+    };
+    for (const k of tiles) {
+      if (!(k.key in src) || src[k.key] === null) continue;
+      const v = src[k.key] as number;
+      const idx = k.key === "spot" || k.key === "zg" ? px(v, t) : strike(v);
+      k.label = (
+        <>
+          {k.label}
+          <span className="fut-tag">{fut.root}</span>
+        </>
+      );
+      k.value = futPx(toFut(v, fut));
+      k.sub = (
+        <>
+          <span className="fut-idx">
+            {t} {idx}
+          </span>
+          {k.key === "spot" ? <> · {k.sub}</> : <> · {distText(v, S, t)}</>}
+        </>
+      );
+    }
   }
   // No usable quotes: every current-chain value is unavailable, never a neutral sign or a $0 total. The 10:00
   // reference levels (frozen) come from the capture, so they stay.

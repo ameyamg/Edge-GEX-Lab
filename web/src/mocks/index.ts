@@ -975,6 +975,8 @@ export async function mockFetch(path: string, init?: RequestInit): Promise<unkno
     }
     case "/api/scorecard":
       return scorecard();
+    case "/api/futures":
+      throw new Error("The mock build has no Futures view: run the API with GEXLAB_DEMO=1 for a synthetic one");
     default:
       throw new Error(`Mock has no route for ${url.pathname}`);
   }

@@ -593,3 +593,33 @@ def health() -> dict:
             "last_frozen_capture": None if demo else last_frozen(),
             "latest_captures": _demo_latest_captures() if demo else latest_captures(), "rate": rate,
             "keys_configured": demo or load_credentials() is not None, "calendar": calendar}
+
+
+# ---------------------------------------------------------------- futures view (display transform only)
+
+def futures_view(ticker: str, override_price: float | None = None, override_basis: float | None = None) -> dict:
+    """GET /api/futures. Reads the index's Cboe payload through the map's own cache (same 60 s politeness floor)
+    and, for SPY/QQQ or a live override, Alpaca REST trades. Never touches the map, the recorder or the studies."""
+    from gexlab import futures
+    ticker = ticker.upper()
+    index = config.ETF_INDEX.get(ticker, ticker)
+    if index not in config.FUTURES:
+        raise SourceError("The Futures view covers SPX, NDX, SPY and QQQ", status=404)
+    if config.is_demo():
+        now, cal = demo_as_of(), get_calendar()
+        spots = {t: chain_from_fixture(t).spot.price for t in (index, *[e for e, i in config.ETF_INDEX.items() if i == index])}
+        demo_spot = lambda sym, at=None, lookback_s=None: Spot(spots[sym], now, "demo")   # noqa: E731
+        return futures.build(ticker, now=now, cal=cal, market_open=True,
+                             index_body=futures.demo_payload(index, spots[index], now), trade_at=demo_spot,
+                             latest_trade=demo_spot, override_price=override_price, override_basis=override_basis,
+                             demo=True)
+    now = utc_now()
+    cal = get_calendar(now)
+    body, _ = cboe.fetch_raw(index)
+    trade_at = latest = None
+    if load_credentials() is not None:
+        src = AlpacaSource(who="futures")
+        trade_at, latest = src.trade_at, src.latest_trade
+    return futures.build(ticker, now=now, cal=cal, market_open=cal.market_open(now), index_body=body,
+                         trade_at=trade_at, latest_trade=latest, override_price=override_price,
+                         override_basis=override_basis)

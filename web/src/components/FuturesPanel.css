@@ -1,0 +1,123 @@
+/* Futures view panel and the futures labels on the level cards. Same tokens as app.css. */
+.futures-panel .f-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.f-chip {
+  font: 600 9.5px/1 var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--amber);
+  border: 1px solid var(--amber-dim);
+  border-radius: var(--r-s);
+  padding: 3px 5px;
+}
+.f-head {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: var(--r-s);
+  overflow: hidden;
+}
+.f-head > div {
+  background: var(--surface);
+  padding: 10px 12px;
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+.f-head small {
+  font: 600 10px/1 var(--mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.f-basis,
+.f-sym {
+  font: 600 22px/1.05 var(--mono);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.f-basis.na {
+  color: var(--muted);
+  font-size: 16px;
+}
+.f-src {
+  font: 500 11px/1.3 var(--mono);
+  color: var(--muted);
+}
+.f-kv {
+  margin-top: 10px;
+}
+.f-kv dd {
+  font-variant-numeric: tabular-nums;
+}
+.f-ov {
+  margin-top: 10px;
+  display: grid;
+  gap: 6px;
+}
+.f-ov label {
+  font: 600 10px/1 var(--mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.f-ov-row {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.f-ov-row input {
+  flex: 1;
+  min-width: 0;
+  height: 28px;
+  padding: 0 8px;
+  background: var(--surface-2);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-s);
+  font: 500 13px/1 var(--mono);
+  font-variant-numeric: tabular-nums;
+}
+.f-ov-row input:focus {
+  outline: none;
+  border-color: var(--green-dim);
+}
+.f-small {
+  margin: 0;
+  font: 400 12px/1.45 var(--body);
+  color: var(--text-2);
+}
+.f-small b {
+  font-family: var(--mono);
+}
+.f-amber {
+  color: var(--amber);
+}
+.f-muted {
+  color: var(--muted);
+}
+.f-warn {
+  border-left: 2px solid var(--amber);
+  padding-left: 8px;
+}
+.f-foot {
+  margin: 10px 0 0;
+  font: 400 11px/1.4 var(--body);
+  color: var(--muted);
+}
+/* level cards and the lead aside */
+.fut-tag {
+  margin-left: 2px;
+  color: var(--amber);
+  letter-spacing: 0.04em;
+}
+.fut-idx {
+  color: var(--text-2);
+}
+.fut-aside {
+  color: var(--amber);
+}

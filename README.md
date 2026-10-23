@@ -77,6 +77,8 @@ caches or screenshots with your account details.
   missing too much of its gamma.
 - **Coverage you can see**: the share of the estimated |GEX| within 5% of spot held by contracts with
   usable open interest and IV, and how many contracts were left out and why.
+- **Futures view**: the same levels as /ES or /MNQ equivalents for SPX, NDX, SPY and QQQ, with the
+  basis estimated from the option chain. See [Futures view](#futures-view).
 - **Present mode** (key P): a larger layout for screen recording.
 
 ## Screenshots
@@ -162,6 +164,33 @@ Your keys (`.env`) and caches (`data/`) are not part of a release, so an update 
   delayed. The map labels which one you are looking at.
 - **Valuation clock.** Time to expiry is measured from the quote time, and from the session close when
   the market is shut, so a weekend map is not distorted.
+
+## Futures view
+
+If you trade /ES or /MNQ, flip the Live Map's **Index | Futures** toggle and every level reads as a
+futures price: the level cards show the futures value large with the index or ETF value underneath,
+the chart tags read like "CALL WALL /ES 7,791.00", and the guidance prices convert too. It is a
+display change only: the GEX math stays in index or ETF units, and the panel labels the result an
+estimate, not a futures quote.
+
+- **Which contract.** SPX maps to /ES (and /MES), NDX to /MNQ (and /NQ). The view uses the front
+  quarterly contract (Mar, Jun, Sep, Dec) and moves to the next one on the roll date, the Thursday 8
+  calendar days before the third Friday.
+- **Where the basis comes from.** Put-call parity on the AM settled index options that expire with the
+  futures: forward = strike + e^(rT) x (call mid minus put mid), taken as the median over the strikes
+  nearest the forward. The basis is that forward minus the index value from the same Cboe payload, so
+  the 15 minute delay cancels out. No futures feed and no extra account. With fewer than 3 usable
+  strike pairs the view says it is unavailable instead of guessing.
+- **SPY and QQQ** convert to index points first, by the index to ETF price ratio at the same instant
+  (the Cboe index value and the last ETF trade at or before that second, from Alpaca). That needs your
+  Alpaca keys; without them the SPY and QQQ futures view is unavailable, like their maps.
+- **Your own price.** Type the live futures price you see into the panel and the basis becomes that
+  price minus the latest index value. When it differs from the parity estimate by more than 3 points
+  on /ES (12 on /MNQ), the panel warns.
+- **Rounding.** Futures = level x ratio + basis, rounded to the contract's 0.25 tick. The ratio is 1
+  for SPX and NDX.
+
+Works in demo mode on synthetic data, labeled as such. Not financial advice.
 
 ## Contributing
 

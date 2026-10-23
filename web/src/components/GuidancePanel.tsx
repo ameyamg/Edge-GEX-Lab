@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { MOCK } from "../api/client";
 import { DEMO_LABEL, Icon, Panel, Skeleton, usePresent } from "./ui";
 import { isIndex } from "../lib/format";
+import { futPx, toFut, type FutConv } from "../lib/futures";
 import "./GuidancePanel.css";
 
 // Trade guidance: model-based ideas computed by the API from this map (gexlab/guidance).
@@ -82,9 +83,25 @@ function fx(v: number | null | undefined, whole = false): string {
   if (v === null || v === undefined || !Number.isFinite(v)) return "n/a";
   return v.toLocaleString("en-US", { maximumFractionDigits: whole ? 0 : 2 });
 }
-function dist(l: GLevel, whole: boolean): string {
+// A price cell: the index (or ETF) value, or in the Futures view its futures equivalent on the tick.
+function pf(v: number | null | undefined, whole: boolean, fut: FutConv | null): string {
+  return fut ? futPx(toFut(v, fut)) : fx(v, whole);
+}
+// The guidance API rounds index prices to whole points. In the Futures view the spot and the gamma flip convert from
+// the map's exact values instead, so they match the level cards to the tick (strikes are exact already).
+export interface ExactLevels {
+  spot: number;
+  flips: number[];
+}
+function exactOf(shown: number, candidates: number[], whole: boolean): number {
+  const tol = whole ? 0.5 + 1e-9 : 0.005 + 1e-9;
+  return candidates.find((c) => Math.abs(c - shown) <= tol) ?? shown;
+}
+function dist(l: GLevel, whole: boolean, fut: FutConv | null = null): string {
   if (l.side === "at") return "at spot";
-  return `${l.distance > 0 ? "+" : "-"}${fx(Math.abs(l.distance), whole)}${l.distance_pct !== null ? ` (${fx(Math.abs(l.distance_pct))}%)` : ""}`;
+  // Futures view: a distance in ETF dollars becomes futures points through the ratio (the basis cancels).
+  const d = fut ? `${Math.abs(l.distance * fut.ratio).toFixed(2)}` : fx(Math.abs(l.distance), whole);
+  return `${l.distance > 0 ? "+" : "-"}${d}${l.distance_pct !== null ? ` (${fx(Math.abs(l.distance_pct))}%)` : ""}`;
 }
 function levelClass(l: GLevel): string {
   if (l.frozen) return "g-muted";
@@ -93,9 +110,9 @@ function levelClass(l: GLevel): string {
   if (l.key === "cluster") return l.sign === "positive" ? "g-green-dim" : "g-purple-dim";
   return "g-text";
 }
-function entryText(s: Scenario, whole: boolean): string {
+function entryText(s: Scenario, whole: boolean, fut: FutConv | null = null): string {
   if (!s.entry) return "none";
-  return s.entry.low === s.entry.high ? fx(s.entry.low, whole) : `${fx(s.entry.low, whole)} to ${fx(s.entry.high, whole)}`;
+  return s.entry.low === s.entry.high ? pf(s.entry.low, whole, fut) : `${pf(s.entry.low, whole, fut)} to ${pf(s.entry.high, whole, fut)}`;
 }
 
 async function getJson<T>(url: string, init?: RequestInit): Promise<{ status: number; body: T | null }> {
@@ -110,12 +127,18 @@ export default function GuidancePanel({
   signed,
   asOf,
   range,
+  fut = null,
+  exact = null,
 }: {
   ticker: string;
   expiries: string;
   signed: boolean;
   asOf: string | null;
   range: number;
+  /** Futures view: every price shows as its futures equivalent (estimate). Distances in futures points. */
+  fut?: FutConv | null;
+  /** The map's unrounded spot and gamma flips, used for the futures conversion. */
+  exact?: ExactLevels | null;
 }) {
   const present = usePresent();
   const [open, setOpen] = useState(readOpen);
@@ -234,6 +257,11 @@ export default function GuidancePanel({
           {DEMO_LABEL}
         </span>
       )}
+      {fut && (
+        <p className="g-small g-amber">
+          Prices are {fut.symbol} equivalents: {ticker} level{fut.ratio !== 1 ? ` x ${fut.ratio.toFixed(4)}` : ""} {fut.basis >= 0 ? "+" : "-"} {Math.abs(fut.basis).toFixed(2)} basis, an estimate. The text below keeps {ticker} prices.
+        </p>
+      )}
       {g.feed.stale && <p className="g-small g-amber">Feed is stale: {g.feed.label}. These levels may be out of date.</p>}
       {err && <p className="g-small g-amber">{err} Showing the last guidance.</p>}
 
@@ -260,18 +288,20 @@ export default function GuidancePanel({
               {ladder.map((l, i) =>
                 "spot" in l ? (
                   <tr key={`spot-${i}`} className="g-spot">
-                    <td className="mono">{fx(l.spot, whole)}</td>
+                    <td className="mono">{pf(fut && exact ? exactOf(l.spot, [exact.spot], whole) : l.spot, whole, fut)}</td>
                     <td>spot</td>
                     <td className="r mono">0</td>
                   </tr>
                 ) : (
                   <tr key={`${l.key}-${l.price}`}>
-                    <td className={`mono ${levelClass(l)}`}>{fx(l.price, whole)}</td>
+                    <td className={`mono ${levelClass(l)}`} title={fut ? `${ticker} ${fx(l.price, whole)}` : undefined}>
+                      {pf(fut && exact && l.key === "gamma_flip" ? exactOf(l.price, exact.flips, whole) : l.price, whole, fut)}
+                    </td>
                     <td className={levelClass(l)}>
                       {l.label}
                       {l.net_gex_billions !== undefined ? <span className="g-muted"> {fx(l.net_gex_billions)}B</span> : null}
                     </td>
-                    <td className="r mono">{dist(l, whole)}</td>
+                    <td className="r mono">{dist(l, whole, fut)}</td>
                   </tr>
                 ),
               )}
@@ -305,13 +335,13 @@ export default function GuidancePanel({
                 {s.bias !== "flat" && (
                   <dl className="g-plan">
                     <dt>Entry</dt>
-                    <dd className="mono">{entryText(s, whole)}</dd>
+                    <dd className="mono">{entryText(s, whole, fut)}</dd>
                     <dt>Stop</dt>
                     <dd className="mono" title={s.stop?.basis}>
-                      {s.stop ? fx(s.stop.price, whole) : "none"}
+                      {s.stop ? pf(s.stop.price, whole, fut) : "none"}
                     </dd>
                     <dt>Targets</dt>
-                    <dd className="mono">{s.targets.map((t) => fx(t.price, whole)).join(" / ") || "none"}</dd>
+                    <dd className="mono">{s.targets.map((t) => pf(t.price, whole, fut)).join(" / ") || "none"}</dd>
                   </dl>
                 )}
                 <p className="g-why">{s.why}</p>

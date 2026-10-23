@@ -410,7 +410,7 @@ def test_narrate_endpoint_demo_serves_template_without_cli(demo, monkeypatch):
 
 def test_core_app_includes_the_guidance_router(demo):
     from gexlab.api import app
-    assert TestClient(app).get("/api/guidance", params={"ticker": "QQQ"}).status_code == 200
+    assert TestClient(app, base_url="http://127.0.0.1").get("/api/guidance", params={"ticker": "QQQ"}).status_code == 200
 
 
 # ----------------------------------------------------------------------------- targets, fade zones, reward to risk

@@ -220,6 +220,8 @@ def test_in_session_alpaca_valuation_is_the_quote_time_and_feeds_the_digest(tmp_
 
 
 def test_frozen_capture_t_uses_the_valuation_not_the_request_time(tmp_path, monkeypatch):
+    # This test isolates valuation time; Cboe OI has separate mocked coverage.
+    monkeypatch.setattr(service.config, "OI_SOURCE", "alpaca")
     monkeypatch.setattr(service, "get_calendar", lambda now=None: CAL)
     monkeypatch.setattr(service, "AlpacaSource", lambda **kw: F._source(tmp_path, F.make_handler()))
     monkeypatch.setattr(config, "is_demo", lambda: False)

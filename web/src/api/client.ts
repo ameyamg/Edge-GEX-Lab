@@ -1,6 +1,7 @@
 import type {
   CaptureRow,
   Expirations,
+  FuturesView,
   GexMap,
   Health,
   Recap,
@@ -74,5 +75,7 @@ export const api = {
   generateRecap: (ticker: string, date: string, signal?: AbortSignal) =>
     http<Recap>("/api/recap/generate", { method: "POST", body: JSON.stringify({ ticker, date }), signal }),
   scorecard: (variant?: "passed") => http<Scorecard>(`/api/scorecard${variant ? `?variant=${variant}` : ""}`),
+  futures: (ticker: string, o: { overridePrice?: number; overrideBasis?: number } = {}) =>
+    http<FuturesView>(`/api/futures?${q({ ticker, override_price: o.overridePrice, override_basis: o.overrideBasis })}`),
   replayDates: (ticker: string) => http<ReplayDates>(`/api/replay/dates?${q({ ticker })}`),
 };

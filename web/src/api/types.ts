@@ -471,3 +471,81 @@ export interface Scorecard {
   lead: string;
   notes?: string[];
 }
+
+// ---------- GET /api/futures: the Futures view conversion (display only; the map is unchanged) ----------
+export interface FuturesContract {
+  index: "SPX" | "NDX";
+  symbol: string; // "/ESZ26"
+  also: string[]; // ["/MESZ26"]: same index, same price
+  month: string; // "2026-12"
+  label: string; // "Dec 2026"
+  expiry: string;
+  roll_date: string;
+  code: string; // "Z26"
+  settlement: string;
+  next?: FuturesContract;
+}
+export interface FuturesParity {
+  available: boolean;
+  reason: string | null;
+  forward: number | null;
+  index_spot: number;
+  /** median of basis_raw over the payloads of the last few minutes (basis_window) */
+  basis: number | null;
+  /** this payload's F - index */
+  basis_raw: number | null;
+  basis_window: { payloads: number; seconds: number } | null;
+  rate: number;
+  rate_source: string;
+  t_years: number | null;
+  strikes: { strike: number; call_mid: number; put_mid: number; forward: number }[];
+  usable_pairs: number;
+  spread: number | null;
+  option_root: string;
+  option_expiry: string | null;
+  settlement: "AM";
+  as_of: string | null;
+  index_time: string | null;
+}
+export interface FuturesRatio {
+  value: number;
+  index_price: number;
+  index_time: string;
+  etf: string;
+  etf_price: number;
+  etf_time: string | null;
+  lag_s: number | null;
+  source: string;
+  note: string;
+}
+export interface FuturesOverride {
+  price: number;
+  index_value: number;
+  index_source: "live_etf_ratio" | "cboe_delayed" | "demo";
+  index_time: string | null;
+  delayed: boolean;
+  basis: number;
+  at: string | null;
+  label: string;
+}
+export interface FuturesView {
+  ticker: string;
+  index: "SPX" | "NDX";
+  etf: string | null;
+  available: boolean;
+  reason: string | null;
+  contract: FuturesContract;
+  parity: FuturesParity | null;
+  ratio: FuturesRatio | null;
+  override: FuturesOverride | null;
+  check: { diff: number | null; tolerance: number; warning: boolean } | null;
+  basis: { value: number; source: "parity" | "override"; label: string } | null;
+  /** futures = round to tick (level * ratio + basis). ratio is 1 for SPX and NDX. */
+  convert: { ratio: number; basis: number; tick: number } | null;
+  tick: number;
+  tolerance: number;
+  label: string;
+  warnings: string[];
+  as_of: string;
+  demo: boolean;
+}

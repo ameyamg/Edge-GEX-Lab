@@ -13,7 +13,7 @@ def client(monkeypatch):
     from gexlab import api, service
     service._CHAINS.clear()
     service._LEVEL_CACHE.clear()
-    return TestClient(api.app)
+    return TestClient(api.app, base_url="http://127.0.0.1")
 
 
 BANNED = re.compile(r"\b(buy|sell|bullish|bearish|signal|entry|should)\b", re.I)

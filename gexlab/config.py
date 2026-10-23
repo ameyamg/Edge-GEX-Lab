@@ -214,3 +214,40 @@ GUIDANCE_MAX_DATA_AGE_S = 300    # Market open: no setups when the vendor's data
 GUIDANCE_MIN_RR = 1.0            # A scenario is shown only when the reward from the entry zone's worst edge to target 1
                                  # is at least the risk from that edge to the stop. Below 1 to 1 the
                                  # idea needs a hit rate above 50% to break even, which nothing here has measured.
+
+# ---------------------------------------------------------------- futures view (display transform only)
+# The Live Map's Futures view relabels levels as /ES or /MNQ equivalents. It never touches the GEX math, the levels,
+# the recorder, the frozen captures or the studies: every map number stays in index or ETF units, and the UI adds
+# the basis (and, for SPY and QQQ, the ETF to index ratio) at display time. gexlab/futures.py has the method.
+FUTURES = {                      # Index -> the futures it settles: /ES and /MES settle to the SPX special opening
+                                 # quotation on the quarterly expiry, /NQ and /MNQ to the NDX one, the same settlement
+                                 # as the AM settled monthly index options (root SPX, root NDX; not SPXW or NDXP).
+    "SPX": {"root": "ES", "symbol": "/ES", "also": ("/MES",), "option_root": "SPX",
+            "tolerance": 3.0},   # Override vs parity warning, in index points (3 ES points).
+    "NDX": {"root": "MNQ", "symbol": "/MNQ", "also": ("/NQ",), "option_root": "NDX",
+            "tolerance": 12.0},  # 3 ES points scaled by the NDX/SPX price ratio: 29,844 / 7,751 = 3.85 in the Cboe
+                                 # payloads of 2026-10-21 11:59 ET, so 11.6, rounded up to 12.
+}
+ETF_INDEX = {"SPY": "SPX", "QQQ": "NDX"}  # ETF levels convert to index points by the index/ETF price ratio first.
+FUTURES_MONTHS = {3: "H", 6: "M", 9: "U", 12: "Z"}  # Quarterly cycle and the exchange month codes.
+FUTURES_ROLL_DAYS = 8            # Roll rule: the front contract switches to the next quarter ON the roll date, the
+                                 # Thursday 8 calendar days before the third Friday (the second Thursday before expiry,
+                                 # when volume moves to the next contract). No holiday adjustment to the roll date.
+FUTURES_RATE = 0.0418            # r in the parity forward F = K + e^(rT) (C - P): the 13 week Treasury bill, coupon
+                                 # equivalent, 4.18% on 2026-10-20 (home.treasury.gov, Daily Treasury Bill Rates).
+                                 # Strikes are picked nearest the forward, where C - P is near 0, so r barely matters:
+                                 # on the Dec 2026 chains at 11:59 ET 2026-10-21, r = 0 instead moved F by 0.02 pt (SPX)
+                                 # and 0.10 pt (NDX).
+FUTURES_RATE_SOURCE = "13 week Treasury bill, coupon equivalent, 4.18% on 2026-10-20 (US Treasury)"
+FUTURES_PARITY_STRIKES = 6       # Strikes used: the 6 nearest the forward with usable call AND put mids (mid_usable,
+                                 # the same check the map uses). Median of the per-strike forwards.
+FUTURES_PARITY_MIN = 3           # Fewer usable strike pairs than this: the parity basis is unavailable, never a guess.
+FUTURES_PARITY_WARN_FRAC = 0.0005  # Warn when the per-strike forwards spread more than 0.05% of spot (SPX near 3.9 pt,
+                                 # NDX near 15 pt). Measured 2026-10-21 11:59 ET: SPX 0.07 pt, NDX 1.10 pt.
+FUTURES_TICK = 0.25              # /ES, /MES, /NQ and /MNQ all tick 0.25 index points.
+FUTURES_RATIO_MAX_LAG_S = 90     # SPY/QQQ ratio: the ETF trade used must print within 90 s before the index value's time.
+FUTURES_BASIS_WINDOW_S = 300     # The parity basis shown is the median over the Cboe payloads of the last 5 minutes (by payload
+                                 # time), not one file. Measured 2026-10-21: two NDX payloads a minute apart (12:14:59 and
+                                 # 12:15:59 ET) gave 187.86 and 193.26, because NDX option spreads run 30 to 50 points and the
+                                 # per-strike forwards bounce about 4 points; SPX strikes agreed within 0.3. The true basis
+                                 # only decays with carry (about 0.7 point a day on Dec SPX), so 5 minutes loses nothing real.

@@ -11,6 +11,7 @@ import logging
 from datetime import date
 
 from fastapi import FastAPI, HTTPException, Query
+from starlette.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
@@ -20,6 +21,8 @@ from gexlab.sources.base import SourceError
 log = logging.getLogger("gexlab.api")
 
 app = FastAPI(title="Edge GEX Lab", version=config.MODEL_VERSION)
+# Refuse rebound hostnames before any route can expose local data.
+app.add_middleware(TrustedHostMiddleware, allowed_hosts=["127.0.0.1", "localhost"], www_redirect=False)
 app.add_middleware(CORSMiddleware, allow_origins=["http://127.0.0.1:5240", "http://localhost:5240"],
                    allow_methods=["GET", "POST"], allow_headers=["*"])
 
@@ -72,6 +75,16 @@ def gex_map(ticker: str, expiries: str | None = None, signed: bool = True):
             raise HTTPException(400, "expiries must be YYYY-MM-DD, comma separated")
     try:
         return service.build_map(_ticker(ticker), exp, signed)
+    except SourceError as e:
+        raise _vendor_error(e)
+
+
+@app.get("/api/futures")
+def futures_view(ticker: str, override_price: float | None = Query(None, gt=0),
+                 override_basis: float | None = None):
+    """Futures view conversion for SPX, NDX, SPY and QQQ (display only; the map is unchanged)."""
+    try:
+        return service.futures_view(_ticker(ticker), override_price, override_basis)
     except SourceError as e:
         raise _vendor_error(e)
 
