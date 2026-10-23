@@ -942,6 +942,8 @@ export async function mockFetch(path: string, init?: RequestInit): Promise<unkno
       };
       return h;
     }
+    case "/api/update":
+      return { enabled: false, current: "1.1.0", latest: null, available: false, url: "", title: "", checked_at: null, error: null };
     case "/api/tickers":
       return { pinned: ["SPY", "QQQ", "SPX", "NDX"] };
     case "/api/search": {

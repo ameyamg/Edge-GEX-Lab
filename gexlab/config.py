@@ -12,7 +12,12 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 
 # ---------------------------------------------------------------- identity
-MODEL_VERSION = "1.1"            # Model/input version, stored on every capture. 1.0 = SPEC math with Alpaca OI for
+APP_VERSION = "1.1.0"            # The public release this build is. Bump it before tagging a release: the update check
+                                 # (gexlab/update_check.py) compares it with GitHub's latest release tag.
+UPDATE_REPO = "simonro/Edge-GEX-Lab"  # Where the update check looks for releases (the public repo).
+UPDATE_EVERY_H = 24              # At most one update check a day; the answer is cached in CACHE_DIR.
+UPDATE_TIMEOUT_S = 3             # The check gives up after 3 s, silently.
+MODEL_VERSION = "1.1"           # Model/input version, stored on every capture. 1.0 = SPEC math with Alpaca OI for
                                  # SPY, QQQ and stocks. 1.1 (2026-10-19, Cboe OI switch): same gamma math, but open
                                  # interest for Alpaca-quoted tickers now comes from Cboe (OI_SOURCE). Inputs changed,
                                  # so the version moved; the capture gate stays 1.2.

@@ -5,6 +5,18 @@ export type FeedKind = "opra" | "indicative" | "cboe_delayed" | "demo";
 export type Regime = "positive" | "negative" | "neutral";
 export type CaptureStatus = "eligible" | "late" | "invalid" | "missed" | "future";
 
+// GET /api/update: is a newer release out? Checked at most once a day; enabled false in demo mode or when opted out.
+export interface UpdateInfo {
+  enabled: boolean;
+  current: string;
+  latest: string | null;
+  available: boolean;
+  url: string;
+  title: string;
+  checked_at: string | null;
+  error: string | null;
+}
+
 export interface Health {
   status: string;
   demo: boolean;

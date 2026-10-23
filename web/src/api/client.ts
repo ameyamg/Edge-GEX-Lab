@@ -10,6 +10,7 @@ import type {
   Scorecard,
   SearchHit,
   Tickers,
+  UpdateInfo,
 } from "./types";
 
 // VITE_MOCK=1 (npm run dev:mock) answers every call from src/mocks with synthetic data.
@@ -64,6 +65,7 @@ const q = (params: Record<string, string | number | boolean | undefined>) =>
 
 export const api = {
   health: () => http<Health>("/api/health"),
+  update: () => http<UpdateInfo>("/api/update"),
   tickers: () => http<Tickers>("/api/tickers"),
   search: (term: string) => http<SearchHit[]>(`/api/search?${q({ q: term })}`),
   expirations: (ticker: string) => http<Expirations>(`/api/expirations?${q({ ticker })}`),

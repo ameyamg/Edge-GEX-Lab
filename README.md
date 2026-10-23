@@ -10,7 +10,8 @@ net GEX is next to the stock's own daily dollar volume, and a trade guidance pan
 into levels and scenarios with every number traceable to the map. Built for active traders who want to
 see where option gamma sits without paying for a GEX service.
 
-- **Runs on your computer.** No account, no telemetry, the server listens on `127.0.0.1` only.
+- **Runs on your computer.** No account, no telemetry, the server listens on `127.0.0.1` only. The
+  only call home is a once-a-day check for a new release, and you can turn it off.
 - **Every number is shown with how it was made.** OI date and source, feed, valuation time, coverage
   and the sign assumption are on the map, not in a footnote.
 - **AI is optional and fenced.** The guidance is a deterministic template. "Explain this map" can ask
@@ -57,6 +58,12 @@ personal research, at your own risk. Do not redistribute the data.
 **Your local `claude` CLI** (optional): only when you press "Explain this map". It receives the
 guidance object for that map and nothing else, runs with every tool, MCP server and setting disabled,
 and gets no API key from this app.
+
+**GitHub** (update check): when the server starts, at most once a day, it asks `api.github.com` for
+this repo's latest release. GitHub sees your IP address and the app version, nothing else: no keys, no
+tickers, no settings. If a newer version exists, a banner on the page and a line in the `launch.bat`
+window link to the release notes; nothing is downloaded or installed. It is silent when you are
+offline, demo mode never checks, and `set GEXLAB_NO_UPDATE_CHECK=1` before `launch.bat` turns it off.
 
 ### API keys
 
@@ -132,6 +139,8 @@ version of Rollup to avoid it, so delete `web\node_modules` and run `setup.bat` 
 ## Updating to a new release
 
 Your keys (`.env`) and caches (`data/`) are not part of a release, so an update never touches them.
+When a new release is out, the app tells you with a banner at the top of the page (once a day, see
+Privacy above), linking to its release notes.
 
 **If you cloned with git:** `git pull`, then `setup.bat` (it rebuilds the page), then `launch.bat`.
 
@@ -147,6 +156,7 @@ Your keys (`.env`) and caches (`data/`) are not part of a release, so an update 
 | `ALPACA_ENV_FILE` (environment variable, not `.env`) | Optional path to a `.env` file somewhere else that already holds your Alpaca keys, used instead of the `.env` next to this README. Keys set directly as environment variables win over both. |
 | `GEXLAB_PORT` (environment variable, not `.env`) | Port for `launch.bat` and the web dev server's proxy, 8240 by default. Example: `set GEXLAB_PORT=8250` then `launch.bat`. For the manual start, pass the same number to `--port`. |
 | `GEXLAB_NO_BROWSER` (environment variable, not `.env`) | `1` stops `launch.bat` from opening your browser. |
+| `GEXLAB_NO_UPDATE_CHECK` (environment variable, not `.env`) | `1` turns off the once-a-day check for a new release on GitHub. |
 | `GEXLAB_DEMO` (environment variable, not `.env`) | `1` serves the synthetic demo fixtures, the same as `launch.bat demo`. |
 | `GEXLAB_RECAP_MODEL` (environment variable, not `.env`) | Optional model name passed to your `claude` CLI for "Explain this map". |
 

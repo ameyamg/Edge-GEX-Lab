@@ -229,6 +229,30 @@ p {
   padding: 20px var(--pad) 28px;
   min-width: 0;
 }
+/* a newer release is out: one line above the screen, dismissible */
+.update-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+  padding: 9px 12px;
+  border: 1px solid var(--green-dim);
+  border-radius: var(--r-s);
+  background: rgba(120, 210, 2, 0.06);
+  color: var(--text-2);
+  font-size: 13px;
+}
+.update-banner b {
+  color: var(--green);
+}
+.update-banner a {
+  color: var(--text);
+}
+.update-banner code {
+  font: 500 12px/1 var(--mono);
+  color: var(--text);
+}
 .screen {
   display: grid;
   gap: var(--gap);

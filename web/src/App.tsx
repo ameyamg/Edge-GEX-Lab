@@ -1,6 +1,7 @@
 import { Component, useCallback, useEffect, useState, type ReactNode } from "react";
 import { API_HOST, MOCK, api } from "./api/client";
 import { DemoContext, MetaContext, PresentContext, type TopMeta } from "./components/ui";
+import UpdateBanner from "./components/UpdateBanner";
 import { useAsync, useHashRoute } from "./lib/hooks";
 import LiveMap from "./screens/LiveMap";
 
@@ -134,6 +135,7 @@ export default function App() {
             </header>
 
             <main className="main">
+              <UpdateBanner hidden={present} />
               <Boundary resetKey={route}>
                 {route === "/live" && !awaitingDefault && <LiveMap key="live" initialTicker={ticker} onTicker={setTicker} />}
               </Boundary>

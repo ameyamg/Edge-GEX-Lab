@@ -8,6 +8,7 @@ GEXLAB_DEMO=1 serves synthetic fixtures with no keys and no network.
 from __future__ import annotations
 
 import logging
+from contextlib import asynccontextmanager
 from datetime import date
 
 from fastapi import FastAPI, HTTPException, Query
@@ -15,12 +16,19 @@ from starlette.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
-from gexlab import config, service
+from gexlab import config, service, update_check
 from gexlab.sources.base import SourceError
 
 log = logging.getLogger("gexlab.api")
 
-app = FastAPI(title="Edge GEX Lab", version=config.MODEL_VERSION)
+
+@asynccontextmanager
+async def _lifespan(_app: FastAPI):
+    update_check.start_background_check()      # at most once a day, silent offline, GEXLAB_NO_UPDATE_CHECK=1 skips it
+    yield
+
+
+app = FastAPI(title="Edge GEX Lab", version=config.MODEL_VERSION, lifespan=_lifespan)
 # Refuse rebound hostnames before any route can expose local data.
 app.add_middleware(TrustedHostMiddleware, allowed_hosts=["127.0.0.1", "localhost"], www_redirect=False)
 app.add_middleware(CORSMiddleware, allow_origins=["http://127.0.0.1:5240", "http://localhost:5240"],
@@ -45,6 +53,12 @@ def _vendor_error(e: SourceError) -> HTTPException:
 @app.get("/api/health")
 def health():
     return service.health()
+
+
+@app.get("/api/update")
+def update():
+    """Is a newer release out? From the day-old cache, or one request to GitHub (3 s timeout). Never fails."""
+    return update_check.check()
 
 
 @app.get("/api/tickers")

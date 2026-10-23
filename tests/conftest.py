@@ -1,7 +1,15 @@
 """Shared test helpers for the public edition."""
 from datetime import date, timedelta
 
+import pytest
+
 from gexlab.engine.calendar import TradingCalendar
+
+
+@pytest.fixture(autouse=True)
+def _no_update_check(monkeypatch):
+    """Tests never ask GitHub for releases; test_update_check turns it back on with an injected fetch."""
+    monkeypatch.setenv("GEXLAB_NO_UPDATE_CHECK", "1")
 
 
 def exchange_cal(start=date(2026, 9, 1), end=date(2026, 11, 30), closes=None):
